@@ -48,5 +48,5 @@ fs.writeFileSync(path.join(site, "index.html"), page(true));
 for (const f of fs.readdirSync(path.join(__dirname, "pwa"))) fs.copyFileSync(path.join(__dirname, "pwa", f), path.join(site, f));
 const dev = path.join(site, "dev");
 for (const d of ["src", "test", "pwa"]) fs.cpSync(path.join(__dirname, d), path.join(dev, d), { recursive: true });
-for (const f of ["build.js", "LISEZMOI.md", "deploy.sh"]) fs.copyFileSync(path.join(__dirname, f), path.join(dev, f));
+for (const f of ["build.js", "LISEZMOI.md", "deploy.sh", "NOTES-PROJET.md"]) fs.copyFileSync(path.join(__dirname, f), path.join(dev, f));
 console.log("site/ prêt");

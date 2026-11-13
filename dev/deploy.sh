@@ -2,7 +2,7 @@
 # Construit puis dépose le site sur github.com/yous-em/officina (sa progression n'est jamais touchée).
 set -e
 cd "$(dirname "$0")" && node build.js && node test/core.test.js | tail -1
-R=/home/claude/officina-repo
+R=${OFFICINA_REPO:-/home/claude/officina-repo}
 [ -d "$R/.git" ] || git clone --depth 1 https://github.com/yous-em/officina "$R"
 git -C "$R" pull -q --ff-only origin main || true
 find "$R" -mindepth 1 -maxdepth 1 ! -name .git ! -name .nojekyll -exec rm -rf {} +
