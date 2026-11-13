@@ -1,0 +1,156 @@
+/* Lot 4 : six cas de comptoir sans ordonnance (ophtalmologie, sevrage tabagique, voyageur).
+   Critères d'orientation vérifiés sur les sources citées ; le reste est signalé « à vérifier ». */
+Object.assign(SRC, {
+  oeilSfmu: { label: "Œil rouge, Société française de médecine d'urgence (2014)", url: "https://sfmu.org/upload/70_formation/02_eformation/02_congres/Urgences/urgences2014/donnees/pdf/010.pdf" },
+  oeilFiche: { label: "Fiche ophtalmologie en médecine générale, Antibioclic (11/2023)", url: "https://antibioclic.com/storage/61/LA-ophta-199-NOV23.pdf" },
+  oeilQdp: { label: "Le confort oculaire, Le Quotidien du pharmacien", url: "https://www.lequotidiendupharmacien.fr/formation/specialites-medicales/le-confort-oculaire" },
+  tabacHas: { label: "Aide au sevrage tabagique, avis de la HAS", url: "https://www.has-sante.fr/upload/docs/application/pdf/strategies_therapeutiques_daide_au_sevrage_tabagique__avis_de_la_has.pdf" },
+  tabacRcp: { label: "RCP Nicopatchlib", url: "https://base-donnees-publique.medicaments.gouv.fr/extrait.php?specid=66413409" },
+  tabacFiche: { label: "Repérer et prescrire les substituts nicotiniques, SRAE Addictologie (11/2023)", url: "https://res.cloudinary.com/void-elsan/raw/upload/v1700130726/Fiche%20Reperer-prescrire-TNS_SRAE-ADDICTO_Nov-23.pdf" },
+  voyOrdre: { label: "Voyage et santé : recommandations 2026, Ordre des pharmaciens", url: "https://www.ordre.pharmacien.fr/les-communications/focus-sur/les-actualites/voyage-et-sante-recommandations-2026" },
+  voyCespharm: { label: "Conseils aux voyageurs 2026, Cespharm", url: "https://www.cespharm.fr/content/download/59269/file/conseils-aux-voyageurs-2026-brochure.pdf?version=2" },
+  voyPasteur: { label: "Conseils santé aux voyageurs, Institut Pasteur", url: "https://www.pasteur.fr/node/1901" }
+});
+Object.assign(DOMAINES, { ophtalmo: { label: "Ophtalmologie" }, tabac: { label: "Sevrage tabagique" }, voyage: { label: "Voyageur" } });
+Object.assign(NOTIONS, { "oeil-rouge": "Œil rouge : signes de gravité", "tns": "Substituts nicotiniques : choix et adaptation", "voyage-palu": "Paludisme : prévention et fièvre au retour" });
+const Q = (id, q, r, attendue, pourquoi) => ({ id, q, r, attendue, pourquoi });
+const O = (id, texte, correct, pourquoi) => ({ id, texte, correct, pourquoi });
+
+CAS.push(
+{ id: "c2", titre: "Un collyre pour un œil rouge", domaines: ["ophtalmo"], niveau: 2, type: "Comptoir", resume: "Demande spontanée, orientation à décider",
+  demande: "Bonjour, j'ai l'œil droit tout rouge depuis hier. Vous auriez un collyre ?", patient: "Mme A., 27 ans",
+  questions: [
+    Q("q1", "Portez-vous des lentilles de contact ?", "Oui, des lentilles souples. J'ai dormi avec avant-hier.", true, "Œil rouge sous lentilles : avis ophtalmologique en urgence"),
+    Q("q2", "Avez-vous mal, ou seulement une gêne comme un grain de sable ?", "Une vraie douleur, pas juste une gêne.", true, "La douleur est un signe de gravité"),
+    Q("q3", "Voyez-vous moins bien de cet œil ?", "Oui, c'est un peu flou.", true, "La baisse de vision est un signe de gravité"),
+    Q("q4", "La lumière vous gêne-t-elle ?", "Oui, beaucoup.", true, "La photophobie est un signe de gravité"),
+    Q("q5", "Un seul œil ou les deux ? Des sécrétions ?", "Seulement le droit. Il pleure, sans pus.", true, "Oriente le diagnostic"),
+    Q("q6", "Un choc, une projection, un produit dans l'œil ?", "Non.", true, "Un traumatisme impose un avis en urgence"),
+    Q("q7", "Avez-vous déjà mis quelque chose ?", "Du sérum physiologique.", true, "Évite un doublon"),
+    Q("q8", "Travaillez-vous beaucoup sur écran ?", "Oui, toute la journée.", false, "Sans utilité devant ces signes")],
+  hypothese: { attendu: "Atteinte de la cornée sous lentilles (kératite, abcès) jusqu'à preuve du contraire.",
+    mecanisme: ["Lentille portée la nuit", "Cornée fragilisée, infection possible", "Douleur, photophobie, vision floue : **3 signes de gravité**", "Risque pour la vision : **urgence ophtalmologique**"] },
+  options: [
+    O("a", "Délivrer un collyre antiseptique et lui dire de revenir si cela persiste", false, "Trois signes de gravité et des lentilles : tout délai menace la vision."),
+    O("b", "Conseiller des larmes artificielles et 48 heures sans lentilles", false, "Ce conseil convient à une simple irritation, pas à un œil rouge douloureux."),
+    O("c", "Faire retirer les lentilles, les conserver, ne rien instiller, et orienter vers un ophtalmologiste en urgence, aujourd'hui", true, "Œil rouge chez un porteur de lentilles, avec douleur, photophobie et baisse de vision."),
+    O("d", "Délivrer un collyre antiallergique", false, "Rien n'évoque une allergie : un seul œil, douleur, pas de démangeaison.")],
+  statut: "verifie", note: "Signes de gravité et urgence sous lentilles : vérifiés sur les trois sources. « Conserver les lentilles » vient d'une source hospitalière suisse.",
+  sources: ["oeilSfmu", "oeilFiche", "oeilQdp"],
+  synthese: ["Devant un œil rouge, toujours chercher : **douleur, baisse de vision, photophobie, lentilles, traumatisme**.", "Un seul de ces signes suffit pour orienter.", "Le conseil officinal ne concerne que l'œil rouge sans douleur et sans baisse de vision."],
+  drugs: [], notion: "oeil-rouge" },
+
+{ id: "c3", titre: "Les yeux qui grattent au printemps", domaines: ["ophtalmo"], niveau: 1, type: "Comptoir", resume: "Demande spontanée, conseil possible",
+  demande: "Mes yeux me démangent et pleurent depuis trois jours. C'est la saison, non ?", patient: "M. T., 34 ans",
+  questions: [
+    Q("q1", "Les deux yeux sont-ils touchés ?", "Oui, les deux.", true, "Une atteinte bilatérale oriente vers l'allergie"),
+    Q("q2", "Est-ce que ça démange, ou est-ce que ça fait mal ?", "Ça démange beaucoup. Pas de douleur.", true, "Démangeaison sans douleur : pas de signe de gravité"),
+    Q("q3", "Votre vision a-t-elle changé ?", "Non, je vois comme d'habitude.", true, "Signe de gravité à écarter"),
+    Q("q4", "La lumière vous gêne-t-elle ?", "Pas vraiment.", true, "Signe de gravité à écarter"),
+    Q("q5", "Portez-vous des lentilles ?", "Non.", true, "Sous lentilles, l'orientation serait systématique"),
+    Q("q6", "Comment sont les sécrétions ?", "Claires, comme des larmes. Pas de pus.", true, "Du pus évoquerait une infection bactérienne"),
+    Q("q7", "Êtes-vous allergique ? Le nez coule, vous éternuez ?", "Oui, rhume des foins chaque printemps.", true, "Terrain allergique"),
+    Q("q8", "Prenez-vous un traitement ?", "De la cétirizine de temps en temps.", true, "Évite un doublon, complète le conseil"),
+    Q("q9", "Avez-vous de la fièvre ?", "Non.", false, "Peu utile ici")],
+  hypothese: { attendu: "Conjonctivite allergique saisonnière, sans signe de gravité.",
+    mecanisme: ["Contact avec un allergène (pollens)", "Libération d'histamine dans la conjonctive", "**Démangeaisons**, larmoiement, rougeur des deux yeux", "Ni douleur, ni baisse de vision : **prise en charge au comptoir**"] },
+  options: [
+    O("a", "Orienter en urgence vers un ophtalmologiste", false, "Aucun signe de gravité : ni douleur, ni baisse de vision, ni photophobie, ni lentilles."),
+    O("b", "Lavages au sérum physiologique, collyre antiallergique sans ordonnance, mesures d'éviction, et consulter sans amélioration en quelques jours ou si douleur ou baisse de vision", true, "Œil rouge sans douleur ni baisse de vision : le seul cas qui relève du conseil officinal."),
+    O("c", "Délivrer un collyre antibiotique", false, "Sur ordonnance seulement, et rien n'évoque une infection bactérienne."),
+    O("d", "Délivrer un collyre vasoconstricteur pour blanchir l'œil", false, "Il masque la rougeur sans traiter l'allergie.")],
+  statut: "partiel", note: "Absence de signes de gravité et consultation sans amélioration : vérifiées. Choix du collyre antiallergique (par exemple cromoglicate) et mesures d'éviction : à vérifier sur son cours.",
+  sources: ["oeilQdp", "oeilFiche"],
+  synthese: ["Allergie : **les deux yeux, ça démange**, sécrétions claires.", "Conseil possible seulement après avoir écarté les signes de gravité.", "Toujours donner la consigne de reconsultation."],
+  drugs: [], notion: "oeil-rouge" },
+
+{ id: "c4", titre: "Je veux arrêter de fumer", domaines: ["tabac"], niveau: 2, type: "Comptoir", resume: "Demande spontanée, choix du substitut",
+  demande: "Je veux arrêter de fumer. Qu'est-ce que vous me conseillez ?", patient: "M. D., 45 ans",
+  questions: [
+    Q("q1", "Combien de cigarettes fumez-vous par jour ?", "Vingt-cinq.", true, "Mesure la dépendance, guide le dosage"),
+    Q("q2", "Combien de temps après le réveil fumez-vous la première ?", "Dans les cinq minutes.", true, "Question du test de Fagerström : forte dépendance"),
+    Q("q3", "Avez-vous déjà essayé d'arrêter ? Avec quoi ?", "Oui, un patch à 14 mg. J'ai craqué au bout d'une semaine, j'étais à cran.", true, "Un échec par sous-dosage change le choix"),
+    Q("q4", "Avez-vous un problème de santé, un traitement ?", "De la tension, traitée.", true, "Précautions d'emploi, intérêt d'un suivi médical"),
+    Q("q5", "Avez-vous fixé une date d'arrêt ?", "Lundi prochain.", true, "Évalue la motivation"),
+    Q("q6", "Avez-vous eu des épisodes de déprime ou d'anxiété ?", "Non.", true, "À repérer avant un sevrage"),
+    Q("q7", "Fumez-vous des blondes ou des brunes ?", "Des blondes.", false, "Sans utilité pour le choix"),
+    Q("q8", "À quel âge avez-vous commencé ?", "À seize ans.", false, "Sans utilité pour le choix")],
+  hypothese: { attendu: "Forte dépendance à la nicotine ; l'échec précédent s'explique par un sous-dosage.",
+    mecanisme: ["25 cigarettes par jour, première dans les 5 minutes", "**Forte dépendance** (20 cigarettes ou plus, ou Fagerström à 5 ou plus)", "Un patch à 14 mg seul apportait trop peu de nicotine", "Manque, irritabilité, rechute"] },
+  options: [
+    O("a", "Reprendre un patch à 14 mg seul, comme la dernière fois", false, "Même sous-dosage, même rechute probable."),
+    O("b", "Patch à 21 mg, associé à une forme orale pour les envies, point à 24-48 heures pour adapter, et information sur le remboursement sur prescription", true, "Dosage adapté à une forte dépendance, association possible chez les patients très dépendants ou sous-dosés."),
+    O("c", "L'envoyer chez le médecin sans rien proposer", false, "Les substituts peuvent être délivrés sans ordonnance : ne pas laisser repartir un fumeur motivé sans aide."),
+    O("d", "Lui conseiller de réduire seul et de revenir quand il sera vraiment prêt", false, "Il est prêt : il a fixé une date.")],
+  statut: "partiel", note: "Patch à 21 mg pour 20 cigarettes ou plus, association avec une forme orale, adaptation aux signes de sous-dosage : vérifiés (RCP, HAS). Le RCP prévoit l'association avec l'avis d'un professionnel de santé. Règles de remboursement : à vérifier.",
+  sources: ["tabacRcp", "tabacHas", "tabacFiche"],
+  synthese: ["Deux questions suffisent pour estimer la dépendance : **nombre de cigarettes** et **délai de la première**.", "**20 cigarettes ou plus : patch à 21 mg** pour commencer.", "Le sous-dosage est fréquent et fait rechuter : associer une forme orale et revoir le patient vite."],
+  drugs: [], notion: "tns" },
+
+{ id: "c5", titre: "Le patch ne marche pas", domaines: ["tabac"], niveau: 2, type: "Comptoir", resume: "Suivi d'un sevrage en cours",
+  demande: "Votre patch ne marche pas. Je suis à cran et j'ai refumé deux cigarettes hier.", patient: "Mme R., 38 ans, sous patch à 14 mg depuis 5 jours",
+  questions: [
+    Q("q1", "Combien fumiez-vous avant d'arrêter ?", "Un paquet par jour.", true, "20 cigarettes : le patch à 14 mg est faible"),
+    Q("q2", "Avez-vous de fortes envies de fumer, de l'irritabilité, des fringales, du mal à dormir ?", "Oui, tout ça. Les envies durent longtemps.", true, "Signes de sous-dosage"),
+    Q("q3", "Avez-vous des nausées, des maux de tête, des palpitations, l'impression d'avoir trop fumé ?", "Non, rien de ça.", true, "Signes de surdosage à écarter"),
+    Q("q4", "Comment utilisez-vous le patch ?", "Un nouveau chaque matin, il tient bien.", true, "Écarte un mésusage"),
+    Q("q5", "Êtes-vous enceinte ou allaitez-vous ?", "Non.", true, "Situation qui demande un avis médical"),
+    Q("q6", "Utilisez-vous autre chose : gommes, pastilles ?", "Non, juste le patch.", true, "Une forme orale peut s'ajouter"),
+    Q("q7", "À quelle heure vous couchez-vous ?", "Vers 23 heures.", false, "Sans utilité ici")],
+  hypothese: { attendu: "Sous-dosage en nicotine.",
+    mecanisme: ["20 cigarettes par jour, patch à 14 mg seul", "Apport de nicotine insuffisant", "**Envies durables, irritabilité, fringales, insomnie**", "Rechute si rien ne change"] },
+  options: [
+    O("a", "Arrêter le patch, puisqu'elle a refumé", false, "Refumer sous patch n'impose pas d'arrêter : c'est le signe qu'il faut plus de nicotine."),
+    O("b", "Augmenter l'apport : patch plus dosé et forme orale pour les envies, puis refaire le point sous 48 heures", true, "Conduite à tenir devant un sous-dosage."),
+    O("c", "Passer au patch à 7 mg", false, "Cela aggraverait le sous-dosage."),
+    O("d", "Lui dire que c'est normal et qu'il faut tenir", false, "Le sous-dosage se corrige ; le laisser en place conduit à la rechute.")],
+  statut: "verifie", note: "Signes de sous-dosage et de surdosage, conduite à tenir : vérifiés (fiche SRAE Addictologie, HAS, RCP).",
+  sources: ["tabacFiche", "tabacHas", "tabacRcp"],
+  synthese: ["**Sous-dosage** : envies qui durent, irritabilité, fringales, troubles du sommeil.", "**Surdosage** : nausées, céphalées, palpitations, impression d'avoir trop fumé.", "Un écart n'est pas un échec : on adapte la dose."],
+  drugs: [], notion: "tns" },
+
+{ id: "c6", titre: "Quelque chose contre le palu", domaines: ["voyage"], niveau: 2, type: "Comptoir", resume: "Préparation d'un voyage, orientation à décider",
+  demande: "On part au Sénégal. On voudrait quelque chose contre le palu et un bon anti-moustique.", patient: "M. et Mme K., avec leur fils de 4 ans",
+  questions: [
+    Q("q1", "Où irez-vous exactement, et où dormirez-vous ?", "En zone rurale, dans la famille.", true, "Le risque dépend du lieu et des nuits"),
+    Q("q2", "Combien de temps restez-vous ?", "Trois semaines.", true, "Conditionne la prophylaxie"),
+    Q("q3", "Quand partez-vous ?", "Dans douze jours.", true, "Délai pour consulter et vacciner"),
+    Q("q4", "Avez-vous vu un médecin pour ce voyage ?", "Non, pas encore.", true, "La chimioprophylaxie se prescrit"),
+    Q("q5", "Qui voyage ? Enfant, grossesse ?", "Nous deux et notre fils de 4 ans.", true, "Choix du répulsif et de la prophylaxie selon l'âge"),
+    Q("q6", "Vos vaccins sont-ils à jour pour cette destination ?", "On ne sait pas.", true, "Vaccins exigés ou recommandés à vérifier"),
+    Q("q7", "Prenez-vous des traitements ?", "Non.", true, "Interactions avec la prophylaxie"),
+    Q("q8", "Avec quelle compagnie voyagez-vous ?", "Air Sénégal.", false, "Sans utilité")],
+  hypothese: { attendu: "Séjour à risque de paludisme : la prévention associe protection contre les piqûres et chimioprophylaxie sur prescription.",
+    mecanisme: ["Zone d'endémie, nuits en zone rurale", "Piqûres d'anophèles, surtout la nuit", "**Sans piqûre, pas de paludisme** : répulsif, moustiquaire, vêtements", "La **chimioprophylaxie** se décide au cas par cas, **sur prescription**"] },
+  options: [
+    O("a", "Vendre un répulsif et un complément « anti-palu » sans ordonnance", false, "Aucun produit sans ordonnance ne prévient le paludisme."),
+    O("b", "Les orienter rapidement vers un médecin ou un centre de vaccinations internationales, et conseiller dès maintenant la protection contre les piqûres : répulsif avec AMM adapté à l'âge, moustiquaire imprégnée, vêtements couvrants", true, "La prophylaxie et les vaccins relèvent du médecin ; la protection contre les piqûres se conseille au comptoir."),
+    O("c", "Leur dire qu'un bon répulsif suffit", false, "En zone rurale d'endémie, la chimioprophylaxie doit être discutée avec un médecin."),
+    O("d", "Leur dire qu'il est trop tard pour se protéger", false, "Douze jours suffisent pour consulter.")],
+  statut: "partiel", note: "Répulsifs recommandés en 2026 (DEET, IR3535, icaridine, avec AMM), chimioprophylaxie au cas par cas par un médecin, absence de produit sans ordonnance efficace : vérifiés. Concentrations de répulsif selon l'âge et vaccins exigés pour le Sénégal : à vérifier dans les recommandations 2026.",
+  sources: ["voyOrdre", "voyCespharm", "voyPasteur"],
+  synthese: ["Trois répulsifs recommandés en 2026 : **DEET, IR3535, icaridine**, avec AMM.", "Chimioprophylaxie : **toujours une prescription**.", "Consigne à donner à tout voyageur : **fièvre pendant ou après le séjour = consulter vite**."],
+  drugs: [], notion: "voyage-palu" },
+
+{ id: "c7", titre: "Du paracétamol pour une grippe", domaines: ["voyage"], niveau: 3, type: "Comptoir", resume: "Demande banale, urgence à repérer",
+  demande: "Une boîte de Doliprane, s'il vous plaît. J'ai 39 depuis hier et des courbatures, sûrement la grippe.", patient: "M. N., 31 ans",
+  questions: [
+    Q("q1", "Avez-vous voyagé récemment ?", "Je suis rentré du Cameroun il y a dix jours.", true, "Question clé devant toute fièvre"),
+    Q("q2", "Avez-vous pris un traitement préventif contre le paludisme ?", "Oui, mais je l'ai arrêté en rentrant.", true, "Une prophylaxie, même bien suivie, n'exclut pas le paludisme"),
+    Q("q3", "Depuis quand avez-vous de la fièvre ?", "Depuis hier soir.", true, "Chronologie"),
+    Q("q4", "Avez-vous d'autres signes : maux de tête, vomissements, diarrhée, fatigue intense ?", "Mal à la tête, et j'ai vomi ce matin.", true, "Signes compatibles, recherche de gravité"),
+    Q("q5", "Avez-vous un problème de santé, un traitement ?", "Non.", true, "Terrain"),
+    Q("q6", "Des personnes malades autour de vous ?", "Mon collègue a la grippe.", true, "Piège : un contexte de grippe ne dispense pas d'écarter le paludisme"),
+    Q("q7", "Prenez-vous votre température au front ou sous le bras ?", "Au front.", false, "Sans utilité ici")],
+  hypothese: { attendu: "Paludisme jusqu'à preuve du contraire.",
+    mecanisme: ["Retour d'une zone d'endémie il y a 10 jours", "Fièvre dans les **3 mois** qui suivent le retour", "**Paludisme jusqu'à preuve du contraire**, quels que soient les autres signes", "**Urgence médicale** : tout retard peut être fatal"] },
+  options: [
+    O("a", "Délivrer le paracétamol et lui dire de revenir si la fièvre dure plus de trois jours", false, "Trois jours d'attente peuvent tuer : c'est l'erreur à ne pas commettre."),
+    O("b", "L'orienter vers une consultation médicale en urgence, aujourd'hui, en signalant son voyage. Le paracétamol peut être délivré sans retarder la consultation", true, "Toute fièvre au retour d'une zone d'endémie doit faire évoquer le paludisme et consulter très rapidement."),
+    O("c", "Lui proposer d'abord un test de grippe à l'officine", false, "Un test positif n'écarterait pas un paludisme, et le temps compte."),
+    O("d", "Lui conseiller de l'ibuprofène, plus efficace sur les courbatures", false, "Même erreur d'orientation, avec un médicament de plus.")],
+  statut: "verifie", note: "Fièvre dans les 3 mois suivant le retour à considérer comme un paludisme, consultation très rapide : vérifiés (Institut Pasteur, recommandations aux voyageurs).",
+  sources: ["voyPasteur", "voyOrdre", "voyCespharm"],
+  synthese: ["Devant toute fièvre : **« Avez-vous voyagé ? »**", "Fièvre dans les **3 mois** après un retour de zone d'endémie = **paludisme jusqu'à preuve du contraire**.", "La prophylaxie prise et l'épidémie de grippe ne changent rien : **consultation en urgence**."],
+  drugs: [], notion: "voyage-palu" }
+);
