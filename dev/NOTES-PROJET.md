@@ -9,7 +9,7 @@ Elle sert pour les examens et pour la pratique clinique.
 - Appli web installable (PWA) en un seul fichier HTML, en JS sans dépendance. Mode jour uniquement, pensée pour le téléphone.
 - Hébergée sur GitHub Pages (dépôt yous-em/officina). Le site est à la racine du dépôt, les sources dans `dev/`.
 - Sa progression reste sur son téléphone (localStorage). Elle peut l'exporter en fichier vers Fichiers ou iCloud, avec un rappel au bout de 7 jours.
-- Pour mettre à jour : `dev/deploy.sh "message"`, qui construit, teste et pousse. Cloner le dépôt et travailler depuis `dev/`.
+- Pour mettre à jour : cloner le dépôt, copier `dev/` dans un dossier de travail hors du clone (le script vide le clone avant de recopier le site), y modifier `src/`, puis lancer `OFFICINA_REPO=<chemin du clone> ./deploy.sh "message"`, qui construit, teste et pousse.
 - Une version de prévisualisation existe aussi en artefact Claude « Officina ». L'utilisatrice se sert de l'appli installée.
 
 ## Contenu actuel
