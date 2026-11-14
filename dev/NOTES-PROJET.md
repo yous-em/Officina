@@ -13,17 +13,18 @@ Elle sert pour les examens et pour la pratique clinique.
 - Une version de prévisualisation existe aussi en artefact Claude « Officina ». L'utilisatrice se sert de l'appli installée.
 
 ## Contenu actuel
-- 28 ordonnances :
+- 36 ordonnances :
   - o1 et o2 : exemples validés ;
   - o3 : sujet âgé, d'après le cours de commentaire d'ordonnance ;
   - o4 à o8 : pédiatrie, d'après l'ED de pédiatrie ; corrections construites à partir des recommandations du cours ;
   - o9 à o12 (lot 7) : ordonnances d'entraînement inventées (ostéoporose, AVC, grossesse, infection de prothèse) ;
   - o13 à o28 (lot 8) : tirées des documents du projet claude.ai « Pharma Yous » : ED de M. Boulin (o13, o14, o19), de M. Fagnoni (o15, o16), de Mme Cransac (o17 TDAH, o18 ostéoporose), annales 2021-22 (o20, o21), 2022-23 (o22 à o25), 2024-25 (o26 à o28). Correction de l'enseignant quand l'ED la donne ; sinon correction construite et signalée.
+  - o29 à o36 (lot 10) : les 7 ordonnances de l'ED de Mme Freppel (SEP, MICI, Basedow, diabète de type 1, épilepsie, bipolaire, migraine) et la capécitabine de l'annale 2021-22 (mention « résultats uracilémie pris en compte »).
 - 21 cas de comptoir :
   - c1 à c7 : toux sous IEC, œil rouge sous lentilles, conjonctivite allergique, sevrage tabagique (×2), paludisme, fièvre au retour de voyage ;
   - c8 à c21 (lot 6) : deux par thème restant (otologie, dermatologie, sportif, anxiété, insomnie, fatigue, premiers soins et urgences).
-- 25 fiches médicaments, **toutes au format détaillé** (modèle ramipril) ; les 14 dernières (lot 9) sont marquées « vérifié en partie » ou « à vérifier » avec les points à relire.
-- 40 cartes FSRS, 5 rappels de cours (statines, médicaments à prendre à distance, inducteurs enzymatiques, benzodiazépines chez le sujet âgé, écrire au prescripteur).
+- 41 fiches médicaments, **toutes au format détaillé** (modèle ramipril) ; celles des lots 9 et 10 sont marquées « vérifié en partie » avec les points à relire dans la note.
+- 50 cartes FSRS, 6 rappels de cours (statines, médicaments à prendre à distance, inducteurs enzymatiques, benzodiazépines chez le sujet âgé, écrire au prescripteur, traitements qui imposent une contraception).
 - Niveaux de problème : en plus des 5 niveaux d'interaction, « inap » (médicament inadapté au patient, pentagone marron) et « reg » (réglementation, document gris).
 - Tests : `node test/core.test.js` ; parcours navigateur : `NODE_PATH=<node_modules contenant playwright> node test/parcours.js` (Chrome dans /usr/bin/google-chrome).
 
@@ -53,9 +54,9 @@ Elle sert pour les examens et pour la pratique clinique.
 - L'an dernier : rhinite allergique, douleurs, fièvre, diarrhée, constipation, hémorroïdes, toux, maux de gorge, RGO, ulcère, gastralgies, nausées et vomissements, dyspepsie, rhume.
 
 ## À faire
-1. Documents du projet encore à exploiter (dans « Fusion cas cliniques » et « ED 1 Freppel ») : ordonnances de Mme Freppel (SEP, MICI, Basedow, diabète de type 1, épilepsie lamotrigine + Minidril, trouble bipolaire, migraine), AVC (3 cas de M. Fagnoni), goutte (2 cas), mucoviscidose (2 cas, ordre d'administration), infection ostéoarticulaire (relais oral), cas de gynécologie (Monazole, lupus, SEP sous fentanyl), ordonnance de la personne âgée (mirtazapine, Dépamide, rispéridone). Annales : capécitabine et résultat DPD (2021-22 partie 2), courrier clopidogrel + ésoméprazole. Les ordonnances sont des images dans les PDF : les lire avec `project_read` et `original: true`. Les annales 2023-24 ne sont pas dans le projet.
+1. Documents du projet encore à exploiter (dans « Fusion cas cliniques ») : AVC (3 cas de M. Fagnoni), goutte (2 cas), mucoviscidose (2 cas, ordre d'administration), infection ostéoarticulaire (relais oral), cas de gynécologie (Monazole, lupus, SEP sous fentanyl), ordonnances de la personne âgée (Meloux ; mirtazapine, Dépamide, rispéridone ; miansérine, prazépam), BPCO/ostéoporose cas 2 (Brintellix + tramadol). Annale 2021-22 : courrier clopidogrel + ésoméprazole (partie 2). Les ordonnances sont des images dans les PDF : les lire avec `project_read` et `original: true`. Les annales 2023-24 ne sont pas dans le projet.
 2. Cas de comptoir : les 2 par thème sont faits ; en ajouter sur les thèmes de l'an dernier (rhinite allergique, douleurs, fièvre, diarrhée, constipation, hémorroïdes, toux, maux de gorge, RGO, nausées…).
-3. Fiches : relire sur les RCP les points signalés dans les notes des 14 fiches du lot 9 ; chaque nouveau médicament reçoit directement une fiche détaillée.
+3. Fiches : relire sur les RCP les points signalés dans les notes des fiches des lots 9 et 10 ; chaque nouveau médicament reçoit directement une fiche détaillée.
 4. Nouveaux exercices tirés des annales : courrier ou mail au prescripteur, questions courtes notées, fiche SFPC à remplir, calcul de dose pédiatrique sans calculatrice, protocole de déprescription. Plus tard : CLEO.
 5. Points qu'elle doit vérifier : ils sont marqués dans l'appli (statut et note).
 6. **À rappeler à l'utilisateur** : les annales 2023-24 manquent dans les documents du projet ; lui demander de les ajouter (demande du 14/11/2026).

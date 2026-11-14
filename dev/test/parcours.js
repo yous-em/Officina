@@ -40,7 +40,7 @@ const path = require("path");
   await tap('[data-a="ordo-save"]'); await txt("Résultat enregistré : 33 %");
   await page.locator("details.rappel summary").nth(1).click(); await txt("Posologie usuelle");
   await page.locator("details.rappel").first().scrollIntoViewIfNeeded(); await shot("4-rappel");
-  await tap('[data-a="ordo-close"]'); await txt("28 ordonnances"); await tap('[data-a="dom"][data-n="pediatrie"]'); await tap('[data-a="ordo-open"][data-id="o6"]'); await tap('.ligne[data-l="l3"]'); await tap('[data-a="draft-cat"][data-n="2"]'); await tap('[data-a="draft-inter"][data-n="1"]'); await tap('[data-a="draft-prio"][data-n="1"]'); await tap('[data-a="flag-add"]'); await tap('[data-a="ordo-valider"]'); await txt("200 mg/kg par jour"); await txt("1/1"); await noOverflow("ordo pédiatrie"); await shot("3d-pediatrie"); await tap('[data-a="ordo-close"]'); await tap('[data-a="dom"][data-n=""]');
+  await tap('[data-a="ordo-close"]'); await txt("36 ordonnances"); await tap('[data-a="dom"][data-n="pediatrie"]'); await tap('[data-a="ordo-open"][data-id="o6"]'); await tap('.ligne[data-l="l3"]'); await tap('[data-a="draft-cat"][data-n="2"]'); await tap('[data-a="draft-inter"][data-n="1"]'); await tap('[data-a="draft-prio"][data-n="1"]'); await tap('[data-a="flag-add"]'); await tap('[data-a="ordo-valider"]'); await txt("200 mg/kg par jour"); await txt("1/1"); await noOverflow("ordo pédiatrie"); await shot("3d-pediatrie"); await tap('[data-a="ordo-close"]'); await tap('[data-a="dom"][data-n=""]');
   for (const id of ["o3", "o4", "o5", "o7", "o8"]) { await tap(`[data-a="ordo-open"][data-id="${id}"]`); await tap('[data-a="ordo-valider"]'); await tap('[data-a="ordo-valider"]'); await txt("À retenir"); await noOverflow("ordo " + id); await tap('[data-a="ordo-close"]'); }
   await tap('[data-a="ordo-open"][data-id="o1"]'); await txt("commenter en 10 points"); await tap('.ligne[data-l="l1"]'); await tap('[data-a="draft-cat"][data-n="3"]'); await tap('[data-a="draft-sfpc"][data-n="3.4"]'); await tap('[data-a="draft-inter"][data-n="6"]'); await tap('[data-a="draft-prio"][data-n="1"]'); await tap('[data-a="flag-add"]'); await tap('[data-a="ordo-valider"]'); await txt("Métabolisme des statines"); await txt("Pour faire le lien"); await noOverflow("rappel cours"); await page.locator("article.cours").first().screenshot({ path: "/tmp/shot-3c-cours.png" }); await tap('[data-a="ordo-close"]');
 
@@ -77,12 +77,12 @@ const path = require("path");
   if (!(await page.locator("main").innerHTML()).includes("<mark>modifiée</mark>")) errors.push("mise en valeur absente");
   await tap('[data-a="carte-reset"]'); if ((await page.locator("main").innerText()).includes("Rétablir l'original")) errors.push("rétablissement sans effet");
   await tap('[data-a="carte-susp"]'); await txt("Suspendue"); await tap('[data-a="carte-susp"]');
-  await tap('[data-a="carte-close"]'); await tap('[data-a="cartes-drug-clear"]'); await txt("40 cartes");
+  await tap('[data-a="carte-close"]'); await tap('[data-a="cartes-drug-clear"]'); await txt("50 cartes");
   await tap('[data-a="carte-new"]'); await tap('[data-a="carte-save"]'); await txt("Écrivez la question");
   await page.fill("#ce-recto", "Ma question <i>test</i> ?"); await page.fill("#ce-cle", "Ma **réponse**"); await page.fill("#ce-details", "Mécanisme : via le **CYP3A4**\nligne libre");
   await tap('[data-a="carte-save"]'); await txt("Ma question <i>test</i> ?"); await txt("Mécanisme"); await shot("12-ma-carte");
   await tap('[data-a="carte-close"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await page.fill("#carte-q", "zzz"); await txt("0 carte"); await page.fill("#carte-q", "");
-  await page.selectOption("#carte-tri", "notion"); await tap('[data-a="cartes-etat"][data-e="toutes"]'); await txt("41 cartes");
+  await page.selectOption("#carte-tri", "notion"); await tap('[data-a="cartes-etat"][data-e="toutes"]'); await txt("51 cartes");
   await tap('nav [data-t="medicaments"]'); await tap('[data-a="med-close"]'); await page.fill("#recherche", "simva"); await tap('[data-a="med-open"]'); await txt("Métabolisme des statines"); await txt("OATP1B1"); await noOverflow("fiche simva"); await shot("13-simva");
   for (const [q, t] of [["apixa", "facteur Xa"], ["omép", "pompe à protons"], ["potassium", "8 mmol"], ["paracé", "glutathion"], ["furo", "anse de Henlé"], ["biso", "cardiosélectif"], ["spiro", "canrénone"], ["ibu", "cyclo-oxygénases"], ["clari", "Macrolide"]]) { await tap('[data-a="med-close"]'); await page.fill("#recherche", q); await tap('[data-a="med-open"]'); await txt(t); await txt("Grossesse et allaitement"); await noOverflow("fiche " + q); }
   await tap('[data-a="saut"][data-s="grossesse"]'); await shot("15-clari-grossesse");
