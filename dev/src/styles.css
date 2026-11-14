@@ -211,3 +211,27 @@ main > * { flex-shrink: 0; }
 
 .grav.ok { background: var(--ok-bg); color: var(--ok); }
 .wrap > button.chip { white-space: normal; text-align: left; border-radius: 12px; max-width: 100%; }
+/* Lot 12 : fiches de classe */
+.rflx { background: var(--accent-soft); border-left: 5px solid var(--accent); border-radius: 0 14px 14px 0; padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.rflx .rtete { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.rflx .rlab { display: inline-flex; align-items: center; gap: 6px; font-weight: 700; color: var(--accent); font-size: 13px; text-transform: uppercase; letter-spacing: .03em; }
+.rflx p { margin: 0; font-size: 15px; }
+.mols0 { border-top: 4px solid var(--ink); }
+.mtab { width: 100%; border-collapse: collapse; font-size: 15px; }
+.mtab td { padding: 8px 4px; border-top: 1px solid var(--line); vertical-align: top; }
+.mtab td:first-child { width: 46%; }
+.mtab tr.mg th { text-align: left; font-size: 12.5px; font-weight: 700; color: var(--accent); padding: 12px 4px 4px; }
+.mtab tr:first-child td, .mtab tr.mg + tr td { border-top: 0; }
+.mtab tr.hl td { background: var(--g-pe-bg); }
+.pro { display: inline-block; font-size: 11px; font-weight: 600; padding: 1px 7px; border-radius: 999px; border: 1px solid var(--ink-3); color: var(--ink-2); vertical-align: 1px; white-space: nowrap; }
+.spec { display: flex; gap: 8px; align-items: flex-start; margin-top: 8px; font-size: 14.5px; }
+.spec .dci { flex-shrink: 0; max-width: 42%; background: var(--ink); color: #fff; font-size: 12px; font-weight: 600; border-radius: 6px; padding: 2px 8px; margin-top: 1px; }
+.ptab { width: 100%; border-collapse: collapse; font-size: 14px; table-layout: fixed; }
+.ptab th:nth-child(1) { width: 27%; } .ptab th:nth-child(2) { width: 37%; } .ptab th:nth-child(3) { width: 27%; } .ptab th:nth-child(4) { width: 9%; }
+.ptab th { text-align: left; font-size: 12px; color: var(--ink-3); padding: 6px 4px; border-bottom: 2px solid var(--g-poso); }
+.ptab { font-size: 13.5px; }
+.ptab td { padding: 8px 4px; border-top: 1px solid var(--line); vertical-align: top; overflow-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; }
+.ptab td.voie { font-size: 12.5px; font-weight: 600; color: var(--ink-2); }
+.fsec h3.stit { margin-top: 12px; }
+.nmol { font-size: 13px; font-weight: 600; color: var(--ink-3); }
+.rflx h3.rtit { font-size: 17px; color: var(--ink); }

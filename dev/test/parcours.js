@@ -66,12 +66,11 @@ const path = require("path");
   await txt("Séance terminée");
   await tap('[data-a="rev-close"]'); await txt("Terminée pour aujourd'hui");
 
-  // Médicaments
-  await tap('nav [data-t="medicaments"]'); await page.fill("#recherche", "iec"); await txt("Ramipril");
-  if ((await page.locator("#liste-meds .card").count()) !== 1) errors.push("recherche : résultat inattendu");
-  await tap('[data-a="med-open"]'); await txt("Conseils au comptoir"); await txt("Grossesse et allaitement"); await txt("Demi-vie du ramiprilate"); await noOverflow("fiche"); await shot("8-fiche");
-  await tap('[data-a="saut"][data-s="grossesse"]'); await shot("8b-fiche-grossesse");
-  await tap('[data-a="cartes-drug"]'); await txt("6 cartes"); await txt("Médicament : Ramipril"); await noOverflow("cartes"); await shot("10-cartes");
+  // Médicaments : fiches de classe
+  await tap('nav [data-t="medicaments"]'); await txt("Cœur et vaisseaux"); await txt("Os et métabolisme"); await page.fill("#recherche", "iec"); await txt("Inhibiteurs de l'enzyme de conversion");
+  await tap('[data-a="cls-open"][data-id="iec"]'); await txt("Molécules de la classe"); await txt("prodrogue"); await txt("Coversyl"); await txt("Grossesse et allaitement"); await txt("Propres à une molécule"); await noOverflow("fiche iec"); await shot("8-fiche-iec");
+  await tap('[data-a="saut"][data-s="posologies"]'); await shot("8b-iec-poso");
+  await tap('[data-a="cartes-cls"]'); await txt("6 cartes"); await txt("Classe : Inhibiteurs"); await noOverflow("cartes"); await shot("10-cartes");
   await tap('[data-a="carte-open"]'); await txt("Carte 1 sur 6"); await tap('[data-a="carte-nav"][data-d="1"]'); await txt("Carte 2 sur 6"); await shot("11-carte");
   await tap('[data-a="carte-edit"]'); await page.fill("#ce-cle", "Réponse **modifiée**"); await tap('[data-a="carte-save"]'); await txt("Rétablir l'original");
   if (!(await page.locator("main").innerHTML()).includes("<mark>modifiée</mark>")) errors.push("mise en valeur absente");
@@ -83,9 +82,13 @@ const path = require("path");
   await tap('[data-a="carte-save"]'); await txt("Ma question <i>test</i> ?"); await txt("Mécanisme"); await shot("12-ma-carte");
   await tap('[data-a="carte-close"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await page.fill("#carte-q", "zzz"); await txt("0 carte"); await page.fill("#carte-q", "");
   await page.selectOption("#carte-tri", "notion"); await tap('[data-a="cartes-etat"][data-e="toutes"]'); await txt("63 cartes");
-  await tap('nav [data-t="medicaments"]'); await tap('[data-a="med-close"]'); await page.fill("#recherche", "simva"); await tap('[data-a="med-open"]'); await txt("Métabolisme des statines"); await txt("OATP1B1"); await noOverflow("fiche simva"); await shot("13-simva");
-  for (const [q, t] of [["apixa", "facteur Xa"], ["omép", "pompe à protons"], ["potassium", "8 mmol"], ["paracé", "glutathion"], ["furo", "anse de Henlé"], ["biso", "cardiosélectif"], ["spiro", "canrénone"], ["ibu", "cyclo-oxygénases"], ["clari", "Macrolide"]]) { await tap('[data-a="med-close"]'); await page.fill("#recherche", q); await tap('[data-a="med-open"]'); await txt(t); await txt("Grossesse et allaitement"); await noOverflow("fiche " + q); }
-  await tap('[data-a="saut"][data-s="grossesse"]'); await shot("15-clari-grossesse");
+  await tap('nav [data-t="medicaments"]'); await tap('[data-a="cls-close"]'); await page.fill("#recherche", "prolia"); await txt("Anticorps anti-RANKL"); await tap('[data-a="cls-open"][data-id="antirankl"]'); await txt("rebond"); await noOverflow("anti-RANKL");
+  await tap('[data-a="cls-close"]'); await page.fill("#recherche", "fosamax"); await tap('[data-a="cls-open"][data-id="bisphos"]'); await txt("75 mg"); await txt("1×/an"); await txt("PO : voie orale"); await noOverflow("bisphosphonates"); await shot("13-bisphos");
+  await tap('[data-a="saut"][data-s="posologies"]'); await shot("13b-bisphos-poso");
+  for (const [q, c, t] of [["apixa", "aod", "facteur"], ["omép", "ipp", "pompe à protons"], ["potassium", "potassium", "13,4 mmol"], ["paracé", "paracetamol", "glutathion"], ["furo", "anse", "anse de Henle"], ["biso", "bb", "Cardiosélectifs"], ["aldactone", "arm", "gynécomastie"], ["ibu", "ains", "COX-1"], ["clari", "macrolides", "50S"], ["lamictal", "antiepi-na", "canaux sodiques"], ["levothyrox", "thyroide", "TSH"], ["concerta", "psychostim", "ordonnance sécurisée"]]) { await tap('[data-a="cls-close"]'); await page.fill("#recherche", q); await tap('[data-a="cls-open"][data-id="' + c + '"]'); await txt(t); await txt("Molécules de la classe"); await txt("Grossesse et allaitement"); await noOverflow("classe " + q); }
+  // Depuis une ordonnance, un médicament ouvre sa classe
+  await page.evaluate(() => { location.hash = "accueil"; }); await tap('nav [data-t="accueil"]'); await txt("Change à chaque passage"); await tap('[data-a="refl-autre"]'); await txt("Un autre réflexe"); await shot("14-accueil-reflexe");
+  await tap('[data-a="cls-open"]'); await txt("Molécules de la classe");
 
   // Progrès, sauvegarde, rechargement
   await tap('nav [data-t="progres"]'); await txt("Par notion"); await noOverflow("progres"); await shot("9-progres");
