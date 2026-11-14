@@ -28,6 +28,8 @@ ${strip(r("data8.js"))}
 ${strip(r("data9.js"))}
 ${strip(r("data10.js"))}
 ${strip(r("data11.js"))}
+${strip(r("data12.js"))}
+${strip(r("data13.js"))}
 ${strip(r("core.js"))}
 ${r("ui.js")}</script>${pwa ? PWA_SW : ""}
 </body>
