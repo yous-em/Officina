@@ -30,6 +30,10 @@ ${strip(r("data10.js"))}
 ${strip(r("data11.js"))}
 ${strip(r("data12.js"))}
 ${strip(r("data13.js"))}
+${strip(r("data14.js"))}
+${strip(r("data15.js"))}
+${strip(r("data16.js"))}
+${strip(r("data17.js"))}
 ${strip(r("core.js"))}
 ${r("ui.js")}</script>${pwa ? PWA_SW : ""}
 </body>

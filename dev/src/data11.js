@@ -11,10 +11,10 @@ Object.assign(SRC, {
 });
 
 const SPE = [
-  ["cardio", "Cœur et vaisseaux"], ["douleur", "Douleur et inflammation"], ["infectio", "Anti-infectieux"],
-  ["neuro", "Neurologie"], ["psy", "Psychiatrie, anxiété, sommeil"], ["endocrino", "Endocrinologie, diabète"],
+  ["cardio", "Cœur et vaisseaux"], ["hemato", "Sang, coagulation et carences"], ["respi", "Pneumologie"], ["douleur", "Douleur, inflammation, goutte"], ["infectio", "Anti-infectieux"],
+  ["neuro", "Neurologie"], ["psy", "Psychiatrie, addictions, sommeil"], ["endocrino", "Endocrinologie, diabète"],
   ["os", "Os et métabolisme phosphocalcique"], ["gastro", "Digestif"], ["allergie", "Allergie et urgences"],
-  ["femme", "Gynécologie, contraception"], ["uro", "Urologie"], ["onco", "Cancérologie"], ["phyto", "Phytothérapie"]
+  ["dermato", "Dermatologie"], ["ophtalmo", "Ophtalmologie"], ["femme", "Gynécologie, contraception"], ["uro", "Urologie"], ["onco", "Cancérologie, immunosuppression"], ["phyto", "Phytothérapie"]
 ];
 
 const VOIES = { PO: "voie orale", SL: "sublinguale", IV: "intraveineuse", IM: "intramusculaire", SC: "sous-cutanée", Cut: "cutanée", Rect: "rectale", Nas: "nasale", Vag: "vaginale", Oph: "collyre", TD: "transdermique", Inh: "inhalée" };
@@ -105,7 +105,7 @@ F({ id: "statines", nom: "Statines", spe: "cardio", sous: "Inhibiteurs de l'HMG-
   cinS: [["Simvastatine", "**Prodrogue** (lactone) ; forte métabolisation par le **CYP3A4** ; captage hépatique par OATP1B1"], ["Atorvastatine", "CYP3A4 ; demi-vie longue grâce à ses métabolites actifs"], ["Rosuvastatine", "Peu métabolisée ; exposition 2 fois plus élevée chez les patients asiatiques"], ["Pravastatine", "**Hydrophile**, non métabolisée par les CYP"]],
   asso: ["Simvastatine + ézétimibe : Inegy", "Atorvastatine + amlodipine : Caduet"] });
 
-F({ id: "aod", nom: "Anticoagulants oraux directs (AOD)", spe: "cardio", sous: "Inhibiteurs directs du facteur Xa ou de la thrombine", drugs: ["apixaban"], src: ["eliquis"],
+F({ id: "aod", nom: "Anticoagulants oraux directs (AOD)", spe: "hemato", sous: "Inhibiteurs directs du facteur Xa ou de la thrombine", drugs: ["apixaban"], src: ["eliquis"],
   mols: [["Anti-Xa"], ["Apixaban", "Eliquis"], ["Rivaroxaban", "Xarelto"], ["Édoxaban", "Lixiana"], ["Anti-IIa"], ["Dabigatran étexilate", "Pradaxa", 1]],
   refl: ["Sous AOD : **jamais d'AINS ni d'aspirine** en automédication. Paracétamol pour la douleur.", "Remettre et faire remplir la **carte de porteur d'anticoagulant**.", "Dabigatran : gélule **avalée entière**, jamais ouverte (absorption ↑, saignements)."],
   meca: ["Inhibition **directe** et réversible d'un facteur activé, sans antithrombine", "Anti-**Xa** → génération de thrombine ↓", "Anti-**IIa** (dabigatran) → thrombine bloquée → fibrine ↓", "→ formation et extension du caillot ↓"],
@@ -126,7 +126,7 @@ F({ id: "aod", nom: "Anticoagulants oraux directs (AOD)", spe: "cardio", sous: "
   cin: ["Effet maximal en 2 à 4 heures ; demi-vie courte (environ 12 heures)", "Substrats de la **P-gp** (et du CYP3A4 pour les xabans)"],
   cinS: [["Dabigatran", "**Prodrogue** ; élimination **rénale environ 80 %** : le plus sensible à l'insuffisance rénale ; antidote **idarucizumab** (Praxbind)"], ["Apixaban", "Élimination rénale environ **27 %** : le moins dépendant du rein"], ["Rivaroxaban", "Environ un tiers éliminé inchangé par le rein"], ["Anti-Xa", "Antidote : **andexanet alfa** (Ondexxya)"]] });
 
-F({ id: "p2y12", nom: "Antiagrégants anti-P2Y12", spe: "cardio", sous: "Antagonistes du récepteur plaquettaire à l'ADP", drugs: ["clopidogrel"],
+F({ id: "p2y12", nom: "Antiagrégants anti-P2Y12", spe: "hemato", sous: "Antagonistes du récepteur plaquettaire à l'ADP", drugs: ["clopidogrel"],
   mols: [["Clopidogrel", "Plavix", 1], ["Prasugrel", "Efient", 1], ["Ticagrélor", "Brilique"]],
   refl: ["Double antiagrégation après stent : **jamais d'arrêt** sans l'accord du cardiologue (thrombose de stent).", "Clopidogrel + oméprazole ou ésoméprazole : **déconseillé**. Le pantoprazole est le bon choix."],
   meca: ["Blocage du récepteur **P2Y12** plaquettaire à l'ADP → activation et agrégation plaquettaires ↓", "Clopidogrel, prasugrel (thiénopyridines) : liaison **irréversible** → effet sur toute la vie de la plaquette, **7 à 10 jours**", "Ticagrélor : liaison **réversible**, effet plus court"],
