@@ -45,6 +45,9 @@ const path = require("path");
   await tap('[data-a="ordo-open"][data-id="o1"]'); await txt("commenter en 10 points"); await tap('.ligne[data-l="l1"]'); await tap('[data-a="draft-cat"][data-n="3"]'); await tap('[data-a="draft-sfpc"][data-n="3.4"]'); await tap('[data-a="draft-inter"][data-n="6"]'); await tap('[data-a="draft-prio"][data-n="1"]'); await tap('[data-a="flag-add"]'); await tap('[data-a="ordo-valider"]'); await txt("Métabolisme des statines"); await txt("Pour faire le lien"); await noOverflow("rappel cours"); await page.locator("article.cours").first().screenshot({ path: "/tmp/shot-3c-cours.png" }); await tap('[data-a="ordo-close"]');
 
   // Cas
+  await tap('nav [data-t="ordonnances"]'); await tap('[data-a="ordo-vue"][data-v="courriers"]'); await txt("8 courriers"); await tap('[data-a="cr-open"][data-id="cr5"]'); await tap('[data-a="cr-voir"]'); await txt("quelques phrases");
+  await page.fill("#cr-txt", "Cher Confrère, je me permets de vous contacter au sujet de M. X : clopidogrel et ésoméprazole, association déconseillée. Je vous propose le pantoprazole. Bien confraternellement."); await tap('[data-a="cr-voir"]'); await txt("Courrier modèle"); await txt("CYP2C19");
+  await tap('[data-a="cr-crit"][data-c="b-patient"]'); await tap('[data-a="cr-crit"][data-c="c4"]'); await txt("2 / 12"); await noOverflow("courrier"); await shot("4c-courrier"); await tap('[data-a="cr-save"]'); await txt("Enregistré"); await tap('[data-a="cr-close"]'); await tap('[data-a="ordo-vue"][data-v="ordos"]'); await txt("50 ordonnances");
   await tap('nav [data-t="cas"]'); await tap('[data-a="cas-open"]'); await tap('[data-a="cas-next"]');
   await tap('[data-a="cas-next"]'); await txt("Posez au moins une question");
   for (const q of ["q1", "q3", "q4", "q7"]) await tap(`[data-q="${q}"]`);
@@ -93,10 +96,10 @@ const path = require("path");
   // Progrès, sauvegarde, rechargement
   await tap('nav [data-t="progres"]'); await txt("Par notion"); await noOverflow("progres"); await shot("9-progres");
   const avant = await page.evaluate(() => localStorage.getItem("officina.v1"));
-  await page.reload(); await tap('nav [data-t="progres"]'); await txt("3 exercices"); await tap('nav [data-t="cartes"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await tap('nav [data-t="progres"]');
+  await page.reload(); await tap('nav [data-t="progres"]'); await txt("4 exercices"); await tap('nav [data-t="cartes"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await tap('nav [data-t="progres"]');
   await tap('[data-a="sv-reset"]'); await tap('[data-a="sv-reset-ok"]'); await txt("Progression effacée"); await txt("0 exercice");
   await tap('[data-a="sv-ouvrir"]'); await page.fill("#sv-in", "pas une sauvegarde"); await tap('[data-a="sv-restaurer"]'); await txt("n'est pas une sauvegarde valide");
-  await page.fill("#sv-in", avant); await tap('[data-a="sv-restaurer"]'); await txt("Progression restaurée"); await txt("3 exercices");
+  await page.fill("#sv-in", avant); await tap('[data-a="sv-restaurer"]'); await txt("Progression restaurée"); await txt("4 exercices");
 
   // Sauvegarde dans le compte : écriture après un exercice, puis relecture sur un appareil vierge
   const faux = `window.claude = { use: async (n) => n === "db" ? { doc: (p) => ({ get: async () => ({ exists: !!window.__dist, data: () => window.__dist }), set: async (d) => { window.__dist = d; window.__chemin = p; window.__n = (window.__n || 0) + 1; } }) } : { id: async () => "u_test" } };`;

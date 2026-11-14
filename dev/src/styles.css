@@ -235,3 +235,12 @@ main > * { flex-shrink: 0; }
 .fsec h3.stit { margin-top: 12px; }
 .nmol { font-size: 13px; font-weight: 600; color: var(--ink-3); }
 .rflx h3.rtit { font-size: 17px; color: var(--ink); }
+
+/* Courriers */
+.lettre { background: var(--surface); border-left: 3px solid var(--ink-3); padding: 10px 12px; border-radius: 6px; }
+.lettre p { margin: 0 0 6px; }
+.crit { display: flex; gap: 10px; align-items: flex-start; text-align: left; width: 100%; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--ink-3); border-radius: 10px; padding: 9px 11px; cursor: pointer; }
+.crit .case { flex: none; width: 22px; height: 22px; border: 2px solid var(--ink-3); border-radius: 6px; display: grid; place-items: center; }
+.crit .case svg { width: 16px; height: 16px; }
+.crit[aria-pressed="true"] { border-color: var(--accent, #2b6cb0); }
+.crit[aria-pressed="true"] .case { background: var(--accent, #2b6cb0); border-color: var(--accent, #2b6cb0); color: #fff; }

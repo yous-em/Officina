@@ -1,6 +1,6 @@
 // Contrôle de la logique : correction, scores, répétition espacée, cohérence des données.
 const assert = require("assert");
-const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8") + fs.readFileSync(__dirname + "/../src/data12.js", "utf8") + ["data13", "data14", "data15", "data16", "data18", "data17"].map((f) => fs.readFileSync(__dirname + "/../src/" + f + ".js", "utf8")).join(""));
+const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8") + fs.readFileSync(__dirname + "/../src/data12.js", "utf8") + ["data13", "data14", "data15", "data16", "data18", "data19", "data17"].map((f) => fs.readFileSync(__dirname + "/../src/" + f + ".js", "utf8")).join(""));
 const D = require("/tmp/officina-data.cjs"), C = require("../src/core.js");
 let n = 0; const ok = (name, fn) => { fn(); n++; console.log("ok  " + name); };
 
@@ -146,6 +146,18 @@ ok("lots 11-12 : fiches de classe", () => {
   });
   Object.keys(D.DRUGS).forEach((d) => assert(D.CLASSE_DE[d], "sans classe " + d));
   assert(D.REFLEXES.length > 40);
+});
+
+ok("courriers : données complètes", () => {
+  assert(D.COURRIERS.length >= 8); assert(D.NOTIONS.courrier);
+  const ids = new Set();
+  D.COURRIERS.forEach((c) => {
+    assert(!ids.has(c.id), c.id); ids.add(c.id);
+    assert(!c.ordo || D.ORDOS.some((o) => o.id === c.ordo), c.id + " ordo");
+    assert(c.titre && c.contexte && c.consigne && c.modele.length >= 5 && c.court && c.retenir && c.crit.length >= 3, c.id);
+    assert.strictEqual(new Set(c.crit.map((x) => x[0])).size, c.crit.length);
+    assert(["verifie", "partiel", "a_verifier"].includes(c.statut)); c.sources.forEach((s) => assert(D.SRC[s], s));
+  });
 });
 
 console.log(n + " contrôles passés");
