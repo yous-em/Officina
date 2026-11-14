@@ -14,6 +14,8 @@
   --g-pe: #8A6A00; --g-pe-bg: #FAF1C8; --g-pe-mark: #D9A800;
   --g-apec: #2463AC; --g-apec-bg: #E2EDFA;
   --g-poso: #6A40A8; --g-poso-bg: #EEE6F9;
+  --g-inap: #8A5410; --g-inap-bg: #F6EADB;
+  --g-reg: #4B5563; --g-reg-bg: #ECEEF1;
   --ok: #0B7A63; --ok-bg: #DCEFE9;
   --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
   --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -78,11 +80,14 @@ button.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--i
 .grav.pe { background: var(--g-pe-bg); color: var(--g-pe); }
 .grav.apec { background: var(--g-apec-bg); color: var(--g-apec); }
 .grav.poso { background: var(--g-poso-bg); color: var(--g-poso); }
+.grav.inap { background: var(--g-inap-bg); color: var(--g-inap); }
+.grav.reg { background: var(--g-reg-bg); color: var(--g-reg); }
 button.grav { border: 1.5px solid transparent; min-height: 36px; }
 button.grav[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
 .bord-ci { border-left: 5px solid var(--g-ci); } .bord-asdec { border-left: 5px solid var(--g-asdec); }
 .bord-pe { border-left: 5px solid var(--g-pe-mark); } .bord-apec { border-left: 5px solid var(--g-apec); }
 .bord-poso { border-left: 5px solid var(--g-poso); }
+.bord-inap { border-left: 5px solid var(--g-inap); } .bord-reg { border-left: 5px solid var(--g-reg); }
 
 /* Ordonnance */
 .ordonnance { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 4px 14px 14px; border-top: 4px double var(--ink); padding: 4px 0 0; }

@@ -31,6 +31,8 @@
   --g-pe: #8A6A00; --g-pe-bg: #FAF1C8; --g-pe-mark: #D9A800;
   --g-apec: #2463AC; --g-apec-bg: #E2EDFA;
   --g-poso: #6A40A8; --g-poso-bg: #EEE6F9;
+  --g-inap: #8A5410; --g-inap-bg: #F6EADB;
+  --g-reg: #4B5563; --g-reg-bg: #ECEEF1;
   --ok: #0B7A63; --ok-bg: #DCEFE9;
   --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
   --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -95,11 +97,14 @@ button.chip[aria-pressed="true"] { background: var(--ink); border-color: var(--i
 .grav.pe { background: var(--g-pe-bg); color: var(--g-pe); }
 .grav.apec { background: var(--g-apec-bg); color: var(--g-apec); }
 .grav.poso { background: var(--g-poso-bg); color: var(--g-poso); }
+.grav.inap { background: var(--g-inap-bg); color: var(--g-inap); }
+.grav.reg { background: var(--g-reg-bg); color: var(--g-reg); }
 button.grav { border: 1.5px solid transparent; min-height: 36px; }
 button.grav[aria-pressed="true"] { border-color: currentColor; box-shadow: inset 0 0 0 1px currentColor; }
 .bord-ci { border-left: 5px solid var(--g-ci); } .bord-asdec { border-left: 5px solid var(--g-asdec); }
 .bord-pe { border-left: 5px solid var(--g-pe-mark); } .bord-apec { border-left: 5px solid var(--g-apec); }
 .bord-poso { border-left: 5px solid var(--g-poso); }
+.bord-inap { border-left: 5px solid var(--g-inap); } .bord-reg { border-left: 5px solid var(--g-reg); }
 
 /* Ordonnance */
 .ordonnance { background: var(--surface); border: 1px solid var(--line); border-radius: 4px 4px 14px 14px; border-top: 4px double var(--ink); padding: 4px 0 0; }
@@ -1654,7 +1659,7 @@ CARDS.push(
     points: [["Âge", "Adulte et enfant de plus de **6 ans**"], ["Orienter", "Près de l'œil, étendu, fièvre, immunodépression"], ["Conseil clé", "**Pas de bisou au nouveau-né**"]] },
   { id: "k22", notion: "peau-orientation", drug: "amoxicilline", recto: "Plaque rouge qui s'étend autour d'une ancienne piqûre de tique, sans démangeaison. Diagnostic, faut-il une sérologie ?", cle: "**Érythème migrant** · antibiotique **sans sérologie**",
     points: [["Délai", "Dans les **30 jours** après la piqûre"], ["Conduite", "**Médecin traitant** rapidement"], ["Prévention", "Tire-tique, désinfecter, **surveiller un mois**"]] },
-  { id: "k23", notion: "entorse", drug: "paracetamol", recto: "Entorse de cheville : quels critères d'Ottawa imposent une radiographie ?", cle: "**Appui impossible (4 pas)** · **douleur osseuse** malléolaire · âge",
+  { id: "k23", notion: "entorse", drug: null, recto: "Entorse de cheville : quels critères d'Ottawa imposent une radiographie ?", cle: "**Appui impossible (4 pas)** · **douleur osseuse** malléolaire · âge",
     points: [["Douleur osseuse", "Bord postérieur ou **pointe** d'une malléole"], ["Âge", "Moins de 18 ans ou plus de 55 ans (sources françaises)"], ["Règle", "**Un seul critère suffit**"]] },
   { id: "k24", notion: "inducteurs", drug: "millepertuis", recto: "Une patiente sous pilule demande du millepertuis. Niveau de l'interaction, mécanisme, conséquence ?", cle: "**Contre-indication** · **inducteur** enzymatique · **échec de la contraception**",
     points: [["Mécanisme", "Induction du **CYP3A4** : la pilule est éliminée plus vite"], ["Durée", "L'induction persiste environ **1 semaine** après l'arrêt"], ["Autres CI", "AVK, digoxine, immunosuppresseurs, antirétroviraux"]] },
@@ -1662,7 +1667,7 @@ CARDS.push(
     points: [["Pourquoi", "Effet **atropinique**"], ["Sujet âgé", "Chutes, confusion : prudence, dose réduite"], ["Prise", "15 à 30 minutes avant le coucher"]] },
   { id: "k26", notion: "urgence-vitale", drug: "adrenaline", recto: "Stylo d'adrénaline : dose selon le poids, site d'injection, et dans quel ordre avec le 15 ?", cle: "**0,30 mg** au-dessus de 30 kg · **0,15 mg** de 15 à 30 kg · **cuisse**, puis **15**",
     points: [["Site", "**Face antérolatérale de la cuisse**, à travers les vêtements, jamais la fesse"], ["Deuxième dose", "Après **5 à 15 minutes** si pas d'amélioration"], ["Ordre", "**Injecter d'abord, appeler ensuite**"]] },
-  { id: "k27", notion: "brulure", drug: "paracetamol", recto: "Brûlure : quelle est la « règle des 15 », et 3 critères qui imposent un avis urgent ?", cle: "**15 minutes**, eau à **15 °C**, à **15 cm**",
+  { id: "k27", notion: "brulure", drug: null, recto: "Brûlure : quelle est la « règle des 15 », et 3 critères qui imposent un avis urgent ?", cle: "**15 minutes**, eau à **15 °C**, à **15 cm**",
     points: [["Gravité", "**Enfant de moins de 5 ans**, visage, mains, plis, périnée ; cloques étendues ; chimique ou électrique"], ["À ne pas faire", "Glace, corps gras, percer les cloques"]] },
   { id: "k28", notion: "prises-distance", drug: "alendronate", recto: "Alendronate 70 mg : comment le prendre, et à quelle distance du calcium ?", cle: "**À jeun**, grand verre d'eau du robinet, **debout 30 min** · calcium **2 h** après",
     points: [["Pourquoi", "Absorption **très faible**, réduite encore par le calcium"], ["Risque", "**Œsophagite** si on se recouche"], ["Conseil", "Bilan dentaire : ostéonécrose de la mâchoire"]] },
@@ -1672,6 +1677,515 @@ CARDS.push(
     points: [["Même si", "Prise courte, gel, automédication"], ["Alternative", "**Paracétamol**, dose minimale, durée minimale"], ["Source pratique", "Le **CRAT**"]] },
   { id: "k31", notion: "inducteurs", drug: "rifampicine", recto: "Rifampicine chez un patient sous apixaban : que se passe-t-il, et que faire ?", cle: "Exposition à l'apixaban **divisée par 2** · **appeler le prescripteur**",
     points: [["Mécanisme", "Induction du **CYP3A4** et de la **P-gp**"], ["Risque", "**AVC** dans la fibrillation atriale"], ["Piège", "L'effet persiste **après l'arrêt** de la rifampicine"]] }
+);
+
+/* Lot 8 : seize ordonnances tirées des documents de ses cours (annales 2021 à 2025, ED de commentaire
+   d'ordonnance et de dispensation). Quand l'ED donne la correction de l'enseignant, elle est reprise et
+   signalée ; pour les annales sans correction, la correction est construite et signalée comme telle. */
+Object.assign(NIVEAUX, {
+  inap: { label: "Médicament inadapté au patient", court: "Inadapté" },
+  reg: { label: "Réglementation ou prescription non conforme", court: "Réglementation" }
+});
+Object.assign(SRC, {
+  edBoulin1: { label: "ED commentaire d'ordonnance, M. Boulin, 05/11/2026 (notes d'étudiants, correction de l'enseignant)", url: "" },
+  edBoulin2: { label: "ED 2 commentaire d'ordonnance, M. Boulin, 10/11/2026 (notes d'étudiants)", url: "" },
+  edFagnoni: { label: "ED commentaire d'ordonnance, M. Fagnoni, 08/10/2026 (notes d'étudiants)", url: "" },
+  edTdah: { label: "ED TDAH, Mme Cransac, 05/11/2026 (notes d'étudiants)", url: "" },
+  edOsteo: { label: "ED 2 Dispensation, ostéoporose, Mme Cransac, 16/09/2026 (notes d'étudiants)", url: "" },
+  edFreppel: { label: "ED médicaments à risque pendant la grossesse, Mme Freppel, 01/10/2026 (notes d'étudiants)", url: "" },
+  edAge: { label: "ED personne âgée : antidépresseurs, anxiolytiques, hypnotiques (notes d'étudiants)", url: "" },
+  edDispBoulin: { label: "ED 1 Dispensation, M. Boulin, 09/09/2026 (notes d'étudiants)", url: "" },
+  annales2122: { label: "Annales de commentaire d'ordonnance 2021-22 et 2022-23 (sans corrigé)", url: "" },
+  annales2425: { label: "Annales de commentaire d'ordonnance 2024-25 (sans corrigé)", url: "" },
+  zomigRcp: { label: "RCP Zomig 2,5 mg (21/12/2023)", url: "https://base-donnees-publique.medicaments.gouv.fr/medicament/68232350/extrait" },
+  domperidoneAnsm: { label: "La dompéridone ne doit plus être utilisée chez l'enfant de moins de 12 ans, ANSM (2019)", url: "https://ansm.sante.fr/actualites/la-domperidone-motilium-et-generiques-ne-doit-plus-etre-utilisee-chez-lenfant-de-moins-de-12-ans" },
+  entrestoVidal: { label: "Entresto (sacubitril/valsartan), monographie Vidal (RCP 02/05/2025)", url: "https://www.vidal.fr/Medicament/entresto-164458-formes_et_presentations.htm" },
+  levodopaVidal: { label: "Lévodopa, fiche substance Vidal (interactions)", url: "https://www.vidal.fr/medicaments/substances/levodopa-2083.html" },
+  sforlCortico: { label: "Corticothérapie en ORL, SFORL (2020)", url: "https://www.sforl.org/wp-content/uploads/2020/03/CORTICOTHERAPIE-EN-ORL-2.pdf" }
+});
+Object.assign(DOMAINES, { psy: { label: "Psychiatrie" }, endocrino: { label: "Endocrinologie, diabète" }, onco: { label: "Cancérologie, hématologie" } });
+Object.assign(NOTIONS, {
+  "inhibiteurs-dose": "Inhibiteur enzymatique : dose à réduire",
+  "hypoglycemie-age": "Hypoglycémiants chez le sujet âgé",
+  "double-sraa": "IEC et sacubitril/valsartan",
+  "reglementation": "Réglementation de la prescription",
+  "beers-psy": "Psychotropes inadaptés au sujet âgé",
+  "grossesse-risque": "Femme en âge de procréer et grossesse",
+  "parkinson": "Antiparkinsoniens : interactions et surveillance"
+});
+
+Object.assign(RAPPELS, {
+  "bzd-age": {
+    titre: "Benzodiazépines chez la personne âgée",
+    intro: "Toutes les benzodiazépines sont inappropriées chez le sujet âgé ; certaines le sont moins. L'oxydation hépatique diminue avec l'âge, la conjugaison est conservée.",
+    colonnes: ["Catégorie", "Molécules", "Pourquoi"],
+    lignes: [
+      ["**À privilégier** (si indispensable)", "**Oxazépam, lorazépam** (anxiolytiques)", "Éliminées par **conjugaison**, demi-vie courte, sans métabolite actif"],
+      ["Hypnotiques possibles", "Zopiclone, zolpidem, loprazolam, lormétazépam ; mélatonine en premier", "Demi-vie courte"],
+      ["**À éviter**", "**Bromazépam, clobazam, clorazépate, diazépam, prazépam**, nitrazépam", "**Demi-vie longue**, oxydées, accumulation"],
+      ["À éviter", "Anti-H1 sédatifs : doxylamine, hydroxyzine", "Effets **anticholinergiques**"]
+    ],
+    reflexe: "Réflexe : benzodiazépine chez un patient âgé → chutes, confusion, dépendance. Plus courte durée, plus faible dose, et penser à la déprescription.",
+    statut: "verifie", note: "Tableau repris de l'ED sur la personne âgée (critères REMEDIES, Beers, STOPP/START).", sources: ["edAge"]
+  },
+  "lettre-prescripteur": {
+    titre: "Écrire au prescripteur",
+    intro: "Mme Cransac pose chaque année un courrier ou un mail au médecin, et la fiche d'intervention SFPC à remplir.",
+    colonnes: ["Partie", "Ce qu'on attend", "Exemple"],
+    lignes: [
+      ["En-tête", "Coordonnées de la pharmacie, du médecin, date, **objet**", "Objet : traitement de M. X, né le…"],
+      ["Ouverture", "Formule de politesse, **patient identifié** et **problème dès la première phrase**", "« Cher Confrère, je me permets de vous contacter au sujet de… »"],
+      ["Corps", "Problème **chiffré et sourcé** (RCP, Thésaurus), du plus urgent au moins urgent", "« Le RCP limite la dose à 25 mg/j avec l'amiodarone »"],
+      ["Proposition", "Toujours **proposer une solution**, sans l'imposer", "« Je vous propose… ; à pondérer avec la clinique et la biologie »"],
+      ["Clôture", "Disponibilité, remerciements, **formule de politesse**, signature", "« Je reste disponible par téléphone. Confraternellement »"]
+    ],
+    reflexe: "Le médecin ne lira peut-être que les deux premières lignes : patient, problème et proposition doivent y être.",
+    statut: "verifie", note: "Repris des ED de Mme Cransac, M. Fagnoni et M. Boulin.", sources: ["coursPed", "edFagnoni", "edBoulin1"]
+  }
+});
+
+Object.assign(DRUGS, {
+  methylphenidate: { dci: "Méthylphénidate", classe: "Psychostimulant, sympathomimétique d'action centrale", domaine: "pediatrie",
+    poso: ["Augmentation **progressive** à l'instauration", "Maximum **60 mg/j chez l'enfant**, 80 mg/j chez l'adulte (environ 1 mg/kg/j)", "Le **matin** ; gélules ouvrables"],
+    alertes: ["**Stupéfiant** : ordonnance sécurisée, en toutes lettres, **28 jours**, nom de la pharmacie", "Prescription initiale **annuelle** par un psychiatre, neurologue ou pédiatre", "Spécialités **non substituables** entre elles (parts LI/LP différentes)", "Sympathomimétique : **pas de vasoconstricteur nasal**"],
+    conseils: ["Surveiller **appétit, poids, taille**", "Suivi **tension et pouls** à chaque changement de dose", "**Ne pas le prendre le jour d'une anesthésie générale**", "Signaler un comportement inhabituel"],
+    statut: "partiel", note: "Repris de l'ED TDAH de Mme Cransac ; à recouper avec le RCP.", sources: ["edTdah"] },
+  cefpodoxime: { dci: "Cefpodoxime", classe: "Céphalosporine de 3e génération", domaine: "infectio",
+    poso: ["Enfant : **8 mg/kg/j en 2 prises**, maximum **400 mg/j**", "OMA et angine : **5 jours** après 2 ans, 10 jours avant 2 ans ; sinusite : 10 jours (ED)"],
+    alertes: ["Antibiotique de **2e intention** (après l'amoxicilline)", "Suivre les **recommandations** (document de l'enseignante), pas seulement l'AMM"],
+    conseils: ["Suspension : conservation au réfrigérateur après reconstitution (à vérifier selon la spécialité)", "Au-delà de 25 kg, le comprimé à 100 mg est plus pratique que la pipette", "Aller au bout du traitement"],
+    statut: "partiel", note: "Doses et durées du cours (recommandations pédiatriques 2024).", sources: ["coursPed", "recoOrl", "edTdah"] },
+  tramadol: { dci: "Tramadol", classe: "Antalgique opioïde de palier 2", domaine: "geriatrie",
+    poso: ["Maximum **400 mg/j** chez l'adulte", "Enfant à partir de 3 ans : solution buvable, dose par kilo (à vérifier sur le RCP)"],
+    alertes: ["**Ordonnance sécurisée obligatoire depuis le 1er mars 2025** : dosage, posologie et durée **en toutes lettres**, **12 semaines** au maximum", "Avec antidépresseurs sérotoninergiques : **syndrome sérotoninergique**, convulsions", "Tolérance très variable : vertiges, nausées"],
+    conseils: ["Somnolence : prudence au volant", "Solution buvable : bien compter les gouttes, ranger hors de portée des enfants", "Nausées, constipation possibles"],
+    statut: "partiel", note: "Réglementation de 2025 et interactions reprises des ED de M. Boulin et de dispensation ; dose pédiatrique à vérifier.", sources: ["edBoulin1", "edOsteo"] },
+  lamotrigine: { dci: "Lamotrigine", classe: "Antiépileptique, thymorégulateur (bloque les canaux sodiques)", domaine: "neuro",
+    poso: ["Instauration **très progressive** : 25 mg puis paliers toutes les 2 semaines", "Ne jamais interrompre puis reprendre à pleine dose"],
+    alertes: ["**Éruptions graves** (Stevens-Johnson, Lyell, DRESS) : arrêt immédiat et avis médical", "Métabolisée par **glucuronoconjugaison** (UGT), pas par les CYP", "**Estroprogestatifs : concentration de lamotrigine divisée par deux** (précaution d'emploi)", "Antiépileptique de **référence pendant la grossesse**"],
+    conseils: ["Tout changement de contraception (début ou arrêt d'une pilule) doit être signalé au neurologue", "Signaler toute éruption cutanée, surtout les 8 premières semaines"],
+    statut: "partiel", note: "Repris de l'ED de Mme Freppel (grossesse) ; à recouper avec le RCP.", sources: ["edFreppel"] }
+});
+
+const NOTE_ANNALE = "Annale sans corrigé : correction construite à partir des cours et des RCP, à valider avec l'enseignant.";
+
+ORDOS.push(
+{ id: "o13", titre: "Hématologie : 12 lignes, une prescription à prioriser", domaines: ["onco", "cardio", "geriatrie"], niveau: 3, resume: "12 lignes, 4 appels à prioriser, 5 points à connaître",
+  patient: { nom: "M. A.", details: "74 ans, environ 63 kg", chips: ["Suivi en hématologie", "Fibrillation atriale probable", "Insuffisance cardiaque"], contexte: "Ordonnance bizone du 5 novembre 2026, rédigée par son médecin. Le poids ne figure pas sur l'ordonnance." },
+  lignes: [
+    L("l1", "Cotrimoxazole 800/160 mg", "1 comprimé le midi, lundi, mercredi, vendredi", "30 jours", "Prophylaxie anti-infectieuse"),
+    L("l2", "Acide folique 5 mg", "2 comprimés le matin", "30 jours", "Prophylaxie anti-infectieuse"),
+    L("l3", "Valaciclovir 500 mg", "1 comprimé le matin", "30 jours", "Prophylaxie anti-infectieuse"),
+    L("l4", "Éplérénone 25 mg", "50 mg le matin", "30 jours", "Traitement habituel"),
+    L("l5", "Bisoprolol 10 mg", "1 comprimé le matin", "30 jours", "Traitement habituel", "bisoprolol"),
+    L("l6", "Aspégic 100 mg", "1 sachet le midi", "30 jours", "Traitement habituel"),
+    L("l7", "Ézétimibe + atorvastatine 10/20 mg (Liptruzet)", "1 comprimé à 8 h, 1 comprimé à 20 h", "30 jours", "Traitement habituel"),
+    L("l8", "Amitriptyline 40 mg/mL (Laroxyl)", "15 gouttes au coucher", "30 jours", "Traitement habituel"),
+    L("l9", "Tinzaparine 14 000 UI/0,7 mL", "11 000 UI anti-Xa le soir", "30 jours", "Traitement habituel"),
+    L("l10", "Amiodarone 200 mg", "1 comprimé le matin", "30 jours", "Traitement habituel"),
+    L("l11", "Tramadol 50 mg", "Si douleurs, toutes les 6 h, 4 gélules par jour au maximum", "30 jours", "Si besoin", "tramadol"),
+    L("l12", "Filgrastim 48 MU (Nivestim)", "1 seringue le matin, 3 à 5 jours, si PNN < 1 G/L après accord de l'hématologie", "À renouveler 2 fois", "Si besoin")],
+  problemes: [
+    PB({ id: "p1", titre: "Éplérénone 50 mg avec l'amiodarone", lignes: ["l4", "l10"], cle: ["l4", "l10"], niveau: "poso", priorite: 1, notion: "inhibiteurs-dose", sfpc: ["2", "3.2"], interv: ["1"],
+      mecanisme: ["L'**amiodarone** inhibe **faiblement à modérément le CYP3A4**", "L'exposition à l'éplérénone est **environ doublée**", "**50 mg ≈ 100 mg** d'exposition", "**Hyperkaliémie**, troubles du rythme"],
+      conduite: "Appeler en premier. Proposer 25 mg/j en citant le RCP (25 mg/j au maximum avec un inhibiteur faible à modéré du CYP3A4). Possible de suspendre la délivrance un à deux jours, le temps de la réponse.",
+      statut: "verifie", note: "Correction de l'enseignant (priorité 1).", sources: ["edBoulin1"] }),
+    PB({ id: "p2", titre: "Liptruzet deux fois par jour", lignes: ["l7"], cle: ["l7"], niveau: "poso", priorite: 1, notion: "statines", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["AMM : **une prise par jour**, plutôt le soir", "2 comprimés = **20 mg d'ézétimibe** (dose fixe 10 mg/j) et 40 mg d'atorvastatine", "Risque musculaire majoré par l'**amiodarone**", "Aucun gain d'efficacité à doubler l'ézétimibe"],
+      conduite: "Erreur de saisie probable : vérifier le dosage habituel dans le DP, proposer 1 comprimé le soir, demander le LDL actuel.",
+      statut: "verifie", note: "Correction de l'enseignant (priorité 2).", sources: ["edBoulin1"] }),
+    PB({ id: "p3", titre: "Aspirine et tinzaparine curative", lignes: ["l6", "l9"], cle: ["l6", "l9"], niveau: "apec", notion: "ains-antiagregant", sfpc: ["3.1"], interv: ["6", "7"],
+      mecanisme: ["Antiagrégant + **HBPM à dose curative**", "**Risque hémorragique**, chez un patient d'hématologie", "Amiodarone + bêtabloquant : **fibrillation atriale** probable", "HBPM curative : relais transitoire (geste, chirurgie) jamais repris par l'AOD ?"],
+      conduite: "Proposer la reprise de l'anticoagulant oral antérieur (à retrouver dans le DP) et l'arrêt de l'aspirine si la bithérapie dure depuis plus d'un an. Respecter le choix du patient s'il préfère les injections.",
+      statut: "verifie", note: "Correction de l'enseignant (priorité 3) ; Thésaurus : à prendre en compte aux doses antiagrégantes.", sources: ["edBoulin1"] }),
+    PB({ id: "p4", titre: "Tramadol sur ordonnance non sécurisée", lignes: ["l11"], cle: ["l11"], niveau: "reg", notion: "reglementation", sfpc: ["9"], interv: ["7"],
+      mecanisme: ["Depuis le **1er mars 2025** : tramadol sur **ordonnance sécurisée**", "Dosage, posologie et durée **en toutes lettres**", "Durée maximale : **12 semaines**"],
+      conduite: "Ne pas délivrer sur ce support. Demander une nouvelle prescription sécurisée ; le tramadol agit aussi sur la composante neuropathique et peut être maintenu s'il soulage.",
+      statut: "verifie", note: "Correction de l'enseignant (priorité 4).", sources: ["edBoulin1"] }),
+    PB({ id: "p5", titre: "Amitriptyline avec amiodarone et bisoprolol", lignes: ["l8", "l10", "l5"], cle: ["l8"], niveau: "pe", notion: "inhibiteurs-dose", sfpc: ["3.2", "4"], interv: ["6"],
+      mecanisme: ["Amitriptyline et amiodarone **allongent le QT**", "Bisoprolol : **bradycardie**", "Âge, cardiopathie, dyskaliémie : **torsades de pointes**", "15 gouttes = 15 mg : dose de **douleur neuropathique**, pas antidépressive"],
+      conduite: "Interroger le patient (douleur, sommeil, ancienneté). Selon le cas, proposer une alternative (gabapentinoïde adapté au rein, duloxétine). ECG au moins annuel.",
+      statut: "verifie", note: "Correction de l'enseignant (priorité 4).", sources: ["edBoulin1"] })],
+  sansProbleme: ["Amiodarone + bisoprolol : précaution d'emploi (bradycardie), association souvent voulue en cardiologie ; surveiller pouls, ECG, TSH.", "Amiodarone + atorvastatine : risque musculaire, réglé par la correction du Liptruzet.", "Éplérénone + triméthoprime : deux hyperkaliémiants, mais cotrimoxazole 3 jours par semaine ; kaliémie de suivi, pas d'appel.", "Tramadol + amitriptyline : convulsions, syndrome sérotoninergique ; tramadol si besoin, conseils seulement.", "Filgrastim : liste I, prescription hospitalière trimestrielle renouvelable 2 fois ; biosimilaire substituable ; conforme.", "Acide folique 10 mg/j : dans la fourchette du Vidal (5 à 15 mg/j). Le poids n'est pas une mention obligatoire."],
+  patientDire: "Signaler saignements, selles noires, palpitations, malaise, douleurs musculaires. Tramadol : somnolence, ne pas dépasser 4 gélules. Ne jamais modifier seul l'anticoagulant.",
+  retenir: "Au téléphone, le médecin n'écoutera pas tout : chiffrer, sourcer, proposer, et commencer par le plus grave (éplérénone, puis Liptruzet, anticoagulation, tramadol).",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o14", titre: "Diabète, insuffisance pancréatique : ce qui manque et ce qui est flou", domaines: ["endocrino", "geriatrie"], niveau: 2, resume: "10 lignes, une ligne sans posologie, un oubli",
+  patient: { nom: "M. A.", details: "75 ans", chips: ["Diabète sous insuline", "Insuffisance pancréatique (Créon)", "Insuffisance rénale probable"], contexte: "Ordonnance de son généraliste du 15 juillet 2026. On considère l'ordonnance réglementaire." },
+  lignes: [
+    L("l1", "Irbésartan 75 mg", "1 comprimé matin et soir", "3 mois", "Généraliste"),
+    L("l2", "Ésoméprazole 40 mg", "1 comprimé le soir", "3 mois", "Généraliste"),
+    L("l3", "Bicarbonate de sodium 500 mg", "2 gélules matin, midi et soir", "3 mois", "Généraliste"),
+    L("l4", "Vitamine E (Toco) 500 mg", "1 gélule le midi", "3 mois", "Généraliste"),
+    L("l5", "Kardégic 75 mg", "1 sachet le midi", "3 mois", "Généraliste"),
+    L("l6", "Vitamine B12 Gerda", "1 boîte de 6 ampoules", "", "Généraliste"),
+    L("l7", "Insuline lispro (Humalog)", "7 UI matin, midi et soir", "3 mois", "Généraliste"),
+    L("l8", "Insuline glargine (Lantus)", "17 UI le soir", "3 mois", "Généraliste"),
+    L("l9", "Loratadine 10 mg", "1 comprimé le soir", "3 mois", "Généraliste"),
+    L("l10", "Pancréatine (Créon)", "Au début des repas (dosage non repris dans les notes)", "3 mois", "Généraliste")],
+  problemes: [
+    PB({ id: "p1", titre: "Vitamine B12 sans posologie", lignes: ["l6"], cle: ["l6"], niveau: "reg", priorite: 1, notion: "reglementation", sfpc: ["9"], interv: ["3"],
+      mecanisme: ["**Aucune posologie** : prescription non conforme", "Carence : attaque 1 000 µg par jour 15 jours, entretien **1 000 µg par mois**", "Maladie de **Biermer** : voie **IM ou SC obligatoire** (pas d'absorption orale)"],
+      conduite: "Appeler pour obtenir la posologie et la voie ; demander au patient s'il a une maladie de Biermer.",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edBoulin2"] }),
+    PB({ id: "p2", titre: "Insuline sans matériel d'autosurveillance", lignes: ["l7", "l8"], cle: ["l7", "l8"], niveau: "reg", notion: "hypoglycemie-age", sfpc: ["5"], interv: ["5"],
+      mecanisme: ["Schéma **basal-bolus**", "Doses adaptées à la **glycémie** et aux repas", "Rien pour mesurer la glycémie sur l'ordonnance"],
+      conduite: "Proposer d'ajouter un capteur de glycémie (plus sûr et confortable que bandelettes et lancettes). Rappeler d'avoir toujours de quoi se resucrer.",
+      statut: "verifie", note: "Correction de l'ED (courrier de l'enseignant).", sources: ["edBoulin2"] }),
+    PB({ id: "p3", titre: "Kardégic sans statine : quelle indication ?", lignes: ["l5"], cle: ["l5"], niveau: "inap", notion: "hypoglycemie-age", sfpc: ["7"], interv: ["4"],
+      mecanisme: ["Pas de statine : **infarctus ou AVC peu probable**", "Diabète seul : faut-il un **haut risque cardiovasculaire** ?", "Antiagrégant : **risque de saignement**"],
+      conduite: "Délivrer et interroger le médecin : antécédent cardiovasculaire ? haut risque ? Rappel des cibles de LDL du diabétique (1 g/L ; 0,7 avec facteurs de risque ; 0,55 après infarctus).",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edBoulin2"] }),
+    PB({ id: "p4", titre: "Irbésartan 75 mg en deux prises", lignes: ["l1"], cle: ["l1"], niveau: "poso", notion: "hypoglycemie-age", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["Deux prises : **observance** moins bonne", "Une prise de 150 mg possible", "Effet néphroprotecteur du diabète ; avec l'insuffisance rénale : surveiller la **kaliémie**"],
+      conduite: "Proposer 150 mg en une prise ; garder 75 mg si la tension est limite. Demander au patient s'il fait des hypotensions.",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edBoulin2"] }),
+    PB({ id: "p5", titre: "Ésoméprazole 40 mg et loratadine au long cours", lignes: ["l2", "l9"], cle: ["l2", "l9"], niveau: "inap", notion: "ipp-long-cours", sfpc: ["7"], interv: ["4"],
+      mecanisme: ["Ésoméprazole **40 mg** : dose élevée, quelle indication ?", "Loratadine **3 mois** : urticaire ou allergie souvent saisonnières", "Médicaments à **réévaluer**"],
+      conduite: "Demander au patient (reflux, ulcère, allergie) ; proposer au médecin 20 mg, voire l'arrêt progressif de l'IPP (rebond acide), et de préciser l'indication de la loratadine.",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edBoulin2"] })],
+  sansProbleme: ["Faux piège : vitamine E + Kardégic, risque de saignement minime aux doses prescrites : pas d'appel.", "Bicarbonate 3 g/j : traitement d'une acidose métabolique de l'insuffisance rénale ? Question à poser, avec bicarbonates, créatinine et natrémie.", "Créon : signe une insuffisance pancréatique ; le diabète est peut-être secondaire (pancréas opéré).", "Vitamine B12 : peut colorer légèrement urines et larmes en rose."],
+  patientDire: "Toujours avoir du sucre sur soi. Adapter l'insuline rapide au repas (pas de repas, pas de bolus). Créon au début des repas.",
+  retenir: "Une ordonnance « réglementaire » peut encore contenir une ligne inutilisable (sans posologie) et un oubli (de quoi surveiller la glycémie).",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o15", titre: "91 ans, une chute il y a 10 jours, et une pneumopathie", domaines: ["geriatrie", "endocrino"], niveau: 2, resume: "7 lignes, 2 problèmes, courrier au médecin",
+  patient: { nom: "M. G.", details: "91 ans", chips: ["Chute il y a 10 jours (urgences)", "Diabète de type 2", "Insuffisance cardiaque probable"], contexte: "Il revient du médecin pour une pneumopathie : l'antibiotique s'ajoute à son traitement chronique." },
+  lignes: [
+    L("l1", "Bisoprolol 10 mg", "1 comprimé le matin", "Traitement chronique", "Médecin traitant", "bisoprolol"),
+    L("l2", "Furosémide 20 mg", "1 comprimé le matin", "Traitement chronique", "Médecin traitant", "furosemide"),
+    L("l3", "Metformine 850 mg", "1 comprimé matin, midi et soir", "Traitement chronique", "Médecin traitant"),
+    L("l4", "Sitagliptine 100 mg", "1 comprimé le matin", "Traitement chronique", "Médecin traitant"),
+    L("l5", "Répaglinide 1 mg", "1 comprimé à chaque repas", "Traitement chronique", "Médecin traitant"),
+    L("l6", "Pravastatine 10 mg", "1 comprimé le soir", "Traitement chronique", "Médecin traitant"),
+    L("l7", "Lévofloxacine 500 mg", "1 comprimé matin et soir", "5 jours", "Médecin traitant", "levofloxacine")],
+  problemes: [
+    PB({ id: "p1", titre: "Répaglinide et sitagliptine à 91 ans, sous bêtabloquant", lignes: ["l5", "l4", "l1"], cle: ["l5"], niveau: "inap", priorite: 1, notion: "hypoglycemie-age", sfpc: ["1", "3.2"], interv: ["6"],
+      mecanisme: ["Deux hypoglycémiants, **surtout le répaglinide** (insulinosécréteur)", "**Hypoglycémie → chute** : la chute d'il y a 10 jours ?", "Le **bisoprolol masque** tachycardie et tremblements", "Insulinosécréteurs **inappropriés après 75 ans**"],
+      conduite: "Délivrer (traitement chronique ancien) mais écrire au médecin : proposer un bilan de médication et une réévaluation (par exemple une gliflozine, utile aussi pour le cœur et le rein), à pondérer avec la clinique et la biologie.",
+      statut: "verifie", note: "Correction de l'enseignant ; le courrier type de l'ED a été commenté (ne pas imposer, proposer un bilan de médication).", sources: ["edFagnoni"],
+      devenir: { scenario: "Le médecin prévoit un bilan de médication et arrête le répaglinide.", code: "1" } }),
+    PB({ id: "p2", titre: "Lévofloxacine et antidiabétiques", lignes: ["l7", "l5"], cle: ["l7"], niveau: "apec", notion: "hypoglycemie-age", sfpc: ["3.1"], interv: ["4"],
+      mecanisme: ["Les quinolones peuvent **déséquilibrer la glycémie**", "Avec deux hypoglycémiants chez un sujet de 91 ans", "Effet surtout marqué avec les anciennes quinolones (ofloxacine, ciprofloxacine)"],
+      conduite: "Délivrer ; renforcer la surveillance glycémique et prévenir des signes d'hypoglycémie ; le mentionner dans le courrier.",
+      statut: "partiel", note: "Point cité par l'enseignant ; niveau exact à vérifier.", sources: ["edFagnoni"] })],
+  sansProbleme: ["Metformine 2 550 mg/j à 91 ans : demander la fonction rénale.", "Pravastatine 10 mg : statine peu interactive, dose faible."],
+  patientDire: "Signes d'hypoglycémie (sueurs, faim, confusion, malaise) même sans palpitations à cause du bêtabloquant ; toujours du sucre sur soi ; se lever doucement.",
+  retenir: "Une chute récente chez un diabétique âgé : chercher l'hypoglycémiant, et le bêtabloquant qui la cache.",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o16", titre: "87 ans : un IEC de trop et des selles noires", domaines: ["cardio", "geriatrie"], niveau: 2, resume: "8 lignes, 1 contre-indication, 1 faux piège",
+  patient: { nom: "M. R.", details: "87 ans", chips: ["Insuffisance cardiaque probable", "Amoxicilline récemment", "Selles « noires »"], contexte: "Difficlir est nouveau sur l'ordonnance. Il vous parle de selles noires." },
+  lignes: [
+    L("l1", "Nébivolol 7,5 mg", "1 comprimé le matin", "", "Médecin"),
+    L("l2", "Périndopril 4 mg", "1 comprimé le matin", "", "Médecin"),
+    L("l3", "Cholécalciférol 400 UI / calcium 500 mg", "1 sachet le midi", "", "Médecin"),
+    L("l4", "Fumarate ferreux 66 mg", "1 comprimé matin et soir", "", "Médecin"),
+    L("l5", "Dapagliflozine 10 mg", "1 comprimé le midi", "", "Médecin"),
+    L("l6", "Metformine 500 mg", "1 comprimé 3 fois par jour", "", "Médecin"),
+    L("l7", "Sacubitril/valsartan 49/51 mg", "1 comprimé 2 fois par jour", "", "Médecin"),
+    L("l8", "Fidaxomicine 200 mg (Difficlir)", "1 comprimé le soir", "5 jours", "Médecin")],
+  problemes: [
+    PB({ id: "p1", titre: "Périndopril et sacubitril/valsartan", lignes: ["l2", "l7"], cle: ["l2", "l7"], niveau: "ci", priorite: 1, notion: "double-sraa", sfpc: ["3.4"], interv: ["7"],
+      mecanisme: ["Sacubitril : inhibiteur de la **néprilysine**", "IEC + inhibiteur de la néprilysine : la **bradykinine** s'accumule", "**Angio-œdème**, potentiellement mortel", "Probable **oubli d'arrêt** de l'IEC lors du passage à Entresto"],
+      conduite: "Ne pas délivrer le périndopril ; appeler le médecin. Entresto ne doit être débuté que 36 heures après la dernière prise d'IEC.",
+      statut: "verifie", note: "Correction de l'enseignant ; contre-indication et délai de 36 heures vérifiés dans le RCP.", sources: ["edFagnoni", "entrestoVidal"],
+      devenir: { scenario: "Le médecin confirme l'oubli : arrêt du périndopril.", code: "1" } }),
+    PB({ id: "p2", titre: "Fidaxomicine une fois par jour pendant 5 jours", lignes: ["l8"], cle: ["l8"], niveau: "poso", notion: "reglementation", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["Posologie usuelle de l'AMM : **200 mg deux fois par jour, 10 jours**", "Ici : 200 mg une fois par jour, 5 jours", "**Sous-traitement** d'une infection à *Clostridioides difficile*, récidive"],
+      conduite: "Faire confirmer la posologie au prescripteur.",
+      statut: "a_verifier", note: "Point non relevé dans l'ED ; posologie de l'AMM écrite de mémoire, à vérifier sur le RCP (un schéma prolongé existe aussi).", sources: ["edFagnoni"] })],
+  sansProbleme: ["Faux piège : les selles noires. Le fer colore les selles en noir, c'est attendu. Mais des selles noires, collantes, malodorantes, avec malaise ou pâleur font penser à un saignement digestif : consulter.", "Clostridioides difficile après l'amoxicilline : diarrhée, parfois sanglante (rouge), pas noire.", "Fer et calcium à distance : ici, fer matin et soir, calcium le midi, c'est bien.", "Il pourrait manquer un antialdostérone, mais sans kaliémie ni fonction rénale on ne peut pas conclure."],
+  patientDire: "Gonflement du visage, des lèvres, de la langue, gêne pour respirer : 15. Fer : selles noires normales. Aller au bout du Difficlir.",
+  retenir: "Ajout de sacubitril/valsartan : toujours vérifier que l'IEC a été arrêté (36 heures avant).",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o17", titre: "Enfant de 10 ans : méthylphénidate et décongestionnant", domaines: ["pediatrie", "neuro"], niveau: 3, resume: "Annale 2024-25, 5 lignes, courrier et fiche SFPC",
+  patient: { nom: "Enfant A.", details: "10 ans, 32 kg", chips: ["TDAH", "Ordonnance sécurisée", "Neuropédiatre"], contexte: "Renouvellement présenté par les parents, prescription du 16/01/2025." },
+  lignes: [
+    L("l1", "Ritaline LP 10 mg", "1 gélule le matin", "28 jours", "Neuropédiatre", "methylphenidate"),
+    L("l2", "Ritaline LP 20 mg", "1 gélule le matin", "28 jours", "Neuropédiatre", "methylphenidate"),
+    L("l3", "Slenyto 1 mg (mélatonine LP)", "1 comprimé le soir, 2 heures avant le coucher", "1 mois", "Neuropédiatre"),
+    L("l4", "Aturgyl 0,05 % (oxymétazoline), pulvérisation nasale", "1 pulvérisation dans chaque narine 2 à 3 fois par jour", "5 jours", "Neuropédiatre"),
+    L("l5", "Orelox 100 mg (cefpodoxime), comprimés", "300 mg par jour", "10 jours", "Neuropédiatre", "cefpodoxime")],
+  problemes: [
+    PB({ id: "p1", titre: "Oxymétazoline chez un enfant de 10 ans sous méthylphénidate", lignes: ["l4", "l1", "l2"], cle: ["l4"], niveau: "ci", priorite: 1, notion: "reglementation", sfpc: ["1", "3.4"], interv: ["7", "6"],
+      mecanisme: ["Oxymétazoline : **contre-indiquée avant 15 ans**", "Méthylphénidate et oxymétazoline : **deux sympathomimétiques**", "**Vasoconstriction**, poussées hypertensives", "Spécialité retirée du marché en 2025"],
+      conduite: "Ne pas délivrer l'Aturgyl. Rhinite allergique : lavages de nez. Sinusite (avec l'antibiotique) : autre traitement adapté à l'âge, sans vasoconstricteur.",
+      statut: "verifie", note: "Correction de l'ED de Mme Cransac.", sources: ["edTdah", "annales2425"],
+      devenir: { scenario: "Le neuropédiatre remplace l'Aturgyl par des lavages de nez au sérum physiologique.", code: "1" } }),
+    PB({ id: "p2", titre: "Cefpodoxime 300 mg par jour", lignes: ["l5"], cle: ["l5"], niveau: "poso", notion: "ped-antibio", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["Attendu : **8 mg/kg/j en 2 prises**, maximum 400 mg/j", "8 × 32 = **256 mg/j**", "300 mg/j, sans répartition en 2 prises", "Sinusite : 10 jours (durée conforme selon l'ED)"],
+      conduite: "Proposer une dose adaptée au poids, en 2 prises ; au-delà de 25 kg, les comprimés à 100 mg sont plus pratiques que la pipette (l'ED propose 2 comprimés de 100 mg par jour).",
+      statut: "partiel", note: "Dose par kilo du cours ; la proposition exacte de l'ED (2 comprimés par jour) est à vérifier sur la correction.", sources: ["edTdah", "coursPed"] }),
+    PB({ id: "p3", titre: "Méthylphénidate : mentions de l'ordonnance sécurisée", lignes: ["l1", "l2"], cle: ["l1", "l2"], niveau: "reg", notion: "reglementation", sfpc: ["9"], interv: ["3"],
+      mecanisme: ["**Stupéfiant** : ordonnance sécurisée, **en toutes lettres**, **28 jours**", "**Nom de la pharmacie** à inscrire sur l'ordonnance", "Prescription initiale **annuelle** par psychiatre, neurologue ou pédiatre"],
+      conduite: "Vérifier les mentions obligatoires et la prescription initiale annuelle ; faire compléter ce qui manque.",
+      statut: "partiel", note: "Règles du cours (ED TDAH). Les mentions exactes manquantes sur cette ordonnance sont à revoir sur l'original.", sources: ["edTdah"] })],
+  sansProbleme: ["Ritaline 10 + 20 mg : 30 mg le matin, sous les 60 mg/j de l'enfant. Spécialités non substituables entre elles.", "Slenyto : mélatonine à libération prolongée de l'enfant (Circadin n'a l'AMM que chez l'adulte). Conseiller plutôt 30 minutes à 1 heure avant le coucher."],
+  patientDire: "Méthylphénidate le matin, gélule ouvrable ; pas le jour d'une anesthésie générale ; surveiller appétit, poids, taille, tension. Aucun décongestionnant vasoconstricteur.",
+  retenir: "Annale type de Mme Cransac : un courrier au prescripteur et une fiche SFPC à remplir. Ici, l'intervention à choisir est l'Aturgyl : problème « contre-indication », intervention « arrêt » et « changement ».",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o18", titre: "85 ans, chutes à répétition : l'ordonnance de sortie", domaines: ["geriatrie", "rhumato"], niveau: 3, resume: "8 lignes, 1 intervention prioritaire, 3 points à clarifier",
+  patient: { nom: "Mme X.", details: "85 ans, 72 kg, clairance 82 mL/min", chips: ["Chutes répétées depuis 2 ans", "Hypotension orthostatique", "Tassements vertébraux", "Séquelles d'AVC", "Vit seule"], contexte: "Sortie d'hospitalisation. À domicile, elle prenait aussi : gabapentine, furosémide, spironolactone, céliprolol (arrêtés), calcium (Calcidose), pantoprazole et pravastatine 40 mg." },
+  lignes: [
+    L("l1", "Paracétamol 500 mg", "2 gélules si douleur, 6 par jour au maximum", "", "Hôpital", "paracetamol"),
+    L("l2", "Kardégic 75 mg", "1 sachet le midi", "", "Hôpital"),
+    L("l3", "Diflucortolone (Nérisone), crème", "1 application par jour", "", "Hôpital"),
+    L("l4", "Alendronate 70 mg + vitamine D3 2 800 UI (Fosavance)", "1 comprimé le lundi", "", "Hôpital", "alendronate"),
+    L("l5", "Macrogol 10 g (Forlax)", "1 à 2 sachets par jour si constipation", "", "Hôpital"),
+    L("l6", "Pravastatine 10 mg", "1 comprimé le soir", "", "Hôpital"),
+    L("l7", "Dexchlorphéniramine 2 mg (Polaramine)", "1 comprimé le soir", "10 jours", "Hôpital"),
+    L("l8", "Cold cream", "Sur les jambes, 1 fois par jour", "", "Hôpital")],
+  problemes: [
+    PB({ id: "p1", titre: "Polaramine chez une patiente qui chute", lignes: ["l7"], cle: ["l7"], niveau: "inap", priorite: 1, notion: "atropiniques-age", sfpc: ["1"], interv: ["6", "7"],
+      mecanisme: ["Anti-H1 de 1re génération : **sédatif et anticholinergique**", "Somnolence, confusion, vertiges ; prise le soir : effet résiduel le matin", "**Contradictoire** avec la prévention des chutes"],
+      conduite: "Intervention prioritaire : réévaluer le besoin ; privilégier le traitement local ; si un antihistaminique est indispensable, proposer une molécule de 2e génération, moins sédative.",
+      statut: "verifie", note: "Correction de l'ED (intervention prioritaire).", sources: ["edOsteo"],
+      devenir: { scenario: "Le médecin remplace la Polaramine par de la cétirizine pour 10 jours.", code: "1" } }),
+    PB({ id: "p2", titre: "Calcium disparu de l'ordonnance", lignes: ["l4"], cle: ["l4"], niveau: "reg", notion: "prises-distance", sfpc: ["5"], interv: ["5"],
+      mecanisme: ["Ostéoporose fracturaire sous **bisphosphonate**", "Calcium (Calcidose) pris à domicile, **absent à la sortie**", "Oubli de conciliation ou arrêt volontaire ?"],
+      conduite: "Vérifier avec le service ; si oubli, proposer de reprendre le calcium (1 à 1,2 g/j au total), à plus de 2 heures du Fosavance.",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edOsteo"] }),
+    PB({ id: "p3", titre: "Pravastatine passée de 40 à 10 mg", lignes: ["l6"], cle: ["l6"], niveau: "poso", notion: "statines", sfpc: ["2"], interv: ["4"],
+      mecanisme: ["Prévention secondaire après **AVC** : on garde la statine", "Baisse forte : myalgies ? perte de tonus des jambes ? erreur ?", "Cible de LDL à connaître"],
+      conduite: "Délivrer ; demander la raison de la baisse et le LDL ; interroger la patiente sur des douleurs ou une faiblesse musculaire.",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edOsteo"] })],
+  sansProbleme: ["Arrêt du céliprolol, du furosémide et de la spironolactone : cohérent avec l'hypotension orthostatique, sous surveillance de la tension et du pouls.", "Arrêt du pantoprazole : déprescription voulue ou oubli ? À vérifier.", "Fosavance remplace alendronate + vitamine D en doses espacées : bénéfique pour l'observance ; ne pas cumuler avec l'ancien alendronate.", "Nérisone : dermocorticoïde fort, couche fine, durée à préciser.", "Paracétamol 3 g/j : conforme ; préciser l'intervalle (4 à 6 heures)."],
+  patientDire: "Se lever par étapes, surtout la nuit ; boire suffisamment ; éclairage la nuit, pas de tapis, chaussures fermées ; Fosavance le lundi au réveil, debout 30 minutes.",
+  retenir: "Ordonnance de sortie : comparer avec le traitement d'avant (conciliation) — ce qui est arrêté, ajouté, modifié, et pourquoi.",
+  rappels: ["prises-a-distance"] },
+
+{ id: "o19", titre: "76 ans, cancer de l'endomètre : l'ordonnance revue en hôpital de jour", domaines: ["geriatrie", "cardio", "onco"], niveau: 3, resume: "7 lignes, HbA1c à 5,6 %, interactions cardiaques",
+  patient: { nom: "Mme X.", details: "76 ans, 75 kg, DFG 73 mL/min", chips: ["HbA1c 5,6 %", "Kaliémie 4,2", "Hb 10,6 g/dL", "Apixaban donné à 5 mg/j par erreur pendant 3 mois"], contexte: "Hôpital de jour de surveillance d'un cancer de l'endomètre. Diabète, hypertension, dépression traitée." },
+  lignes: [
+    L("l1", "Nébivolol 5 mg (Temerit)", "1 comprimé le matin", "", "Hôpital"),
+    L("l2", "Amlodipine 5 mg", "1 comprimé le matin", "", "Hôpital"),
+    L("l3", "Spironolactone 50 mg", "1 comprimé le matin", "", "Hôpital", "spironolactone"),
+    L("l4", "Répaglinide 1 mg (Novonorm)", "1 comprimé matin et soir", "", "Hôpital"),
+    L("l5", "Amitriptyline 25 mg (Laroxyl)", "1 comprimé matin, midi et soir", "", "Hôpital"),
+    L("l6", "Alprazolam 0,25 mg (Xanax)", "1/2 comprimé matin, midi et soir", "", "Hôpital"),
+    L("l7", "Apixaban 5 mg", "1 comprimé matin et soir", "", "Hôpital", "apixaban")],
+  problemes: [
+    PB({ id: "p1", titre: "Nébivolol chez une diabétique sous répaglinide", lignes: ["l1", "l4"], cle: ["l1", "l4"], niveau: "pe", priorite: 1, notion: "hypoglycemie-age", sfpc: ["3.2"], interv: ["6"],
+      mecanisme: ["Bêtabloquant : **masque la tachycardie** de l'hypoglycémie", "Répaglinide : insulinosécréteur, **hypoglycémies**", "HbA1c **5,6 %** : diabète très (trop) bien équilibré", "Bêtabloquant pas en 1re intention dans l'HTA du diabétique (IEC ou ARA II)"],
+      conduite: "Appeler le médecin pour proposer une autre molécule ; ne pas arrêter brutalement le bêtabloquant (rebond). Expliquer les signes d'hypoglycémie et de ne pas prendre le Novonorm si un repas est sauté.",
+      statut: "partiel", note: "Correction de l'ED (appel au médecin). Le lien avec l'HbA1c à 5,6 % est une remarque ajoutée, à valider.", sources: ["edDispBoulin"] }),
+    PB({ id: "p2", titre: "Amitriptyline 75 mg/j avec la spironolactone", lignes: ["l5", "l3"], cle: ["l5"], niveau: "pe", notion: "beers-psy", sfpc: ["3.2", "1"], interv: ["4", "6"],
+      mecanisme: ["Tricyclique : **allonge le QT**, effets **atropiniques**, hypotension orthostatique", "Dyskaliémie sous spironolactone : QT encore plus à risque", "Tricyclique peu recommandé : ISRS/IRSNA (dépression) ou gabapentinoïde (douleur)"],
+      conduite: "Proposer un ECG ; discuter avec le médecin d'une alternative selon l'indication (dépression ou douleur neuropathique).",
+      statut: "verifie", note: "Correction de l'ED.", sources: ["edDispBoulin"] })],
+  sansProbleme: ["Apixaban 5 mg deux fois par jour : la dose est maintenant correcte (elle n'avait reçu que 5 mg/j par erreur).", "Amlodipine, spironolactone, amitriptyline, nébivolol : quatre médicaments hypotenseurs ; tension à 153/91 aujourd'hui, surveiller l'orthostatisme.", "Alprazolam chez une patiente de 76 ans : benzodiazépine à réévaluer (voir le rappel)."],
+  patientDire: "Apixaban matin et soir, saignement : médecin ou 15. Palpitations trop rapides : consulter. Apprendre à mesurer sa tension.",
+  retenir: "Un bêtabloquant chez un diabétique sous insulinosécréteur : penser aux hypoglycémies qu'on ne sent plus.",
+  rappels: ["bzd-age"] },
+
+{ id: "o20", titre: "Enfant de 4 ans, otites à répétition : six lignes de l'ORL", domaines: ["pediatrie", "infectio"], niveau: 3, resume: "Annale 2021-22, 6 lignes, 3 problèmes",
+  patient: { nom: "Enfant", details: "4 ans, 1 m, 15 kg", chips: ["Otites à répétition depuis 2 ans"], contexte: "Ordonnance d'ORL présentée par la mère." },
+  lignes: [
+    L("l1", "Topalgic 100 mg/mL (tramadol), solution buvable", "6 gouttes toutes les 6 à 8 heures si douleurs intenses", "3 jours", "ORL", "tramadol"),
+    L("l2", "Motilium 1 mg/mL (dompéridone), suspension", "1 dose-poids toutes les 8 heures si nausées ou vomissements", "3 jours", "ORL"),
+    L("l3", "Doliprane 2,4 %, suspension", "1 dose-poids toutes les 6 heures si besoin, 6 heures entre deux prises", "10 jours", "ORL", "paracetamol"),
+    L("l4", "Solupred 5 mg orodispersible (prednisolone)", "2 comprimés au petit-déjeuner", "3 jours", "ORL"),
+    L("l5", "Amoxicilline 250 mg/5 mL", "1 cuillère-mesure et demie matin et soir (« = 500 mg/j »)", "48 heures", "ORL", "amoxicilline"),
+    L("l6", "Oflocet 1,5 mg/0,5 mL (ofloxacine), solution auriculaire", "1 unidose matin et soir dans chaque oreille", "7 jours", "ORL")],
+  problemes: [
+    PB({ id: "p1", titre: "Amoxicilline : calcul faux, dose et durée insuffisantes", lignes: ["l5"], cle: ["l5"], niveau: "poso", priorite: 1, notion: "ped-antibio", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["1,5 × 250 = 375 mg, matin et soir = **750 mg/j** (et non 500 comme écrit)", "750 / 15 = **50 mg/kg/j**", "OMA purulente : **80 à 100 mg/kg/j**, soit **1 200 à 1 500 mg/j**", "Après 2 ans : **5 jours**, pas 48 heures"],
+      conduite: "Appeler l'ORL : dose adaptée au poids (par exemple 1 500 mg/j en 2 ou 3 prises) pendant 5 jours.",
+      note: NOTE_ANNALE, sources: ["annales2122", "coursPed", "recoOrl"] }),
+    PB({ id: "p2", titre: "Dompéridone chez un enfant de 4 ans", lignes: ["l2"], cle: ["l2"], niveau: "inap", priorite: 1, notion: "reglementation", sfpc: ["1"], interv: ["7"],
+      mecanisme: ["Depuis **2019** : dompéridone réservée à l'**adulte et l'adolescent de 12 ans et plus, 35 kg et plus**", "Chez l'enfant : **pas plus efficace que le placebo**", "Risque cardiaque (torsades de pointes)"],
+      conduite: "Ne pas délivrer ; prévenir le prescripteur. Conseils de réhydratation si vomissements.",
+      statut: "verifie", note: NOTE_ANNALE + " Restriction d'âge vérifiée (ANSM 2019 ; l'ordonnance date de mai 2019, juste avant).", sources: ["domperidoneAnsm", "annales2122"] }),
+    PB({ id: "p3", titre: "Prednisolone dans une otite aiguë", lignes: ["l4"], cle: ["l4"], niveau: "inap", notion: "ped-antibio", sfpc: ["7"], interv: ["7"],
+      mecanisme: ["Les **corticoïdes ne sont pas recommandés** dans les otites aiguës", "Effets indésirables sans bénéfice démontré"],
+      conduite: "Signaler au prescripteur et proposer de ne pas l'utiliser ; délivrance à discuter.",
+      statut: "partiel", note: NOTE_ANNALE + " Non-recommandation tirée des conseils de la SFORL.", sources: ["sforlCortico", "annales2122"] })],
+  sansProbleme: ["Tramadol : 6 gouttes = 15 mg (1 goutte = 2,5 mg), soit 1 mg/kg par prise ; dose plausible chez l'enfant de plus de 3 ans, à vérifier sur le RCP. Aujourd'hui, il faudrait une ordonnance sécurisée.", "Paracétamol à la dose-poids toutes les 6 heures : conforme.", "Ofloxacine auriculaire : vérifier s'il y a une perforation du tympan ou des aérateurs (yoyos), sinon son intérêt est discutable."],
+  patientDire: "Tramadol : compter les gouttes avec soin, somnolence et vomissements possibles, ranger hors de portée. Amoxicilline avant le repas, aller au bout. Reconsulter si les symptômes persistent 4 jours après la fin.",
+  retenir: "Six lignes d'un spécialiste, trois erreurs : refaire le calcul écrit par le prescripteur, vérifier l'âge de chaque AMM, et la recommandation de l'infection.",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o21", titre: "Antidépresseur IMAO et nouveau triptan", domaines: ["neuro", "psy"], niveau: 2, resume: "Annale 2021-22, 2 prescripteurs, mail au médecin",
+  patient: { nom: "Mme B.", details: "32 ans", chips: ["Renouvellement habituel (Dr A)", "Nouvelle ordonnance (Dr B)", "Femme en âge de procréer"], contexte: "Elle renouvelle sa prescription du Dr A et présente aujourd'hui une ordonnance du Dr B pour ses migraines." },
+  lignes: [
+    L("l1", "Moclobémide 150 mg (Moclamine)", "1 comprimé matin et soir", "1 mois, à renouveler 5 fois", "Dr A"),
+    L("l2", "Médrogestone 5 mg (Colprone)", "1 comprimé par jour du 16e au 25e jour du cycle", "1 mois, à renouveler 5 fois", "Dr A"),
+    L("l3", "Zolmitriptan 2,5 mg orodispersible", "1 comprimé en cas de crise", "1 mois", "Dr B"),
+    L("l4", "Ibuprofène 400 mg", "1 comprimé en cas de crise", "1 mois", "Dr B", "ibuprofene")],
+  problemes: [
+    PB({ id: "p1", titre: "Zolmitriptan et moclobémide", lignes: ["l3", "l1"], cle: ["l3", "l1"], niveau: "ci", priorite: 1, notion: "inhibiteurs-dose", sfpc: ["3.4"], interv: ["6"],
+      mecanisme: ["Le moclobémide **inhibe la MAO-A**", "La MAO-A métabolise le zolmitriptan et **son métabolite actif**", "Exposition augmentée, **effets sérotoninergiques** qui s'additionnent", "RCP du Zomig : **contre-indiqué** avec les IMAO, y compris sélectifs A"],
+      conduite: "Ne pas délivrer le zolmitriptan ; écrire au Dr B (en informant le Dr A) : proposer un triptan non métabolisé par la MAO ou un autre traitement de crise.",
+      statut: "partiel", note: NOTE_ANNALE + " Contre-indication vérifiée dans le RCP du Zomig. Triptan de remplacement à vérifier dans le Thésaurus.", sources: ["zomigRcp", "annales2122"] }),
+    PB({ id: "p2", titre: "Médrogestone : surveillance du méningiome", lignes: ["l2"], cle: ["l2"], niveau: "reg", notion: "grossesse-risque", sfpc: ["10"], interv: ["4"],
+      mecanisme: ["Dérivé **progestatif** de synthèse", "Risque de **méningiome** (comme Lutényl, Lutéran)", "Modalités encadrées : information, attestation, **IRM**, durée limitée"],
+      conduite: "Délivrer en vérifiant que les conditions de prescription et de surveillance sont remplies.",
+      statut: "partiel", note: NOTE_ANNALE + " Médrogestone citée par Mme Freppel parmi les progestatifs à risque de méningiome ; modalités à revoir sur l'ANSM.", sources: ["edFreppel", "annales2122"] })],
+  sansProbleme: ["Ibuprofène 400 mg en cas de crise : AINS, 1re ligne de la crise migraineuse ; femme en âge de procréer : contre-indiqué pendant la grossesse.", "Médrogestone n'est pas une contraception : poser la question de la contraception."],
+  patientDire: "Pas de triptan tant que le médecin n'a pas répondu ; tenir un carnet des crises ; pas de millepertuis ni d'automédication sérotoninergique.",
+  retenir: "Deux prescripteurs qui ne se parlent pas : c'est au pharmacien de croiser l'historique. IMAO sur l'historique → vérifier tout nouveau sérotoninergique.",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o22", titre: "70 ans, diabétique en surpoids, contente d'avoir maigri", domaines: ["endocrino", "geriatrie"], niveau: 2, resume: "Annale 2022-23, 6 lignes, questions au comptoir",
+  patient: { nom: "Mme", details: "70 ans, surpoids", chips: ["HbA1c 6,2 %", "A perdu quelques kilos en un an", "Ordonnance de dispositifs oubliée"], contexte: "Elle n'a que ces six médicaments, et une autre ordonnance de dispositifs médicaux qu'elle n'a pas apportée." },
+  lignes: [
+    L("l1", "Gliclazide 60 mg LM (Diamicron)", "2 comprimés le matin", "1 boîte", "Médecin traitant"),
+    L("l2", "Sémaglutide 1 mg (Ozempic), stylo", "1 injection sous-cutanée par semaine, jour fixe", "3 mois", "Médecin traitant"),
+    L("l3", "Fluvastatine 40 mg, gélule", "1 gélule le soir, au cours du repas", "3 mois", "Médecin traitant"),
+    L("l4", "Aspirine 75 mg gastrorésistant (Résitune)", "1 comprimé par jour", "3 mois", "Médecin traitant"),
+    L("l5", "Furosémide 40 mg", "1 comprimé le matin", "3 mois", "Médecin traitant", "furosemide"),
+    L("l6", "Spironolactone 50 mg", "1 comprimé le matin", "3 mois", "Médecin traitant", "spironolactone")],
+  problemes: [
+    PB({ id: "p1", titre: "Gliclazide 120 mg avec sémaglutide et HbA1c à 6,2 %", lignes: ["l1", "l2"], cle: ["l1"], niveau: "poso", priorite: 1, notion: "hypoglycemie-age", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["Sulfamide hypoglycémiant à **dose maximale**", "Sémaglutide : **perte de poids**, glycémie qui baisse", "HbA1c **6,2 %** à 70 ans : objectif dépassé « par le bas »", "**Risque d'hypoglycémie**"],
+      conduite: "Expliquer que l'HbA1c basse n'est pas forcément une bonne nouvelle ; proposer au médecin de réduire le gliclazide ; renforcer l'autosurveillance.",
+      note: NOTE_ANNALE, sources: ["annales2122"] })],
+  sansProbleme: ["Perte de poids : effet attendu du sémaglutide, à surveiller (nausées, dénutrition, déshydratation sous deux diurétiques).", "Gliclazide « le matin » : préciser au petit-déjeuner, et ne pas sauter le repas.", "Ordonnance des dispositifs : lecteur de glycémie et bandelettes sont indispensables sous sulfamide ; la rapporter pour les délivrer.", "Fluvastatine 40 mg le soir : prise pendant ou hors repas possible ; garder le même horaire (à vérifier sur le RCP).", "Furosémide + spironolactone : surveiller kaliémie, natrémie et fonction rénale."],
+  patientDire: "Signes d'hypoglycémie et resucrage ; ne jamais sauter un repas sous gliclazide ; Ozempic le même jour chaque semaine.",
+  retenir: "Une HbA1c qui « baisse bien » chez un sujet âgé sous sulfamide : penser hypoglycémie avant de féliciter.",
+  rappels: [] },
+
+{ id: "o23", titre: "Enfant de 5 ans, aérateurs posés : trois antalgiques", domaines: ["pediatrie"], niveau: 2, resume: "Annale 2022-23, 3 lignes, calcul de doses",
+  patient: { nom: "Marius", details: "5 ans, 23 kg", chips: ["Pose d'aérateurs transtympaniques (« yoyos »)"], contexte: "Ordonnance de l'ORL après l'intervention." },
+  lignes: [
+    L("l1", "Paracétamol", "15 mg/kg par prise, 4 fois par jour", "8 à 12 jours", "ORL", "paracetamol"),
+    L("l2", "Ibuprofène", "5 mg/kg par prise, 4 fois par jour", "8 jours", "ORL", "ibuprofene"),
+    L("l3", "Contramal (tramadol), solution buvable", "10 gouttes en cas de douleurs vives, 4 prises par jour au maximum", "5 jours", "ORL", "tramadol")],
+  problemes: [
+    PB({ id: "p1", titre: "Tramadol sans ordonnance sécurisée", lignes: ["l3"], cle: ["l3"], niveau: "reg", priorite: 1, notion: "reglementation", sfpc: ["9"], interv: ["7"],
+      mecanisme: ["Aujourd'hui : tramadol sur **ordonnance sécurisée** (depuis le 1er mars 2025)", "Posologie : 10 gouttes = **25 mg**, soit **1,1 mg/kg** par prise", "4 prises = 100 mg/j : dose plausible"],
+      conduite: "Ne pas délivrer sur ce support ; demander une prescription sécurisée. Les paliers : paracétamol (1), ibuprofène (AINS, 1), tramadol (2).",
+      statut: "partiel", note: NOTE_ANNALE + " En 2022, l'ordonnance sécurisée n'était pas encore exigée. Dose pédiatrique à vérifier sur le RCP.", sources: ["edBoulin1", "annales2122"] }),
+    PB({ id: "p2", titre: "Ibuprofène 5 mg/kg quatre fois par jour pendant 8 jours", lignes: ["l2"], cle: ["l2"], niveau: "poso", notion: "ains-dose", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["5 × 4 = **20 mg/kg/j** : dans la fourchette du cours (**20 à 30 mg/kg/j**)", "Mais 5 mg/kg par prise ne correspond pas à la graduation des pipettes pédiatriques", "8 jours d'AINS : durée longue"],
+      conduite: "Donner une suspension pédiatrique à la dose-poids ; proposer au prescripteur un schéma adapté à la pipette et une durée plus courte.",
+      statut: "a_verifier", note: NOTE_ANNALE + " La graduation exacte des pipettes et la durée attendue sont à vérifier.", sources: ["coursPed", "annales2122"] })],
+  sansProbleme: ["Paracétamol 15 mg/kg × 4 = 60 mg/kg/j : conforme."],
+  patientDire: "Effets du tramadol : somnolence, nausées, vertiges ; compter les gouttes avec soin, ranger hors de portée.",
+  retenir: "Chez l'enfant, refaire chaque dose par kilo, puis vérifier qu'elle est administrable avec le dispositif fourni."
+},
+
+{ id: "o24", titre: "72 ans, Parkinson et antipsychotique", domaines: ["neuro", "geriatrie", "psy"], niveau: 2, resume: "Annale 2022-23, 4 lignes, appel au neurologue",
+  patient: { nom: "M. Z.", details: "72 ans", chips: ["Maladie de Parkinson", "Troubles psychotiques ?"], contexte: "Il présente son ordonnance habituelle." },
+  lignes: [
+    L("l1", "Modopar 125 (lévodopa + bensérazide)", "1 gélule à 8 h, 12 h et 16 h", "", "Neurologue"),
+    L("l2", "Modopar 125 LP", "1 gélule à 20 h", "", "Neurologue"),
+    L("l3", "Tasmar 100 (tolcapone)", "1 comprimé 3 fois par jour", "", "Neurologue"),
+    L("l4", "Zyprexa 10 (olanzapine)", "1 comprimé par jour", "", "Neurologue")],
+  problemes: [
+    PB({ id: "p1", titre: "Olanzapine chez un parkinsonien sous lévodopa", lignes: ["l4", "l1"], cle: ["l4"], niveau: "asdec", priorite: 1, notion: "parkinson", sfpc: ["3.3"], interv: ["6"],
+      mecanisme: ["L'olanzapine **bloque les récepteurs D2**", "Elle **s'oppose à la lévodopa** : aggravation du Parkinson", "Antagonisme réciproque", "Hallucinations sous dopaminergiques : la **clozapine** est l'antipsychotique de référence"],
+      conduite: "Appeler le neurologue : proposer la clozapine (sous surveillance de la NFS) ou une autre option.",
+      statut: "partiel", note: NOTE_ANNALE + " Association déconseillée (antiparkinsoniens dopaminergiques + antipsychotiques sauf clozapine) vérifiée sur Vidal.", sources: ["levodopaVidal", "annales2122"] }),
+    PB({ id: "p2", titre: "Tolcapone : surveillance hépatique", lignes: ["l3"], cle: ["l3"], niveau: "reg", notion: "parkinson", sfpc: ["10"], interv: ["4"],
+      mecanisme: ["Inhibiteur de la **COMT** : prolonge l'effet de la lévodopa", "**Hépatotoxicité** grave possible", "Bilan hépatique régulier"],
+      conduite: "Délivrer ; vérifier que le bilan hépatique est fait ; expliquer les signes d'atteinte du foie.",
+      statut: "a_verifier", note: NOTE_ANNALE + " Fréquence du bilan hépatique à vérifier sur le RCP.", sources: ["annales2122"] })],
+  sansProbleme: ["Lévodopa : effets indésirables à expliquer — nausées, hypotension orthostatique, dyskinésies, hallucinations.", "Tolcapone : urines jaune foncé, diarrhée.", "Olanzapine : somnolence, prise de poids."],
+  patientDire: "Lévodopa à heures fixes ; se lever doucement ; signaler hallucinations, mouvements anormaux, jaunisse, urines très foncées.",
+  retenir: "Parkinson + antipsychotique : seule la clozapine (ou une option validée par le neurologue) ne s'oppose pas à la lévodopa."
+},
+
+{ id: "o25", titre: "Enfant de 3 ans : cefpodoxime 200 mg matin et soir", domaines: ["pediatrie", "infectio"], niveau: 1, resume: "Annale 2022-23, 2 lignes, mail au prescripteur",
+  patient: { nom: "Petit B.", details: "3 ans, 15 kg", chips: ["La mère est sous lamotrigine"], contexte: "La mère vient de remplacer sa pilule (Minidril) par un DIU au cuivre." },
+  lignes: [
+    L("l1", "Orelox enfants 40 mg/5 mL (cefpodoxime)", "200 mg matin, 200 mg soir", "3 jours", "Médecin", "cefpodoxime"),
+    L("l2", "Doliprane 2,4 % sans sucre", "Si douleur ou inconfort", "", "Médecin", "paracetamol")],
+  problemes: [
+    PB({ id: "p1", titre: "Cefpodoxime : surdosage et durée trop courte", lignes: ["l1"], cle: ["l1"], niveau: "poso", priorite: 1, notion: "ped-antibio", sfpc: ["2"], interv: ["1"],
+      mecanisme: ["200 × 2 = **400 mg/j**, la dose maximale de l'adulte", "400 / 15 = **27 mg/kg/j**", "Attendu : **8 mg/kg/j**, soit **120 mg/j** (60 mg matin et soir)", "Durée : **5 jours** après 2 ans, pas 3"],
+      conduite: "Mail au prescripteur : dose adaptée au poids et durée de 5 jours (OMA ou angine).",
+      note: NOTE_ANNALE, sources: ["coursPed", "recoOrl", "annales2122"] })],
+  sansProbleme: ["Point de vigilance chez la mère : l'estroprogestatif divisait par deux la concentration de lamotrigine. En l'arrêtant, la lamotrigine remonte : risque de surdosage. Le neurologue doit adapter la dose.", "Doliprane : préciser la dose-poids et l'intervalle."],
+  patientDire: "Antibiotique avant le repas, à la seringue graduée, aller au bout des 5 jours. À la mère : prévenir son neurologue du changement de contraception.",
+  retenir: "Une seconde question cachée dans l'annale : tout changement de contraception sous lamotrigine change sa dose.",
+  rappels: ["lettre-prescripteur"] },
+
+{ id: "o26", titre: "49 ans, Parkinson évolué : 8 lignes et 11 renouvellements", domaines: ["neuro"], niveau: 2, resume: "Annale 2024-25, réglementation et conseils",
+  patient: { nom: "Madame", details: "49 ans", chips: ["Maladie de Parkinson", "Ordonnance du 26/04/2024", "QSP 1 mois, AR 11 fois"], contexte: "Ordonnance en ALD ; mentions manuscrites : aiguilles pour le stylo, kinésithérapie, orthophonie." },
+  lignes: [
+    L("l1", "Apokinon 30 mg/3 mL (apomorphine), stylo SC", "1 mg 1 à 3 fois par jour", "1 mois", "Neurologue"),
+    L("l2", "Requip LP 8 mg (ropinirole)", "1 le matin", "1 mois", "Neurologue"),
+    L("l3", "Sinemet 100/10 (lévodopa + carbidopa)", "1,5 comprimé à 7 h et 10 h ; 2 comprimés à 13 h, 16 h et 19 h", "1 mois", "Neurologue"),
+    L("l4", "Sinemet LP 200/50", "1 le matin et 2 au coucher", "1 mois", "Neurologue"),
+    L("l5", "Amantadine", "2 comprimés à 13 h et 19 h", "1 mois", "Neurologue"),
+    L("l6", "Mélatonine 12 mg, préparation magistrale", "1 par jour", "1 mois", "Neurologue"),
+    L("l7", "Paroxétine 20 mg", "1 par jour", "1 mois", "Neurologue"),
+    L("l8", "Macrogol", "2 par jour", "1 mois", "Neurologue")],
+  problemes: [
+    PB({ id: "p1", titre: "Agonistes dopaminergiques : effets à surveiller", lignes: ["l2", "l1"], cle: ["l2", "l1"], niveau: "apec", notion: "parkinson", sfpc: ["10"], interv: ["4"],
+      mecanisme: ["Ropinirole et apomorphine : **agonistes dopaminergiques**", "**Troubles du contrôle des impulsions** : jeu, achats, hypersexualité, alimentation", "**Somnolence, endormissements soudains** : conduite", "Nausées, **hypotension orthostatique**, hallucinations"],
+      conduite: "Délivrer ; interroger la patiente et son entourage sur les comportements compulsifs et la somnolence ; prévenir le neurologue si besoin.",
+      statut: "a_verifier", note: NOTE_ANNALE, sources: ["annales2425"] })],
+  sansProbleme: ["« QSP 1 mois AR 11 fois » : recevable (12 mois au maximum). Première délivrance dans les 3 mois suivant la prescription ; aucune délivrance au-delà d'un an après la date de l'ordonnance (à vérifier).", "DCI : Requip = ropinirole ; Sinemet = lévodopa + carbidopa ; Macrogol = macrogol 4000 (polyéthylène glycol).", "Macrogol chez une femme de 49 ans : la constipation fait partie de la maladie de Parkinson. Pas plus que la dose prescrite sans avis : diarrhée, déshydratation.", "Paroxétine : pas d'interaction notable retrouvée sur cette ordonnance (inhibiteur du CYP2D6) ; à vérifier.", "Lévodopa à heures fixes, à distance des repas riches en protéines ; apomorphine : aiguilles à délivrer, rotation des sites."],
+  patientDire: "Respecter les horaires de la lévodopa ; prudence au volant ; signaler toute envie irrépressible ; se lever doucement.",
+  retenir: "Une ordonnance sans erreur évidente reste un exercice : réglementation, DCI, effets indésirables de classe et conseils."
+},
+
+{ id: "o27", titre: "79 ans : paroxétine, alprazolam et zopiclone", domaines: ["geriatrie", "psy"], niveau: 2, resume: "Annale 2024-25, 4 lignes, protocole de déprescription",
+  patient: { nom: "Madame", details: "79 ans", chips: ["Zopiclone 7,5 mg au coucher depuis des années", "Anxiété, épisode dépressif"], contexte: "Ordonnance du généraliste du 30 novembre 2023." },
+  lignes: [
+    L("l1", "Alvityl magnésium vitamine B6", "1 comprimé par jour", "45 jours", "Généraliste"),
+    L("l2", "Ristabil antifatigue, solution buvable", "1 flacon par jour", "20 jours", "Généraliste"),
+    L("l3", "Paroxétine 20 mg", "1/2 comprimé le matin pendant 7 jours, puis 1 comprimé par jour pendant 1 mois", "1 mois", "Généraliste"),
+    L("l4", "Alprazolam 0,5 mg (Xanax)", "1/2 à 1 comprimé si crise d'angoisse, 1 à 2 prises par jour", "", "Généraliste")],
+  problemes: [
+    PB({ id: "p1", titre: "Paroxétine chez une patiente de 79 ans", lignes: ["l3"], cle: ["l3"], niveau: "inap", priorite: 1, notion: "beers-psy", sfpc: ["1"], interv: ["6"],
+      mecanisme: ["ISRS le plus **anticholinergique** : bouche sèche, constipation, confusion, chutes", "**Inhibiteur puissant du CYP2D6** (codéine, tramadol, tamoxifène…)", "ISRS chez le sujet âgé : **hyponatrémie** (SIADH), saignements digestifs", "Critères de Beers et REMEDIES : **inappropriée**"],
+      conduite: "Proposer au médecin un autre ISRS : sertraline (ou escitalopram) ; natrémie à 1 mois.",
+      statut: "verifie", note: "Correction construite à partir de l'ED sur la personne âgée (paroxétine inappropriée, sertraline proposée).", sources: ["edAge", "annales2425"] }),
+    PB({ id: "p2", titre: "Alprazolam en plus du zopiclone", lignes: ["l4"], cle: ["l4"], niveau: "inap", notion: "beers-psy", sfpc: ["1"], interv: ["6"],
+      mecanisme: ["Benzodiazépine **oxydée** chez une patiente de 79 ans", "Ajoutée à un **zopiclone** pris depuis des années", "Sédation, **chutes**, confusion, dépendance", "Avec un antidépresseur bien conduit, souvent inutile"],
+      conduite: "Si une benzodiazépine est indispensable, proposer l'oxazépam ou le lorazépam (conjugués), à faible dose et pour peu de temps.",
+      statut: "verifie", note: "Correction construite à partir de l'ED sur la personne âgée.", sources: ["edAge", "annales2425"] })],
+  sansProbleme: ["Magnésium-B6 et Ristabil : sans risque notable, intérêt discutable.", "Déprescription du zopiclone (question 4) : vérifier d'abord la stabilité de l'humeur et de l'anxiété, l'absence d'événement de vie, la motivation ; puis réduire par paliers (par exemple 7,5 → 3,75 mg), chaque palier 1 à 2 semaines, jusqu'à l'arrêt ; règles d'hygiène du sommeil ; prévenir de l'insomnie de rebond et d'un possible syndrome de sevrage ; mélatonine en aide possible."],
+  patientDire: "Ne jamais arrêter brutalement l'antidépresseur ni le somnifère ; se lever doucement ; signaler confusion, chute, somnolence.",
+  retenir: "Sujet âgé + psychotropes : demander à chaque fois si la molécule est sur les listes de Beers ou REMEDIES, et ce qu'on peut proposer à la place.",
+  rappels: ["bzd-age"] },
+
+{ id: "o28", titre: "26 ans, enceinte : maladie de Basedow", domaines: ["grossesse", "endocrino"], niveau: 2, resume: "Annale 2024-25, 3 lignes, conseil et vaccins",
+  patient: { nom: "Mme A.", details: "26 ans", chips: ["Test de grossesse positif", "Retard de règles de 5 jours", "Clinique d'endocrinologie"], contexte: "Elle vient d'apprendre qu'elle est enceinte. Ordonnance du 25/10/2024, à renouveler 3 fois." },
+  lignes: [
+    L("l1", "Lévothyroxine 50 µg (Levothyrox)", "1 comprimé par jour", "1 mois, à renouveler 3 fois", "Endocrinologue", "levothyroxine"),
+    L("l2", "Carbimazole (Néo-Mercazole) 15 mg", "1/2 comprimé de 20 mg + 1 comprimé de 5 mg par jour", "1 mois, à renouveler 3 fois", "Endocrinologue"),
+    L("l3", "Propranolol 40 mg", "1/2 comprimé si palpitations", "1 mois, à renouveler 3 fois", "Endocrinologue")],
+  problemes: [
+    PB({ id: "p1", titre: "Carbimazole en début de grossesse", lignes: ["l2"], cle: ["l2"], niveau: "inap", priorite: 1, notion: "grossesse-risque", sfpc: ["1"], interv: ["6"],
+      mecanisme: ["Antithyroïdien de synthèse", "Pas une vraie contre-indication, mais le **propylthiouracile** est préféré au 1er trimestre", "Ne pas arrêter seule : une hypothyroïdie fœtale serait plus grave qu'une légère hyperthyroïdie", "Risque d'**agranulocytose** : fièvre, mal de gorge = NFS en urgence"],
+      conduite: "Délivrer pour ne pas interrompre le traitement, et lui conseiller de contacter son endocrinologue très rapidement pour adapter le traitement à la grossesse.",
+      statut: "verifie", note: "Correction construite à partir de l'ED de Mme Freppel (maladie de Basedow et grossesse).", sources: ["edFreppel", "annales2425"] })],
+  sansProbleme: ["Levothyrox : sans problème pendant la grossesse ; il sert à prévenir l'hypothyroïdie induite par le carbimazole.", "Propranolol : contre la tachycardie ; bêtabloquant non cardiosélectif (attention à l'asthme).", "Surveillance : NFS, T4 libre et TSH (une TSH seule ne suffit pas).", "Vaccins : grippe et Covid-19 recommandés pendant la grossesse ; les vaccins vivants sont contre-indiqués."],
+  patientDire: "Ne rien arrêter, appeler l'endocrinologue aujourd'hui ; fièvre ou mal de gorge : prise de sang en urgence ; vaccins grippe et Covid possibles.",
+  retenir: "Femme en âge de procréer : chaque ligne doit être relue en se demandant « et si elle était enceinte ? »."
+}
+);
+
+/* Cartes tirées des annales et des ED. */
+CARDS.push(
+  { id: "k32", notion: "inhibiteurs-dose", drug: null, recto: "Éplérénone avec l'amiodarone : dose maximale et pourquoi ?", cle: "**25 mg/j** · exposition **doublée** (CYP3A4)",
+    points: [["Mécanisme", "Amiodarone : inhibiteur **faible à modéré** du CYP3A4"], ["Risque", "**Hyperkaliémie**, troubles du rythme"], ["Source", "**RCP** de l'éplérénone"]] },
+  { id: "k33", notion: "reglementation", drug: "tramadol", recto: "Tramadol : quelles règles de prescription depuis le 1er mars 2025 ?", cle: "**Ordonnance sécurisée** · **en toutes lettres** · **12 semaines**",
+    points: [["En toutes lettres", "Dosage, posologie, durée"], ["Sinon", "**Ne pas délivrer**, demander une nouvelle ordonnance"]] },
+  { id: "k34", notion: "double-sraa", drug: "ramipril", recto: "IEC et sacubitril/valsartan (Entresto) : niveau, risque, délai ?", cle: "**Contre-indication** · **angio-œdème** · **36 heures**",
+    points: [["Mécanisme", "Accumulation de **bradykinine** (néprilysine et ECA bloquées)"], ["Piège classique", "IEC **pas arrêté** lors du passage à Entresto"]] },
+  { id: "k35", notion: "reglementation", drug: "methylphenidate", recto: "Méthylphénidate : statut, durée de prescription, qui fait la prescription initiale ?", cle: "**Stupéfiant** · **28 jours** · spécialiste **annuel**",
+    points: [["Ordonnance", "Sécurisée, en toutes lettres, **nom de la pharmacie**"], ["Prescripteur initial", "Psychiatre, neurologue ou pédiatre, chaque année"], ["Interaction", "**Pas de vasoconstricteur** nasal"]] },
+  { id: "k36", notion: "ped-antibio", drug: "cefpodoxime", recto: "Cefpodoxime chez l'enfant : dose, nombre de prises, maximum ?", cle: "**8 mg/kg/j** · **2 prises** · **400 mg/j**",
+    points: [["Durée", "OMA ou angine : **5 jours** après 2 ans, 10 jours avant"], ["Place", "**2e intention**, après l'amoxicilline"]] },
+  { id: "k37", notion: "grossesse-risque", drug: "lamotrigine", recto: "Lamotrigine et pilule estroprogestative : que se passe-t-il, et à l'arrêt de la pilule ?", cle: "Concentration **÷ 2** sous pilule · **remonte** à l'arrêt",
+    points: [["Niveau", "**Précaution d'emploi**"], ["Conduite", "Adapter la dose (dosage), ou contraception non estroprogestative (DIU)"], ["Grossesse", "Antiépileptique de **référence**"]] },
+  { id: "k38", notion: "beers-psy", drug: null, recto: "Quel ISRS est inapproprié chez le sujet âgé, pourquoi, et par quoi le remplacer ?", cle: "**Paroxétine** · **anticholinergique** · **sertraline**",
+    points: [["En plus", "Inhibiteur puissant du **CYP2D6**"], ["Tous les ISRS", "**Hyponatrémie** : natrémie à 1 mois"]] },
+  { id: "k39", notion: "beers-psy", drug: null, recto: "Benzodiazépines chez le sujet âgé : lesquelles « privilégier » et pourquoi ?", cle: "**Oxazépam, lorazépam** · **conjugaison**",
+    points: [["À éviter", "**Demi-vie longue** : bromazépam, clobazam, clorazépate, diazépam, prazépam"], ["Déprescription", "Paliers de **1 à 2 semaines**, suivi régulier"]] },
+  { id: "k40", notion: "parkinson", drug: null, recto: "Un parkinsonien sous lévodopa reçoit de l'olanzapine. Niveau, risque, alternative ?", cle: "**Association déconseillée** · Parkinson aggravé · **clozapine**",
+    points: [["Mécanisme", "Antagonisme **D2** contre la dopamine"], ["Antiémétiques neuroleptiques", "**Contre-indiqués** (métoclopramide)"]] },
+  { id: "k41", notion: "reglementation", drug: null, recto: "Dompéridone : à partir de quel âge et de quel poids ?", cle: "**12 ans** et **35 kg**",
+    points: [["Depuis", "**2019** (ANSM) : pas plus efficace que le placebo chez l'enfant"], ["Adulte", "10 mg jusqu'à 3 fois par jour, **1 semaine** au maximum"]] }
 );
 
 /* Logique pure : répétition espacée (FSRS-5, paramètres par défaut), correction, statistiques. */
@@ -1875,6 +2389,8 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
     pe: '<polygon points="8,1 15,8 8,15 1,8"/>',
     apec: '<circle cx="8" cy="8" r="7"/>',
     poso: '<rect x="2" y="2" width="12" height="12" rx="1"/>',
+    inap: '<polygon points="8,1 15,6.5 12.5,15 3.5,15 1,6.5"/>',
+    reg: '<path d="M3 1h7l3 3v11H3z"/>',
     ok: '<path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.6 5.3L7.3 10.9 4.5 8.2l1-1 1.8 1.7 3.3-3.6z"/>'
   };
   const forme = (n) => `<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">${FORME[n]}</svg>`;

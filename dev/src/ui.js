@@ -80,6 +80,8 @@
     pe: '<polygon points="8,1 15,8 8,15 1,8"/>',
     apec: '<circle cx="8" cy="8" r="7"/>',
     poso: '<rect x="2" y="2" width="12" height="12" rx="1"/>',
+    inap: '<polygon points="8,1 15,6.5 12.5,15 3.5,15 1,6.5"/>',
+    reg: '<path d="M3 1h7l3 3v11H3z"/>',
     ok: '<path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm3.6 5.3L7.3 10.9 4.5 8.2l1-1 1.8 1.7 3.3-3.6z"/>'
   };
   const forme = (n) => `<svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">${FORME[n]}</svg>`;
