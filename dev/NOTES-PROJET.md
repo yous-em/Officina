@@ -13,12 +13,17 @@ Elle sert pour les examens et pour la pratique clinique.
 - Une version de prévisualisation existe aussi en artefact Claude « Officina ». L'utilisatrice se sert de l'appli installée.
 
 ## Contenu actuel
-- 8 ordonnances :
+- 12 ordonnances :
   - o1 et o2 : exemples validés ;
   - o3 : sujet âgé, d'après le cours de commentaire d'ordonnance ;
-  - o4 à o8 : pédiatrie, d'après l'ED de pédiatrie ; corrections construites à partir des recommandations du cours.
-- 7 cas de comptoir : toux sous IEC, œil rouge sous lentilles, conjonctivite allergique, sevrage tabagique (×2), paludisme, fièvre au retour de voyage.
-- 12 fiches médicaments (11 détaillées, sur le modèle du ramipril, et l'amoxicilline en fiche courte) et 19 cartes FSRS.
+  - o4 à o8 : pédiatrie, d'après l'ED de pédiatrie ; corrections construites à partir des recommandations du cours ;
+  - o9 à o12 (lot 7) : ordonnances d'entraînement originales sur les chapitres de ses cours (ostéoporose, AVC, grossesse, infection de prothèse), pas tirées de ses PDF.
+- 21 cas de comptoir :
+  - c1 à c7 : toux sous IEC, œil rouge sous lentilles, conjonctivite allergique, sevrage tabagique (×2), paludisme, fièvre au retour de voyage ;
+  - c8 à c21 (lot 6) : deux par thème restant (otologie, dermatologie, sportif, anxiété, insomnie, fatigue, premiers soins et urgences).
+- 21 fiches médicaments : 11 détaillées (modèle ramipril) et 10 fiches courtes (amoxicilline, aciclovir, doxylamine, millepertuis, adrénaline, alendronate, lévothyroxine, clopidogrel, rifampicine, lévofloxacine).
+- 30 cartes FSRS, 3 rappels de cours (statines, médicaments à prendre à distance, inducteurs enzymatiques).
+- Tests : `node test/core.test.js` ; parcours navigateur : `NODE_PATH=<node_modules contenant playwright> node test/parcours.js` (Chrome dans /usr/bin/google-chrome).
 
 ## Règles de contenu (demandes de l'utilisatrice)
 - Fiabilité absolue :
@@ -46,8 +51,7 @@ Elle sert pour les examens et pour la pratique clinique.
 
 ## À faire
 1. Ordonnances de ses cours : grossesse, cas avec courrier au prescripteur, autres chapitres (infections ostéoarticulaires, AVC, mucoviscidose, ostéoporose), annales 2021 à 2025 (dont TDAH : méthylphénidate + cefpodoxime). Les PDF sont à redemander à l'utilisateur : ils ne sont pas dans le dépôt.
-2. Cas de comptoir sur les thèmes restants (environ 2 par thème).
-3. Fiches détaillées pour chaque nouveau médicament.
+2. Cas de comptoir : les 2 par thème sont faits ; en ajouter sur les thèmes de l'an dernier (rhinite allergique, douleurs, fièvre, diarrhée, constipation, hémorroïdes, toux, maux de gorge, RGO, nausées…).
+3. Fiches détaillées pour chaque nouveau médicament : les 10 fiches courtes restent à passer au modèle ramipril.
 4. Nouveaux exercices tirés des annales : courrier ou mail au prescripteur, questions courtes notées, fiche SFPC à remplir, calcul de dose pédiatrique sans calculatrice, protocole de déprescription. Plus tard : CLEO.
 5. Points qu'elle doit vérifier : ils sont marqués dans l'appli (statut et note).
-EOF

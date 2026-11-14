@@ -1,6 +1,6 @@
 // Contrôle de la logique : correction, scores, répétition espacée, cohérence des données.
 const assert = require("assert");
-const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8"));
+const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8"));
 const D = require("/tmp/officina-data.cjs"), C = require("../src/core.js");
 let n = 0; const ok = (name, fn) => { fn(); n++; console.log("ok  " + name); };
 
@@ -16,7 +16,7 @@ ok("données : références valides", () => {
       assert(p.cle.every((l) => p.lignes.includes(l)));
     });
   });
-  assert.strictEqual(D.ORDOS.length, 8); assert.strictEqual(D.CAS.length, 7); assert.strictEqual(new Set(D.CAS.map((c) => c.id)).size, 7);
+  assert.strictEqual(D.ORDOS.length, 12); assert.strictEqual(D.CAS.length, 21); assert.strictEqual(new Set(D.CAS.map((c) => c.id)).size, 21); assert.strictEqual(new Set(D.ORDOS.map((o) => o.id)).size, 12);
   D.CAS.forEach((c) => { c.drugs.forEach((d) => assert(D.DRUGS[d])); assert(D.NOTIONS[c.notion]); c.sources.forEach((x) => assert(D.SRC[x], x)); c.domaines.forEach((x) => assert(D.DOMAINES[x], x)); assert(c.questions.filter((q) => q.attendue).length >= 4); assert.strictEqual(new Set(c.questions.map((q) => q.id)).size, c.questions.length); assert.strictEqual(c.options.filter((o) => o.correct).length, 1); });
   D.CARDS.forEach((k) => { assert(D.NOTIONS[k.notion], k.notion); assert(D.DRUGS[k.drug], k.drug); assert(k.cle && Array.isArray(k.points)); });
   assert.strictEqual(new Set(D.CARDS.map((k) => k.id)).size, D.CARDS.length);
@@ -121,4 +121,14 @@ ok("statistiques et file de révision", () => {
   assert(C.fileRevision(store, D, 103, 8).includes("k1")); assert.strictEqual(C.fileRevision(store, D, 103, 8).length, 9);
   assert.strictEqual(C.stats(store, D, 101).serie, 1); assert.strictEqual(C.stats(store, D, 102).serie, 0);
 });
+ok("lots 6-7 : copie parfaite = 100 % sur chaque nouvelle ordonnance", () => {
+  const CODE2 = { ci: "1", asdec: "3.3", pe: "3.2", apec: "3.1", poso: "2" };
+  D.ORDOS.slice(8).forEach((o) => {
+    const flags = o.problemes.map((p) => ({ ligne: p.cle[0], sfpc: p.sfpc[0], inter: p.interv[0], partenaires: p.lignes.length > 1 ? p.lignes.filter((l) => l !== p.cle[0]) : [], priorite: p.priorite, note: "" }));
+    const c = C.corrigerOrdo(o, flags), auto = {};
+    o.problemes.forEach((p) => { auto[p.id] = { mecanisme: "juste", conduite: "juste" }; });
+    const s = C.scoreOrdo(c, auto); assert.strictEqual(s.score, s.max, o.id); assert.strictEqual(c.nonAttendus.length, 0, o.id);
+  });
+});
+
 console.log(n + " contrôles passés");
