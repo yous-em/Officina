@@ -55,6 +55,6 @@ Elle sert pour les examens et pour la pratique clinique.
 ## À faire
 1. Documents du projet encore à exploiter (dans « Fusion cas cliniques » et « ED 1 Freppel ») : ordonnances de Mme Freppel (SEP, MICI, Basedow, diabète de type 1, épilepsie lamotrigine + Minidril, trouble bipolaire, migraine), AVC (3 cas de M. Fagnoni), goutte (2 cas), mucoviscidose (2 cas, ordre d'administration), infection ostéoarticulaire (relais oral), cas de gynécologie (Monazole, lupus, SEP sous fentanyl), ordonnance de la personne âgée (mirtazapine, Dépamide, rispéridone). Annales : capécitabine et résultat DPD (2021-22 partie 2), courrier clopidogrel + ésoméprazole. Les ordonnances sont des images dans les PDF : les lire avec `project_read` et `original: true`. Les annales 2023-24 ne sont pas dans le projet.
 2. Cas de comptoir : les 2 par thème sont faits ; en ajouter sur les thèmes de l'an dernier (rhinite allergique, douleurs, fièvre, diarrhée, constipation, hémorroïdes, toux, maux de gorge, RGO, nausées…).
-3. Fiches détaillées pour chaque nouveau médicament : les 10 fiches courtes restent à passer au modèle ramipril.
+3. Fiches détaillées pour chaque nouveau médicament : les 14 fiches courtes restent à passer au modèle ramipril.
 4. Nouveaux exercices tirés des annales : courrier ou mail au prescripteur, questions courtes notées, fiche SFPC à remplir, calcul de dose pédiatrique sans calculatrice, protocole de déprescription. Plus tard : CLEO.
 5. Points qu'elle doit vérifier : ils sont marqués dans l'appli (statut et note).
