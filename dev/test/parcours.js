@@ -45,9 +45,15 @@ const path = require("path");
   await tap('[data-a="ordo-open"][data-id="o1"]'); await txt("commenter en 10 points"); await tap('.ligne[data-l="l1"]'); await tap('[data-a="draft-cat"][data-n="3"]'); await tap('[data-a="draft-sfpc"][data-n="3.4"]'); await tap('[data-a="draft-inter"][data-n="6"]'); await tap('[data-a="draft-prio"][data-n="1"]'); await tap('[data-a="flag-add"]'); await tap('[data-a="ordo-valider"]'); await txt("Métabolisme des statines"); await txt("Pour faire le lien"); await noOverflow("rappel cours"); await page.locator("article.cours").first().screenshot({ path: "/tmp/shot-3c-cours.png" }); await tap('[data-a="ordo-close"]');
 
   // Cas
-  await tap('nav [data-t="ordonnances"]'); await tap('[data-a="ordo-vue"][data-v="courriers"]'); await txt("8 courriers"); await tap('[data-a="cr-open"][data-id="cr5"]'); await tap('[data-a="cr-voir"]'); await txt("quelques phrases");
+  await tap('nav [data-t="ordonnances"]'); await tap('[data-a="ordo-vue"][data-v="courriers"]'); await txt("8 exercices"); await tap('[data-a="cr-open"][data-id="cr5"]'); await tap('[data-a="cr-voir"]'); await txt("Écrivez votre réponse");
   await page.fill("#cr-txt", "Cher Confrère, je me permets de vous contacter au sujet de M. X : clopidogrel et ésoméprazole, association déconseillée. Je vous propose le pantoprazole. Bien confraternellement."); await tap('[data-a="cr-voir"]'); await txt("Courrier modèle"); await txt("CYP2C19");
-  await tap('[data-a="cr-crit"][data-c="b-patient"]'); await tap('[data-a="cr-crit"][data-c="c4"]'); await txt("2 / 12"); await noOverflow("courrier"); await shot("4c-courrier"); await tap('[data-a="cr-save"]'); await txt("Enregistré"); await tap('[data-a="cr-close"]'); await tap('[data-a="ordo-vue"][data-v="ordos"]'); await txt("50 ordonnances");
+  await tap('[data-a="cr-crit"][data-c="b-patient"]'); await tap('[data-a="cr-crit"][data-c="c4"]'); await txt("2 / 12"); await noOverflow("courrier"); await shot("4c-courrier"); await tap('[data-a="cr-save"]'); await txt("Enregistré"); await tap('[data-a="cr-close"]');
+  await tap('[data-a="ordo-vue"][data-v="qroc"]'); await txt("10 exercices"); await tap('[data-a="cr-open"][data-id="q4"]'); await page.fill("#cr-txt", "Plus de 10 ans, TROD positif, pharmacien formé."); await tap('[data-a="cr-voir"]'); await txt("Réponse attendue");
+  await tap('[data-a="cr-crit"][data-c="c2"]'); await tap('[data-a="cr-crit"][data-c="c3"]'); await txt("2 / 6"); await noOverflow("qroc"); await tap('[data-a="cr-save"]'); await txt("Mal de gorge et TROD"); await tap('[data-a="cr-close"]');
+  await tap('[data-a="ordo-vue"][data-v="depresc"]'); await txt("4 exercices"); await tap('[data-a="cr-open"][data-id="dp1"]'); await txt("Zopiclone"); await tap('[data-a="cr-close"]');
+  await tap('[data-a="ordo-vue"][data-v="doses"]'); await txt("12 calculs"); await tap('[data-a="dose-open"][data-id="d4"]'); await page.fill("#dose-val", "abc"); await tap('[data-a="dose-ok"]'); await txt("Entrez un nombre");
+  await page.fill("#dose-val", "5,6"); await tap('[data-a="dose-ok"]'); await txt("Juste"); await txt("100 mg/mL"); await noOverflow("dose"); await shot("4d-dose"); await tap('[data-a="dose-close"]'); await txt("Réussi");
+  await tap('[data-a="ordo-vue"][data-v="ordos"]'); await txt("50 ordonnances");
   await tap('nav [data-t="cas"]'); await tap('[data-a="cas-open"]'); await tap('[data-a="cas-next"]');
   await tap('[data-a="cas-next"]'); await txt("Posez au moins une question");
   for (const q of ["q1", "q3", "q4", "q7"]) await tap(`[data-q="${q}"]`);
@@ -60,7 +66,7 @@ const path = require("path");
   await tap('[data-a="cas-save"]'); await txt("Évaluez votre hypothèse");
   await tap('[data-a="cas-auto"][data-v="juste"]'); await tap('[data-a="cas-save"]'); await txt("Résultat enregistré");
 
-  await tap('[data-a="cas-close"]'); await txt("21 cas"); await tap('[data-a="theme"][data-n="voyage"]'); await tap('[data-a="cas-open"][data-id="c7"]'); await tap('[data-a="cas-next"]'); await tap('[data-q="q1"]'); await txt("Cameroun"); await tap('[data-a="cas-next"]'); await page.fill("#hyp", "grippe"); await tap('[data-a="cas-next"]'); await tap('[data-o="a"]'); await tap('[data-a="cas-next"]'); await txt("Cas non validé"); await txt("Décision éliminatoire"); await noOverflow("cas éliminé"); await shot("6b-elimine"); await tap('[data-a="cas-auto"][data-v="absent"]'); await tap('[data-a="cas-save"]'); await txt("Résultat enregistré : 0 %");
+  await tap('[data-a="cas-close"]'); await txt("42 cas"); await tap('[data-a="theme"][data-n="voyage"]'); await tap('[data-a="cas-open"][data-id="c7"]'); await tap('[data-a="cas-next"]'); await tap('[data-q="q1"]'); await txt("Cameroun"); await tap('[data-a="cas-next"]'); await page.fill("#hyp", "grippe"); await tap('[data-a="cas-next"]'); await tap('[data-o="a"]'); await tap('[data-a="cas-next"]'); await txt("Cas non validé"); await txt("Décision éliminatoire"); await noOverflow("cas éliminé"); await shot("6b-elimine"); await tap('[data-a="cas-auto"][data-v="absent"]'); await tap('[data-a="cas-save"]'); await txt("Résultat enregistré : 0 %");
   // Révisions
   await tap('nav [data-t="accueil"]'); await txt("Fait aujourd'hui"); await tap('[data-a="rev-start"]'); await txt("Encore 8 cartes");
   await tap('[data-a="rev-montrer"]'); await shot("7-revision");
@@ -96,10 +102,10 @@ const path = require("path");
   // Progrès, sauvegarde, rechargement
   await tap('nav [data-t="progres"]'); await txt("Par notion"); await noOverflow("progres"); await shot("9-progres");
   const avant = await page.evaluate(() => localStorage.getItem("officina.v1"));
-  await page.reload(); await tap('nav [data-t="progres"]'); await txt("4 exercices"); await tap('nav [data-t="cartes"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await tap('nav [data-t="progres"]');
+  await page.reload(); await tap('nav [data-t="progres"]'); await txt("6 exercices"); await tap('nav [data-t="cartes"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await tap('nav [data-t="progres"]');
   await tap('[data-a="sv-reset"]'); await tap('[data-a="sv-reset-ok"]'); await txt("Progression effacée"); await txt("0 exercice");
   await tap('[data-a="sv-ouvrir"]'); await page.fill("#sv-in", "pas une sauvegarde"); await tap('[data-a="sv-restaurer"]'); await txt("n'est pas une sauvegarde valide");
-  await page.fill("#sv-in", avant); await tap('[data-a="sv-restaurer"]'); await txt("Progression restaurée"); await txt("4 exercices");
+  await page.fill("#sv-in", avant); await tap('[data-a="sv-restaurer"]'); await txt("Progression restaurée"); await txt("6 exercices");
 
   // Sauvegarde dans le compte : écriture après un exercice, puis relecture sur un appareil vierge
   const faux = `window.claude = { use: async (n) => n === "db" ? { doc: (p) => ({ get: async () => ({ exists: !!window.__dist, data: () => window.__dist }), set: async (d) => { window.__dist = d; window.__chemin = p; window.__n = (window.__n || 0) + 1; } }) } : { id: async () => "u_test" } };`;

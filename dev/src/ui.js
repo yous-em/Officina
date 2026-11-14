@@ -100,7 +100,7 @@
   /* ---------- État ---------- */
   const TABS = ["accueil", "ordonnances", "cas", "cartes", "medicaments", "progres"];
   const TAB_LABEL = { accueil: "Accueil", ordonnances: "Ordonnances", cas: "Cas", cartes: "Cartes", medicaments: "Médicaments", progres: "Progrès" };
-  const S = { tab: "accueil", ordo: null, cas: null, cls: null, hl: null, refl: Math.floor(Math.random() * D.REFLEXES.length), rev: null, filtre: { niveau: 0 }, q: "", outil: null, ordoVue: "ordos", cr: null,
+  const S = { tab: "accueil", ordo: null, cas: null, cls: null, hl: null, refl: Math.floor(Math.random() * D.REFLEXES.length), rev: null, filtre: { niveau: 0 }, q: "", outil: null, ordoVue: "ordos", cr: null, dose: null,
     cartes: { q: "", etat: "toutes", tri: "echeance", drug: null, ouvert: null, edit: null, ids: [], suppr: false } };
 
   /* ---------- Cartes : celles de l'application, ses modifications, ses propres cartes ---------- */
@@ -201,7 +201,8 @@
     const nivs = [...new Set(D.ORDOS.map((o) => o.niveau))].sort();
     const doms0 = [...new Set(D.ORDOS.flatMap((o) => o.domaines))];
     const liste = D.ORDOS.filter((o) => (!S.filtre.niveau || o.niveau === S.filtre.niveau) && (!S.filtre.dom || o.domaines.includes(S.filtre.dom)));
-    if (S.ordoVue === "courriers") return vCrListe();
+    if (S.ordoVue === "doses") return vDoses();
+    if (EXO[S.ordoVue] && S.ordoVue !== "doses") return vCrListe();
     return `<header><h1>Ordonnances</h1><p class="muted">Analysez, signalez, puis comparez avec la correction.</p></header>${basculeOrdo()}
     <div class="wrap"><button class="chip" data-a="filtre" data-n="0" aria-pressed="${!S.filtre.niveau}">Tous les niveaux</button>${nivs.map((n) => `<button class="chip" data-a="filtre" data-n="${n}" aria-pressed="${S.filtre.niveau === n}">Niveau ${n}</button>`).join("")}</div>
     <div class="wrap"><button class="chip" data-a="dom" data-n="" aria-pressed="${!S.filtre.dom}">Tous les domaines</button>${doms0.map((t) => `<button class="chip" data-a="dom" data-n="${t}" aria-pressed="${S.filtre.dom === t}">${esc(D.DOMAINES[t].label)}</button>`).join("")}</div>
@@ -483,39 +484,61 @@
     <p class="bandeau">Outil de formation. Chaque donnée porte son statut et sa source ; le RCP et le jugement professionnel font foi.</p>`;
   }
 
-  /* ---------- Courriers au prescripteur ---------- */
-  const basculeOrdo = () => `<div class="wrap" role="group" aria-label="Exercices"><button class="chip" data-a="ordo-vue" data-v="ordos" aria-pressed="${S.ordoVue !== "courriers"}">Analyse d'ordonnance</button><button class="chip" data-a="ordo-vue" data-v="courriers" aria-pressed="${S.ordoVue === "courriers"}">Courrier au médecin</button></div>`;
-  const crCourant = () => D.COURRIERS.find((c) => c.id === S.cr.id);
-  const crCriteres = (c) => D.CRIT_BASE.map(([k, t]) => ["b-" + k, t]).concat(c.crit);
+  /* ---------- Exercices écrits (courriers, questions courtes, déprescription) et calculs de dose ---------- */
+  const EXO = {
+    courriers: { kind: "courrier", nom: "Courrier au médecin", titre: "Courriers", intro: "Écrivez au médecin, puis comparez avec le modèle et évaluez-vous sur la grille.", liste: () => D.COURRIERS, base: () => D.CRIT_BASE.map(([k, t]) => ["b-" + k, t]), baseNom: "Méthode (tous les courriers)", label: "Votre courrier", ph: "Pharmacie…, le…&#10;Objet :…&#10;Cher Confrère,&#10;Je me permets de vous contacter au sujet de…", modele: "Courrier modèle", notion: () => "courrier", retour: "Retour aux courriers" },
+    qroc: { kind: "qroc", nom: "Questions courtes", titre: "Questions courtes", intro: "Répondez par écrit comme à l'oral, puis cochez les points clés présents dans votre réponse.", liste: () => D.QROC, base: () => [], label: "Votre réponse", ph: "Répondez en quelques lignes, avec les mots-clés attendus…", modele: "Réponse attendue", notion: (c) => c.notion, retour: "Retour aux questions" },
+    depresc: { kind: "deprescription", nom: "Déprescription", titre: "Déprescription", intro: "Rédigez un protocole d'arrêt progressif, puis comparez avec le modèle et la grille.", liste: () => D.DEPRESC, base: () => D.CRIT_DEP.map(([k, t]) => ["p-" + k, t]), baseNom: "Méthode (tous les protocoles)", label: "Votre protocole", ph: "Pourquoi déprescrire…&#10;Accord du patient…&#10;Palier 1 :…", modele: "Protocole modèle", notion: () => "deprescription", retour: "Retour aux protocoles" },
+    doses: { nom: "Calcul de dose" }
+  };
+  const VUES = [["ordos", "Analyse d'ordonnance"], ["courriers", EXO.courriers.nom], ["qroc", EXO.qroc.nom], ["depresc", EXO.depresc.nom], ["doses", EXO.doses.nom]];
+  const basculeOrdo = () => `<div class="wrap" role="group" aria-label="Exercices">${VUES.map(([v, t]) => `<button class="chip" data-a="ordo-vue" data-v="${v}" aria-pressed="${(S.ordoVue || "ordos") === v}">${t}</button>`).join("")}</div>`;
+  const crCourant = () => EXO[S.cr.t].liste().find((c) => c.id === S.cr.id);
+  const crCriteres = (c) => EXO[S.cr.t].base().concat(c.crit);
   function vCrListe() {
-    return `<header><h1>Courriers</h1><p class="muted">Écrivez au médecin, puis comparez avec le modèle et évaluez-vous sur la grille.</p></header>${basculeOrdo()}
-    <section class="stack">${D.COURRIERS.map((c) => { const a = dernier("courrier", c.id); return `<button class="card tap" data-a="cr-open" data-id="${c.id}"><span class="tile">${ic("ordonnances")}</span><span class="grow stack" style="gap:4px"><span style="font-weight:600">${esc(c.titre)}</span><span class="small">${esc(c.dest)} · ${niv(c.niveau)}${a ? " · Dernier essai : " + Math.round(a.score / a.max * 100) + " %" : ""}</span></span>${ic("chevron")}</button>`; }).join("")}</section>
-    <p class="small">${D.COURRIERS.length} courriers. La méthode du cours est rappelée sous chaque correction.</p>`;
+    const e = EXO[S.ordoVue], L = e.liste();
+    return `<header><h1>${e.titre}</h1><p class="muted">${e.intro}</p></header>${basculeOrdo()}
+    <section class="stack">${L.map((c) => { const a = dernier(e.kind, c.id); return `<button class="card tap" data-a="cr-open" data-t="${S.ordoVue}" data-id="${c.id}"><span class="tile">${ic("ordonnances")}</span><span class="grow stack" style="gap:4px"><span style="font-weight:600">${esc(c.titre)}</span><span class="small">${c.dest ? esc(c.dest) + " · " : ""}${niv(c.niveau)}${a ? " · Dernier essai : " + Math.round(a.score / a.max * 100) + " %" : ""}</span></span>${ic("chevron")}</button>`; }).join("")}</section>
+    <p class="small">${L.length} exercices. Chaque correction indique son statut et ses sources.</p>`;
   }
   function vCourrier() {
-    const c = crCourant(), k = S.cr, o = c.ordo ? D.ORDOS.find((x) => x.id === c.ordo) : null;
-    const tete = `<header class="row"><button class="btn ghost" data-a="cr-close" aria-label="Retour">${ic("retour")}</button><div class="grow"><h1>${esc(c.titre)}</h1><p class="small">À : ${esc(c.dest)} · ${niv(c.niveau)}</p></div></header>
+    const e = EXO[S.cr.t], c = crCourant(), k = S.cr, o = c.ordo ? D.ORDOS.find((x) => x.id === c.ordo) : null;
+    const tete = `<header class="row"><button class="btn ghost" data-a="cr-close" aria-label="Retour">${ic("retour")}</button><div class="grow"><h1>${esc(c.titre)}</h1><p class="small">${c.dest ? "À : " + esc(c.dest) + " · " : ""}${niv(c.niveau)}</p></div></header>
       <section class="card stack"><h2>Situation</h2><p>${fmt(c.contexte)}</p>${o ? `<details><summary class="small">Voir l'ordonnance (${o.lignes.length} lignes)</summary><ul>${o.lignes.map((l) => `<li><b>${esc(l.libelle)}</b> : ${esc(l.poso)}</li>`).join("")}</ul></details>` : ""}<p><b>Consigne.</b> ${fmt(c.consigne)}</p></section>`;
     if (k.phase === "redaction") return `${tete}
-      <section class="stack"><label for="cr-txt">Votre courrier</label><textarea id="cr-txt" data-i="cr-txt" style="min-height:260px" placeholder="Pharmacie…, le…&#10;Objet :…&#10;Cher Confrère,&#10;Je me permets de vous contacter au sujet de…">${esc(k.txt)}</textarea>
-      ${k.err ? `<p class="erreur" role="alert">${esc(k.err)}</p>` : ""}<button class="btn primary block" data-a="cr-voir">Voir le modèle et la grille</button></section>`;
-    const crit = crCriteres(c), n = crit.filter(([id]) => k.coche[id]).length;
+      <section class="stack"><label for="cr-txt">${e.label}</label><textarea id="cr-txt" data-i="cr-txt" style="min-height:${e.kind === "qroc" ? 160 : 260}px" placeholder="${e.ph}">${esc(k.txt)}</textarea>
+      ${k.err ? `<p class="erreur" role="alert">${esc(k.err)}</p>` : ""}<button class="btn primary block" data-a="cr-voir">Voir la correction et la grille</button></section>`;
+    const crit = crCriteres(c), nb = e.base().length, n = crit.filter(([id]) => k.coche[id]).length;
     return `${tete}
-      <section class="card stack"><h2>Votre courrier</h2><div class="lettre">${k.txt.split("\n").map((x) => `<p>${esc(x) || "&nbsp;"}</p>`).join("")}</div></section>
-      <section class="card stack"><h2>Courrier modèle</h2><div class="lettre">${c.modele.map((x) => `<p>${fmt(x)}</p>`).join("")}</div>
-        <h3>Version courte (messagerie sécurisée)</h3><p class="lettre">${fmt(c.court)}</p>
+      <section class="card stack"><h2>${e.label}</h2><div class="lettre">${k.txt.split("\n").map((x) => `<p>${esc(x) || "&nbsp;"}</p>`).join("")}</div></section>
+      <section class="card stack"><h2>${e.modele}</h2><div class="lettre">${c.modele.map((x) => `<p>${fmt(x)}</p>`).join("")}</div>
+        ${c.court ? `<h3>Version courte (messagerie sécurisée)</h3><p class="lettre">${fmt(c.court)}</p>` : ""}
         <p class="small">${statut(c.statut)} ${esc(c.note)}</p>${c.sources.length ? `<p class="small">${sources(c.sources)}</p>` : ""}</section>
-      <section class="card stack"><h2>Grille d'auto-évaluation</h2><p class="small">Cochez ce que votre courrier contient vraiment.</p>
-        <h3>Méthode (tous les courriers)</h3><div class="stack" style="gap:6px">${crit.slice(0, D.CRIT_BASE.length).map(([id, t]) => critBtn(id, t)).join("")}</div>
-        <h3>Propre à ce cas</h3><div class="stack" style="gap:6px">${crit.slice(D.CRIT_BASE.length).map(([id, t]) => critBtn(id, t)).join("")}</div>
+      <section class="card stack"><h2>Grille d'auto-évaluation</h2><p class="small">Cochez ce que votre réponse contient vraiment.</p>
+        ${nb ? `<h3>${e.baseNom}</h3><div class="stack" style="gap:6px">${crit.slice(0, nb).map(([id, t]) => critBtn(id, t)).join("")}</div><h3>Propre à ce cas</h3>` : ""}<div class="stack" style="gap:6px">${crit.slice(nb).map(([id, t]) => critBtn(id, t)).join("")}</div>
         <p><b>${n} / ${crit.length}</b> critères remplis.</p>
-        ${k.err ? `<p class="erreur" role="alert">${esc(k.err)}</p>` : ""}
-        ${k.saved ? `<p class="small" role="status">Enregistré. Le score compte dans la notion « Écrire au prescripteur ».</p>` : `<button class="btn primary block" data-a="cr-save">Enregistrer mon auto-évaluation</button>`}</section>
+        ${k.saved ? `<p class="small" role="status">Enregistré. Le score compte dans la notion « ${esc(D.NOTIONS[e.notion(c)])} ».</p>` : `<button class="btn primary block" data-a="cr-save">Enregistrer mon auto-évaluation</button>`}</section>
       <section class="card stack"><h2>À retenir</h2><p>${fmt(c.retenir)}</p></section>
-      ${D.RAPPELS["lettre-prescripteur"] ? rappelCours("lettre-prescripteur") : ""}
-      <button class="btn ghost block" data-a="cr-close">Retour aux courriers</button>`;
+      ${e.kind === "courrier" && D.RAPPELS["lettre-prescripteur"] ? rappelCours("lettre-prescripteur") : ""}
+      <button class="btn ghost block" data-a="cr-close">${e.retour}</button>`;
   }
   const critBtn = (id, t) => `<button class="crit" data-a="cr-crit" data-c="${id}" aria-pressed="${!!S.cr.coche[id]}"><span class="case">${S.cr.coche[id] ? ic("check") : ""}</span><span>${fmt(t)}</span></button>`;
+  const nombre = (s) => { const x = parseFloat(String(s).replace(/\s/g, "").replace(",", ".")); return isFinite(x) ? x : null; };
+  const chiffre = (x) => String(x).replace(".", ",").replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  function vDoses() {
+    if (!S.dose) return `<header><h1>Calcul de dose</h1><p class="muted">De tête, sans calculatrice : comme au comptoir et à l'examen.</p></header>${basculeOrdo()}
+      <section class="stack">${D.DOSES.map((x) => { const a = dernier("dose", x.id); return `<button class="card tap" data-a="dose-open" data-id="${x.id}"><span class="tile">${ic("ordonnances")}</span><span class="grow stack" style="gap:4px"><span style="font-weight:600">${esc(x.titre)}</span><span class="small">${a ? (a.score ? "Réussi" : "À refaire") : "Pas encore fait"}</span></span>${ic("chevron")}</button>`; }).join("")}</section>
+      <p class="small">${D.DOSES.length} calculs. Chaque correction détaille le calcul mental.</p>`;
+    const x = D.DOSES.find((y) => y.id === S.dose.id), k = S.dose;
+    const tete = `<header class="row"><button class="btn ghost" data-a="dose-close" aria-label="Retour">${ic("retour")}</button><div class="grow"><h1>${esc(x.titre)}</h1></div></header>
+      <section class="card stack"><p>${fmt(x.enonce)}</p></section>`;
+    if (!k.fait) return `${tete}<section class="stack"><label for="dose-val">Votre réponse (${esc(x.u)})</label><input type="text" inputmode="decimal" id="dose-val" data-i="dose-val" value="${esc(k.val)}" autocomplete="off">
+      ${k.err ? `<p class="erreur" role="alert">${esc(k.err)}</p>` : ""}<button class="btn primary block" data-a="dose-ok">Vérifier</button></section>`;
+    const v = nombre(k.val), bon = Math.abs(v - x.r) <= x.tol;
+    return `${tete}<section class="card stack" role="status"><h2>${bon ? "Juste" : "À revoir"}</h2><p>Votre réponse : <b>${chiffre(v)} ${esc(x.u)}</b> · Attendu : <b>${chiffre(x.r)} ${esc(x.u)}</b>${x.tol ? ` (à ${chiffre(x.tol)} près)` : ""}</p></section>
+      <section class="card stack"><h2>Le calcul</h2><ol>${x.etapes.map((t) => `<li>${fmt(t)}</li>`).join("")}</ol>${x.src.length ? `<p class="small">${sources(x.src)}</p>` : ""}</section>
+      <div class="row"><button class="btn ghost grow" data-a="dose-close">Tous les calculs</button>${D.DOSES.indexOf(x) < D.DOSES.length - 1 ? `<button class="btn primary grow" data-a="dose-open" data-id="${D.DOSES[D.DOSES.indexOf(x) + 1].id}">Calcul suivant</button>` : ""}</div>`;
+  }
 
   /* ---------- Rendu ---------- */
   const app = document.getElementById("app");
@@ -540,18 +563,28 @@
 
   /* ---------- Actions ---------- */
   const A = {
-    tab: (d) => { aller(d.t); if (d.t === "ordonnances") S.cr = null; if (d.t !== "medicaments") { S.cls = null; S.hl = null; } if (d.t === "accueil") autreReflexe(); render(true); },
+    tab: (d) => { aller(d.t); if (d.t === "ordonnances") { S.cr = null; S.dose = null; } if (d.t !== "medicaments") { S.cls = null; S.hl = null; } if (d.t === "accueil") autreReflexe(); render(true); },
     filtre: (d) => { S.filtre.niveau = +d.n; render(); },
     theme: (d) => { S.filtre.theme = d.n || null; render(); },
     dom: (d) => { S.filtre.dom = d.n || null; render(); },
-    "ordo-vue": (d) => { S.ordoVue = d.v; render(true); },
-    "cr-open": (d) => { aller("ordonnances"); S.ordoVue = "courriers"; S.cr = { id: d.id, phase: "redaction", txt: "", coche: {}, err: "", saved: false }; render(true); },
+    "ordo-vue": (d) => { S.ordoVue = d.v; S.dose = null; render(true); },
+    "cr-open": (d) => { const t = d.t || "courriers"; aller("ordonnances"); S.ordoVue = t; S.cr = { t, id: d.id, phase: "redaction", txt: "", coche: {}, err: "", saved: false }; render(true); },
+    "dose-open": (d) => { aller("ordonnances"); S.ordoVue = "doses"; S.dose = { id: d.id, val: "", fait: false, err: "" }; render(true); },
+    "dose-close": () => { S.dose = null; render(true); },
+    "dose-ok": () => {
+      const x = D.DOSES.find((y) => y.id === S.dose.id), v = nombre(S.dose.val);
+      if (v === null) { S.dose.err = "Entrez un nombre (la virgule est acceptée)."; return render(); }
+      const bon = Math.abs(v - x.r) <= x.tol ? 1 : 0;
+      store.attempts.push({ kind: "dose", id: x.id, day: day(), score: bon, max: 1, val: v, details: [{ notion: "dose-calcul", score: bon, max: 1, trouve: !!bon }] });
+      marquerJour(); save(); S.dose.fait = true; S.dose.err = ""; render(true);
+    },
     "cr-close": () => { S.cr = null; render(true); },
-    "cr-voir": () => { if (S.cr.txt.trim().length < 40) { S.cr.err = "Écrivez au moins quelques phrases avant de voir le modèle."; return render(); } S.cr.err = ""; S.cr.phase = "correction"; render(true); },
+    "cr-voir": () => { if (S.cr.txt.trim().length < (S.cr.t === "qroc" ? 15 : 40)) { S.cr.err = "Écrivez votre réponse avant de voir la correction."; return render(); } S.cr.err = ""; S.cr.phase = "correction"; render(true); },
     "cr-crit": (d) => { if (S.cr.saved) return; S.cr.coche[d.c] = !S.cr.coche[d.c]; S.cr.err = ""; render(); },
     "cr-save": () => {
       const c = crCourant(), crit = crCriteres(c), score = crit.filter(([id]) => S.cr.coche[id]).length;
-      store.attempts.push({ kind: "courrier", id: c.id, day: day(), score, max: crit.length, txt: S.cr.txt, details: [{ notion: "courrier", score, max: crit.length, trouve: score / crit.length >= 0.7 }] });
+      const e = EXO[S.cr.t];
+      store.attempts.push({ kind: e.kind, id: c.id, day: day(), score, max: crit.length, txt: S.cr.txt, details: [{ notion: e.notion(c), score, max: crit.length, trouve: score / crit.length >= 0.7 }] });
       marquerJour(); save(); S.cr.saved = true; render();
     },
     "ordo-open": (d) => { aller("ordonnances"); S.ordo = { id: d.id, phase: "analyse", flags: [], ouvert: null, draft: draftVide(), err: "", auto: {}, saved: false, confirmVide: false }; render(true); },
@@ -669,6 +702,7 @@
     if (k === "draft-note") S.ordo.draft.note = v;
     else if (k === "cas-hyp") S.cas.hyp = v;
     else if (k === "cr-txt") S.cr.txt = v;
+    else if (k === "dose-val") S.dose.val = v;
     else if (k === "sv-in") S.outil.txt = v;
     else if (k === "med-q") { S.q = v; document.getElementById("liste-meds").innerHTML = medsListe(); }
     else if (k === "carte-q") { S.cartes.q = v; document.getElementById("liste-cartes").innerHTML = listeCartes(); }

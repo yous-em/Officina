@@ -1,6 +1,6 @@
 // Contrôle de la logique : correction, scores, répétition espacée, cohérence des données.
 const assert = require("assert");
-const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8") + fs.readFileSync(__dirname + "/../src/data12.js", "utf8") + ["data13", "data14", "data15", "data16", "data18", "data19", "data17"].map((f) => fs.readFileSync(__dirname + "/../src/" + f + ".js", "utf8")).join(""));
+const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8") + fs.readFileSync(__dirname + "/../src/data12.js", "utf8") + ["data13", "data14", "data15", "data16", "data18", "data19", "data20", "data17"].map((f) => fs.readFileSync(__dirname + "/../src/" + f + ".js", "utf8")).join(""));
 const D = require("/tmp/officina-data.cjs"), C = require("../src/core.js");
 let n = 0; const ok = (name, fn) => { fn(); n++; console.log("ok  " + name); };
 
@@ -16,7 +16,7 @@ ok("données : références valides", () => {
       assert(p.cle.every((l) => p.lignes.includes(l)));
     });
   });
-  assert.strictEqual(D.ORDOS.length, 50); assert.strictEqual(D.CAS.length, 21); assert.strictEqual(new Set(D.CAS.map((c) => c.id)).size, 21); assert.strictEqual(new Set(D.ORDOS.map((o) => o.id)).size, 50);
+  assert.strictEqual(D.ORDOS.length, 50); assert.strictEqual(D.CAS.length, 42); assert.strictEqual(new Set(D.CAS.map((c) => c.id)).size, 42); assert.strictEqual(new Set(D.ORDOS.map((o) => o.id)).size, 50);
   D.CAS.forEach((c) => { c.drugs.forEach((d) => assert(D.DRUGS[d])); assert(D.NOTIONS[c.notion]); c.sources.forEach((x) => assert(D.SRC[x], x)); c.domaines.forEach((x) => assert(D.DOMAINES[x], x)); assert(c.questions.filter((q) => q.attendue).length >= 4); assert.strictEqual(new Set(c.questions.map((q) => q.id)).size, c.questions.length); assert.strictEqual(c.options.filter((o) => o.correct).length, 1); });
   D.CARDS.forEach((k) => { assert(D.NOTIONS[k.notion], k.notion); assert(!k.drug || D.DRUGS[k.drug], k.drug); assert(k.cle && Array.isArray(k.points)); });
   assert.strictEqual(new Set(D.CARDS.map((k) => k.id)).size, D.CARDS.length);
@@ -158,6 +158,43 @@ ok("courriers : données complètes", () => {
     assert.strictEqual(new Set(c.crit.map((x) => x[0])).size, c.crit.length);
     assert(["verifie", "partiel", "a_verifier"].includes(c.statut)); c.sources.forEach((s) => assert(D.SRC[s], s));
   });
+});
+
+ok("lot 16 : questions courtes et déprescription complètes", () => {
+  assert(D.QROC.length >= 10 && D.DEPRESC.length >= 4 && D.CRIT_DEP.length >= 5);
+  [["QROC", D.QROC], ["DEPRESC", D.DEPRESC]].forEach(([nom, L]) => {
+    const ids = new Set();
+    L.forEach((c) => {
+      assert(!ids.has(c.id), nom + c.id); ids.add(c.id);
+      assert(c.titre && c.contexte && c.consigne && c.modele.length >= 1 && c.retenir && c.crit.length >= 3, c.id);
+      assert(D.NOTIONS[c.notion], c.id + " notion"); assert.strictEqual(new Set(c.crit.map((x) => x[0])).size, c.crit.length);
+      assert(["verifie", "partiel", "a_verifier"].includes(c.statut)); c.sources.forEach((s) => assert(D.SRC[s], s));
+    });
+  });
+});
+
+ok("lot 16 : calculs de dose justes et sourcés", () => {
+  assert(D.DOSES.length >= 12); const ids = new Set();
+  D.DOSES.forEach((x) => {
+    assert(!ids.has(x.id)); ids.add(x.id);
+    assert(typeof x.r === "number" && x.tol >= 0 && x.u && x.etapes.length >= 2, x.id);
+    x.src.forEach((s) => assert(D.SRC[s], s));
+  });
+  const r = (id) => D.DOSES.find((x) => x.id === id).r;
+  assert.strictEqual(r("d1"), 15 * 12); assert.strictEqual(r("d2"), 60 * 25); assert.strictEqual(r("d4"), 80 * 14 / 2 / 100);
+  assert.strictEqual(r("d6"), Math.min(100 * 40, 3000)); assert.strictEqual(r("d7"), 8 * 32); assert.strictEqual(r("d8"), 60 / 6);
+  assert.strictEqual(r("d9"), 6.5 * 50); assert(Math.abs(r("d11") - 175 * 63) <= 100); assert.strictEqual(r("d12"), 825 * 2);
+});
+
+ok("lot 16 : cas de comptoir", () => {
+  const nv = D.CAS.filter((c) => +c.id.slice(1) >= 22);
+  assert.strictEqual(nv.length, 21);
+  nv.forEach((c) => {
+    const att = c.questions.filter((q) => q.attendue).map((q) => q.id), bon = c.options.filter((o) => o.correct);
+    assert(att.length >= 4 && bon.length === 1, c.id); assert.strictEqual(new Set(c.questions.map((q) => q.id)).size, c.questions.length);
+    assert.strictEqual(C.scoreCas(c, att, "juste", bon[0].id).score, 5, c.id + " parfait");
+    assert.strictEqual(C.scoreCas(c, att, "juste", c.options.find((o) => !o.correct).id).score, 0, c.id + " mauvaise décision");
+    assert(D.NOTIONS[c.notion], c.id); c.drugs.forEach((d) => assert(D.DRUGS[d], d)); c.domaines.forEach((d) => assert(D.DOMAINES[d], d)); });
 });
 
 console.log(n + " contrôles passés");

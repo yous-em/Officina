@@ -35,6 +35,7 @@ ${strip(r("data15.js"))}
 ${strip(r("data16.js"))}
 ${strip(r("data18.js"))}
 ${strip(r("data19.js"))}
+${strip(r("data20.js"))}
 ${strip(r("data17.js"))}
 ${strip(r("core.js"))}
 ${r("ui.js")}</script>${pwa ? PWA_SW : ""}
