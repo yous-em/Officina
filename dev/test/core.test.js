@@ -1,6 +1,6 @@
 // Contrôle de la logique : correction, scores, répétition espacée, cohérence des données.
 const assert = require("assert");
-const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8") + fs.readFileSync(__dirname + "/../src/data12.js", "utf8") + ["data13", "data14", "data15", "data16", "data17"].map((f) => fs.readFileSync(__dirname + "/../src/" + f + ".js", "utf8")).join(""));
+const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8"));
 const D = require("/tmp/officina-data.cjs"), C = require("../src/core.js");
 let n = 0; const ok = (name, fn) => { fn(); n++; console.log("ok  " + name); };
 
@@ -16,7 +16,7 @@ ok("données : références valides", () => {
       assert(p.cle.every((l) => p.lignes.includes(l)));
     });
   });
-  assert.strictEqual(D.ORDOS.length, 36); assert.strictEqual(D.CAS.length, 21); assert.strictEqual(new Set(D.CAS.map((c) => c.id)).size, 21); assert.strictEqual(new Set(D.ORDOS.map((o) => o.id)).size, 36);
+  assert.strictEqual(D.ORDOS.length, 50); assert.strictEqual(D.CAS.length, 21); assert.strictEqual(new Set(D.CAS.map((c) => c.id)).size, 21); assert.strictEqual(new Set(D.ORDOS.map((o) => o.id)).size, 50);
   D.CAS.forEach((c) => { c.drugs.forEach((d) => assert(D.DRUGS[d])); assert(D.NOTIONS[c.notion]); c.sources.forEach((x) => assert(D.SRC[x], x)); c.domaines.forEach((x) => assert(D.DOMAINES[x], x)); assert(c.questions.filter((q) => q.attendue).length >= 4); assert.strictEqual(new Set(c.questions.map((q) => q.id)).size, c.questions.length); assert.strictEqual(c.options.filter((o) => o.correct).length, 1); });
   D.CARDS.forEach((k) => { assert(D.NOTIONS[k.notion], k.notion); assert(!k.drug || D.DRUGS[k.drug], k.drug); assert(k.cle && Array.isArray(k.points)); });
   assert.strictEqual(new Set(D.CARDS.map((k) => k.id)).size, D.CARDS.length);
@@ -121,7 +121,7 @@ ok("statistiques et file de révision", () => {
   assert(C.fileRevision(store, D, 103, 8).includes("k1")); assert.strictEqual(C.fileRevision(store, D, 103, 8).length, 9);
   assert.strictEqual(C.stats(store, D, 101).serie, 1); assert.strictEqual(C.stats(store, D, 102).serie, 0);
 });
-ok("lots 6 à 10 : copie parfaite = 100 % sur chaque nouvelle ordonnance", () => {
+ok("lots 6 à 11 : copie parfaite = 100 % sur chaque nouvelle ordonnance", () => {
   
   D.ORDOS.slice(8).forEach((o) => {
     const flags = o.problemes.map((p) => ({ ligne: p.cle[0], sfpc: p.sfpc[0], inter: p.interv[0], partenaires: p.lignes.length > 1 ? p.lignes.filter((l) => l !== p.cle[0]) : [], priorite: p.priorite, note: "" }));
@@ -129,23 +129,6 @@ ok("lots 6 à 10 : copie parfaite = 100 % sur chaque nouvelle ordonnance", () =>
     o.problemes.forEach((p) => { auto[p.id] = { mecanisme: "juste", conduite: "juste" }; });
     const s = C.scoreOrdo(c, auto); assert.strictEqual(s.score, s.max, o.id); assert.strictEqual(c.nonAttendus.length, 0, o.id);
   });
-});
-
-ok("lots 11-12 : fiches de classe", () => {
-  const vus = {}, ids = new Set();
-  D.FICHES.forEach((f) => {
-    assert(!ids.has(f.id), "id en double " + f.id); ids.add(f.id);
-    assert(D.SPE.some((s) => s[0] === f.spe), f.id + " spe");
-    assert(f.mols.some((x) => x.length > 1) && f.refl.length && f.meca.length && f.ind.length && f.poso.length && f.adm.length && f.ci.length && f.ei.length && f.surv.length, f.id);
-    f.poso.forEach((r) => { assert.strictEqual(r.length, 4, f.id); r[3].split(/[ ,;]+/).forEach((v) => assert(D.VOIES[v], f.id + " voie " + v)); });
-    f.inter.forEach((i) => assert(D.NIVEAUX[i[0]], f.id + " " + i[0]));
-    [f.gr[0], f.gr[2]].forEach((k) => assert(["ci", "asdec", "pe", "ok"].includes(k), f.id));
-    ["indS", "admS", "ciS", "interS", "eiS", "survS", "cinS"].forEach((k) => f[k].forEach((x) => assert(x.length === 2, f.id + " " + k)));
-    f.sources.forEach((s) => assert(D.SRC[s], s)); (f.rappels || []).forEach((r) => assert(D.RAPPELS[r], r));
-    f.drugs.forEach((d) => { assert(D.DRUGS[d], d); assert(!vus[d], "deux classes " + d); vus[d] = 1; });
-  });
-  Object.keys(D.DRUGS).forEach((d) => assert(D.CLASSE_DE[d], "sans classe " + d));
-  assert(D.REFLEXES.length > 40);
 });
 
 console.log(n + " contrôles passés");

@@ -100,7 +100,7 @@
   /* ---------- État ---------- */
   const TABS = ["accueil", "ordonnances", "cas", "cartes", "medicaments", "progres"];
   const TAB_LABEL = { accueil: "Accueil", ordonnances: "Ordonnances", cas: "Cas", cartes: "Cartes", medicaments: "Médicaments", progres: "Progrès" };
-  const S = { tab: "accueil", ordo: null, cas: null, cls: null, hl: null, refl: Math.floor(Math.random() * D.REFLEXES.length), rev: null, filtre: { niveau: 0 }, q: "", outil: null,
+  const S = { tab: "accueil", ordo: null, cas: null, med: null, rev: null, filtre: { niveau: 0 }, q: "", outil: null,
     cartes: { q: "", etat: "toutes", tri: "echeance", drug: null, ouvert: null, edit: null, ids: [], suppr: false } };
 
   /* ---------- Cartes : celles de l'application, ses modifications, ses propres cartes ---------- */
@@ -131,13 +131,13 @@
     ${m.sources.length ? `<p class="small">${sources(m.sources)}</p>` : ""}`;
   };
   const rappels = (ids) => !ids.length ? "" : `<section class="stack"><h2>Rappels comptoir</h2>
-    ${ids.map((id) => `<details class="rappel"><summary><span class="tile" style="width:30px;height:30px;border-radius:8px">${ic("medicaments")}</span><span class="grow">${esc(D.DRUGS[id].dci)}</span>${statut(D.DRUGS[id].statut)}</summary><div class="in stack">${fiche(id)}<button class="btn ghost" data-a="med-open" data-id="${id}">Ouvrir la fiche de la classe</button></div></details>`).join("")}
+    ${ids.map((id) => `<details class="rappel"><summary><span class="tile" style="width:30px;height:30px;border-radius:8px">${ic("medicaments")}</span><span class="grow">${esc(D.DRUGS[id].dci)}</span>${statut(D.DRUGS[id].statut)}</summary><div class="in stack">${fiche(id)}<button class="btn ghost" data-a="med-open" data-id="${id}">Ouvrir la fiche${D.DRUGS[id].complet ? " détaillée" : ""}</button></div></details>`).join("")}
   </section>`;
   const rappelCours = (id) => { const r = D.RAPPELS[id]; return `<article class="card stack cours"><h3>Pour faire le lien</h3><h2>${esc(r.titre)}</h2><p class="muted">${esc(r.intro)}</p><div class="tablew"><table><thead><tr>${r.colonnes.map((c) => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${r.lignes.map((l) => `<tr>${l.map((c) => `<td>${fmt(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="reflexe">${esc(r.reflexe)}</p><p class="small">${statut(r.statut)} ${esc(r.note)}<br>${sources(r.sources)}</p></article>`; };
   const GA = { ci: "Contre-indiqué", asdec: "Déconseillé", pe: "Avec précaution", ok: "Possible" };
   const ulf = (a) => `<ul>${a.map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>`;
   const dlf = (a) => `<dl class="pts">${a.map(([l, t]) => `<div><dt>${fmt(l)}</dt><dd>${fmt(t)}</dd></div>`).join("")}</dl>`;
-  function ficheComplete(id, k) {
+  function ficheComplete(id) {
     const m = D.DRUGS[id], c = m.complet, g = c.grossesse;
     const secs = [
       ["identite", "Identité", dlf(c.identite)],
@@ -151,9 +151,9 @@
       ["surveillance", "Surveillance", ulf(c.surveillance)],
       ["cinetique", "Cinétique", ulf(c.cinetique)]
     ];
-    return `<div class="wrap sommaire">${secs.map(([s, t]) => `<button class="chip" data-a="saut" data-s="${s}">${t}</button>`).join("")}</div>
-    <section class="stack"><h3>L'essentiel au comptoir${k ? " : " + esc(m.dci) : ""}</h3>${fiche(id)}</section>
-    ${secs.map(([s, t, corps]) => `<section class="fsec ${s}" id="f-${s}"><h2>${t}</h2>${corps}</section>`).join("")}
+    return `<div class="wrap sommaire">${secs.map(([k, t]) => `<button class="chip" data-a="saut" data-s="${k}">${t}</button>`).join("")}</div>
+    <section class="stack"><h3>L'essentiel au comptoir</h3>${fiche(id)}</section>
+    ${secs.map(([k, t, corps]) => `<section class="fsec ${k}" id="f-${k}"><h2>${t}</h2>${corps}</section>`).join("")}
     ${(m.rappels || []).map(rappelCours).join("")}`;
   }
 
@@ -179,7 +179,6 @@
     const rappelExport = jse >= 7 ? `<button class="bandeau tap" data-a="sv-exporter" style="text-align:left;width:100%">${dernierExport() ? "Dernière sauvegarde exportée il y a " + jse + " jours." : "Aucune sauvegarde exportée pour l'instant."} Touchez ici pour l'exporter dans Fichiers ou iCloud.</button>` : "";
     return `${rappelExport}<header class="row"><div class="grow"><p class="small">${esc(date)}</p><h1>${h >= 18 ? "Bonsoir" : "Bonjour"}</h1></div>
       ${st.serie ? `<span class="chip">${ic("flamme").replace("<svg", '<svg width="15" height="15"')} ${st.serie} jour${st.serie > 1 ? "s" : ""}</span>` : ""}</header>
-    ${(() => { const r = D.REFLEXES[S.refl]; return r ? reflexeBox([r.t], `<span class="small">Change à chaque passage</span>`).replace("</div><p>", `</div><h3 class="rtit">${esc(FI[r.fiche].nom)}</h3><p>`).replace("</article>", `<div class="wrap"><button class="chip" data-a="cls-open" data-id="${r.fiche}">Fiche : ${esc(FI[r.fiche].nom)}</button><button class="chip" data-a="refl-autre">Un autre réflexe</button></div></article>`) : ""; })()}
     <section class="hero">
       <svg width="64" height="64" viewBox="0 0 64 64" role="img" aria-label="${n} sur ${items.length}"><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-opacity=".25" stroke-width="6"/><circle cx="32" cy="32" r="26" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" stroke-dasharray="${dash}" stroke-dashoffset="${off}" transform="rotate(-90 32 32)"/><text x="32" y="37" text-anchor="middle" font-size="15" font-weight="700" fill="#fff" font-family="inherit">${n}/${items.length}</text></svg>
       <div class="grow"><h2>Séance du jour</h2><p>${suivant ? "Trois étapes, environ 30 minutes" : "Terminée pour aujourd'hui"}</p>
@@ -318,66 +317,20 @@
     <section class="stack">${err}${k.saved ? `<p class="bandeau">Résultat enregistré : ${Math.round(sc.score / sc.max * 100)} %.</p><button class="btn block" data-a="cas-close">Retour aux cas</button>` : `<button class="btn primary block" data-a="cas-save">Enregistrer mon résultat</button>`}</section>`;
   }
 
-  /* ---------- Médicaments : fiches de classe ---------- */
-  const FI = Object.fromEntries(D.FICHES.map((f) => [f.id, f]));
-  const norm = (t) => String(t).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-  const molsDe = (f) => f.mols.filter((x) => x.length > 1);
-  const specs = (a) => (a || []).map(([d, t]) => `<div class="spec"><span class="dci">${esc(d)}</span><span>${fmt(t)}</span></div>`).join("");
-  const sousTitre = (t) => `<h3 class="stit">${esc(t)}</h3>`;
-  const tabMols = (f) => `<table class="mtab">${f.mols.map((x) => x.length === 1 ? `<tr class="mg"><th colspan="2">${esc(x[0])}</th></tr>` : `<tr${S.hl && norm(x[0]).includes(norm(S.hl)) ? ' class="hl"' : ""}><td><b>${esc(x[0])}</b>${x[2] ? ' <span class="pro">prodrogue</span>' : ""}</td><td>${esc(x[1])}</td></tr>`).join("")}</table>`;
-  const tabPoso = (f) => {
-    const vs = Array.from(new Set([].concat(...f.poso.map((r) => r[3].split(/[ ,;]+/))).filter((v) => D.VOIES[v])));
-    return `<div class="tablew"><table class="ptab"><thead><tr><th>Molécule</th><th>Dose</th><th>Rythme</th><th>Voie</th></tr></thead><tbody>${f.poso.map((r) => `<tr><td><b>${esc(r[0])}</b></td><td>${fmt(r[1])}</td><td>${fmt(r[2])}</td><td class="voie">${esc(r[3])}</td></tr>`).join("")}</tbody></table></div>${vs.length ? `<p class="small">${vs.map((v) => v + " : " + D.VOIES[v]).join(" · ")}</p>` : ""}`;
-  };
-  const reflexeBox = (txts, tete) => `<article class="rflx"><div class="rtete"><span class="rlab">${ic("flamme").replace("<svg", '<svg width="18" height="18"')} Réflexe au comptoir</span>${tete || ""}</div>${txts.map((t) => `<p>${fmt(t)}</p>`).join("")}</article>`;
-  function ficheClasse(f) {
-    const g = f.gr, ul = (a) => (a && a.length ? ulf(a) : "");
-    const secs = [
-      ["mecanisme", "Mécanisme", chaine(f.meca) + (f.mecaNote ? `<p class="muted">${fmt(f.mecaNote)}</p>` : "")],
-      ["indications", "Indications", ul(f.ind) + specs(f.indS)],
-      ["posologies", "Posologies et administration", tabPoso(f) + sousTitre("Administration") + ul(f.adm) + specs(f.admS)],
-      ["ci", "Contre-indications", ul(f.ci) + specs(f.ciS)],
-      ["interactions", "Interactions", (f.inter.length ? `<div class="stack">${f.inter.map(([n, avec, quoi]) => `<div class="inter bord-${n}">${grav(n)}<p><strong>${esc(avec)}</strong></p><p class="muted">${fmt(quoi)}</p></div>`).join("")}</div>` : `<p class="small">Pas d'interaction notable retenue pour la classe.</p>`) + (f.interS.length ? sousTitre("Propres à une molécule") + specs(f.interS) : "")],
-      ["grossesse", "Grossesse et allaitement", `<div class="gas"><div class="ga"><h3>Grossesse</h3><span class="grav ${g[0]}">${forme(g[0])}${GA[g[0]]}</span><p>${fmt(g[1])}</p></div><div class="ga"><h3>Allaitement</h3><span class="grav ${g[2]}">${forme(g[2])}${GA[g[2]]}</span><p>${fmt(g[3])}</p></div></div><p class="small">Pour aller plus loin : <a href="https://www.lecrat.fr" target="_blank" rel="noopener">CRAT</a>.</p>`],
-      ["ei", "Effets indésirables", sousTitre("De la classe") + ul(f.ei) + (f.eiG.length ? sousTitre("Graves") + `<div class="graves">${ulf(f.eiG)}</div>` : "") + (f.eiS.length ? sousTitre("Propres à une molécule") + specs(f.eiS) : "")],
-      ["surveillance", "Surveillance", ul(f.surv) + specs(f.survS)],
-      ["cinetique", "Cinétique", (ul(f.cin) + specs(f.cinS)) || `<p class="small">Rien de particulier à retenir.</p>`]
-    ];
-    if (f.asso.length) secs.push(["asso", "Associations fixes", ulf(f.asso)]);
-    return `<section class="fsec mols0" id="f-molecules"><h2>Molécules de la classe</h2>${tabMols(f)}${f.mols.some((x) => x[2]) ? "" : `<p class="small">Aucune prodrogue dans cette classe.</p>`}</section>
-    <div class="wrap sommaire">${secs.map(([s, t]) => `<button class="chip" data-a="saut" data-s="${s}">${t}</button>`).join("")}</div>
-    ${reflexeBox(f.refl)}
-    ${secs.map(([s, t, corps]) => `<section class="fsec ${s}" id="f-${s}"><h2>${t}</h2>${corps}</section>`).join("")}
-    ${(f.rappels || []).map(rappelCours).join("")}
-    <p class="small">${statut(f.statut)} ${esc(f.note)}<br>${sources(f.sources)}</p>`;
-  }
-  const medsFiltres = () => {
-    const q = norm(S.q.trim());
-    return D.FICHES.map((f) => {
-      if (!q) return { f, hits: [] };
-      const hits = molsDe(f).filter((x) => norm(x[0] + " " + x[1]).includes(q)).map((x) => x[0] + " (" + x[1].split(/[;,(]/)[0].trim() + ")");
-      return hits.length || norm(f.nom + " " + f.sous).includes(q) ? { f, hits } : null;
-    }).filter(Boolean);
-  };
-  const carteFiche = ({ f, hits }) => { const ms = molsDe(f); return `<button class="card tap" data-a="cls-open" data-id="${f.id}"><span class="grow"><span style="font-weight:600;display:block">${esc(f.nom)}</span><span class="small">${esc(hits.length ? hits.slice(0, 3).join(" · ") : ms.slice(0, 4).map((x) => x[0]).join(", ") + (ms.length > 4 ? "…" : ""))}</span></span><span class="nmol">${ms.length}</span></button>`; };
-  const medsListe = () => {
-    const l = medsFiltres();
-    if (!l.length) return `<p class="muted">Aucune classe ni molécule ne correspond.</p>`;
-    return D.SPE.map(([s, nom]) => { const r = l.filter((x) => x.f.spe === s); return r.length ? `<section class="stack"><h2>${esc(nom)}</h2>${r.map(carteFiche).join("")}</section>` : ""; }).join("");
-  };
-  const retour = (a, t) => `<button class="back" data-a="${a}">${ic("retour").replace("<svg", '<svg width="18" height="18"')} ${esc(t)}</button>`;
-  const entrainement = (ids) => D.ORDOS.filter((o) => o.lignes.some((l) => ids.includes(l.drug))).map((o) => `<button class="chip" data-a="ordo-open" data-id="${o.id}">Ordonnance : ${esc(o.titre)}</button>`).concat(D.CAS.filter((c) => c.drugs.some((d) => ids.includes(d))).map((c) => `<button class="chip" data-a="cas-open" data-id="${c.id}">Cas : ${esc(c.titre)}</button>`));
+  /* ---------- Médicaments ---------- */
+  const medsFiltres = () => { const q = S.q.trim().toLowerCase(); return Object.keys(D.DRUGS).filter((id) => { const m = D.DRUGS[id]; return !q || (m.dci + " " + m.classe).toLowerCase().includes(q); }).sort((a, b) => D.DRUGS[a].dci.localeCompare(D.DRUGS[b].dci, "fr")); };
+  const medsListe = () => { const l = medsFiltres(); return l.length ? l.map((id) => `<button class="card tap" data-a="med-open" data-id="${id}"><span class="tile">${ic("medicaments")}</span><span class="grow"><span style="font-weight:600;display:block">${esc(D.DRUGS[id].dci)}</span><span class="small">${esc(D.DRUGS[id].classe)}${D.DRUGS[id].complet ? " · fiche détaillée" : ""}</span></span>${statut(D.DRUGS[id].statut)}</button>`).join("") : `<p class="muted">Aucun médicament ne correspond. La bibliothèque ne contient pour l'instant que ceux des exemples.</p>`; };
   function vMeds() {
-    if (S.cls) {
-      const f = FI[S.cls], ou = entrainement(f.drugs), nc = toutesCartes().filter((x) => f.drugs.includes(x.drug)).length;
-      const spe = (D.SPE.find((x) => x[0] === f.spe) || [0, ""])[1];
-      return `<div>${retour("cls-close", "Médicaments")}<h1>${esc(f.nom)}</h1><p class="muted">${esc(spe)}${f.sous ? " · " + esc(f.sous) : ""}</p></div>
-      ${nc ? `<button class="btn block" data-a="cartes-cls" data-id="${f.id}">${ic("cartes").replace("<svg", '<svg width="18" height="18" style="vertical-align:-3px"')} Cartes liées (${nc})</button>` : ""}
-      ${ficheClasse(f)}${ou.length ? `<section class="stack"><h3>Pour s'entraîner</h3><div class="wrap">${ou.join("")}</div></section>` : ""}`;
+    if (S.med) {
+      const m = D.DRUGS[S.med];
+      const ou = D.ORDOS.filter((o) => o.lignes.some((l) => l.drug === S.med)).map((o) => `<button class="chip" data-a="ordo-open" data-id="${o.id}">Ordonnance : ${esc(o.titre)}</button>`).concat(D.CAS.filter((c) => c.drugs.includes(S.med)).map((c) => `<button class="chip" data-a="cas-open" data-id="${c.id}">Cas : ${esc(c.titre)}</button>`));
+      return `<div><button class="back" data-a="med-close">${ic("retour").replace("<svg", '<svg width="18" height="18"')} Médicaments</button><h1>${esc(m.dci)}</h1><p class="muted">${esc(m.classe)}</p></div>
+      <button class="btn block" data-a="cartes-drug" data-id="${S.med}">${ic("cartes").replace("<svg", '<svg width="18" height="18" style="vertical-align:-3px"')} Cartes liées (${toutesCartes().filter((k) => k.drug === S.med).length})</button>
+      ${m.complet ? ficheComplete(S.med) : fiche(S.med) + `<p class="bandeau">Fiche courte. La version détaillée arrive avec le prochain lot.</p>`}${ou.length ? `<section class="stack"><h3>Pour s'entraîner</h3><div class="wrap">${ou.join("")}</div></section>` : ""}`;
     }
-    return `<header><h1>Médicaments</h1><p class="muted">Par spécialité, puis par classe pharmacologique.</p></header>
-    <input type="search" id="recherche" data-i="med-q" placeholder="Classe, molécule ou nom commercial (Prolia, Triatec…)" value="${esc(S.q)}" aria-label="Rechercher une classe, une molécule ou un nom commercial">
-    <div class="stack" id="liste-meds">${medsListe()}</div>`;
+    return `<header><h1>Médicaments</h1><p class="muted">Posologie, alertes et conseils, toujours au même endroit.</p></header>
+    <input type="search" id="recherche" data-i="med-q" placeholder="Ramipril, statine, AINS" value="${esc(S.q)}" aria-label="Rechercher un médicament ou une classe">
+    <section class="stack" id="liste-meds">${medsListe()}</section>`;
   }
 
   /* ---------- Révisions ---------- */
@@ -405,7 +358,7 @@
   function cartesFiltrees() {
     const f = S.cartes, q = f.q.trim().toLowerCase();
     const l = toutesCartes().map((c) => ({ c, e: etatCarte(c) })).filter(({ c, e }) =>
-      (!f.drug || (f.drug.indexOf("cls:") === 0 ? FI[f.drug.slice(4)].drugs.includes(c.drug) : c.drug === f.drug)) && (f.etat === "toutes" || (f.etat === "perso" ? c.perso : e.code === f.etat)) &&
+      (!f.drug || c.drug === f.drug) && (f.etat === "toutes" || (f.etat === "perso" ? c.perso : e.code === f.etat)) &&
       (!q || (c.recto + " " + c.cle + " " + pointsVersTexte(c.points) + " " + (D.NOTIONS[c.notion] || "") + " " + (c.drug ? D.DRUGS[c.drug].dci : "")).toLowerCase().includes(q)));
     const tri = { echeance: (a, b) => a.e.ord - b.e.ord, notion: (a, b) => (D.NOTIONS[a.c.notion] || "").localeCompare(D.NOTIONS[b.c.notion] || "", "fr"), difficulte: (a, b) => b.e.d - a.e.d, medicament: (a, b) => (a.c.drug || "zz").localeCompare(b.c.drug || "zz", "fr") }[f.tri];
     if (tri) l.sort(tri);
@@ -441,7 +394,7 @@
     const tris = [["echeance", "Échéance"], ["notion", "Notion"], ["medicament", "Médicament"], ["difficulte", "Difficulté"]];
     return `<header class="row"><div class="grow"><h1>Cartes</h1><p class="muted">Parcourir, modifier, ajouter.</p></div><button class="btn primary" data-a="carte-new">Nouvelle</button></header>
     <input type="search" id="carte-q" data-i="carte-q" placeholder="Rhabdomyolyse, apixaban, kaliémie" value="${esc(f.q)}" aria-label="Rechercher dans les cartes">
-    ${f.drug ? `<div class="wrap"><span class="chip">${f.drug.indexOf("cls:") === 0 ? "Classe : " + esc(FI[f.drug.slice(4)].nom) : "Médicament : " + esc(D.DRUGS[f.drug].dci)}</span><button class="chip" data-a="cartes-drug-clear">Voir toutes les cartes</button></div>` : ""}
+    ${f.drug ? `<div class="wrap"><span class="chip">Médicament : ${esc(D.DRUGS[f.drug].dci)}</span><button class="chip" data-a="cartes-drug-clear">Voir toutes les cartes</button></div>` : ""}
     <div class="wrap">${ETATS.map(([k, t]) => `<button class="chip" data-a="cartes-etat" data-e="${k}" aria-pressed="${f.etat === k}">${t}</button>`).join("")}</div>
     <div class="row"><label class="small" for="carte-tri">Trier par</label><select id="carte-tri" data-i="carte-tri" class="grow">${tris.map(([k, t]) => `<option value="${k}" ${f.tri === k ? "selected" : ""}>${t}</option>`).join("")}</select></div>
     <section class="stack" id="liste-cartes">${listeCartes()}</section>`;
@@ -498,13 +451,12 @@
     app.innerHTML = `<main id="contenu" tabindex="-1">${vue()}</main><nav class="tabs" aria-label="Sections">${TABS.map((t) => `<button data-a="tab" data-t="${t}" ${S.tab === t && !S.rev ? 'aria-current="page"' : ""}>${ic(t)}${TAB_LABEL[t]}</button>`).join("")}</nav>`;
     app.querySelector("main").scrollTop = haut ? 0 : y;
   }
-  const autreReflexe = () => { if (D.REFLEXES.length > 1) { let i; do { i = Math.floor(Math.random() * D.REFLEXES.length); } while (i === S.refl); S.refl = i; } };
   const aller = (tab) => { S.tab = tab; S.rev = null; try { if (location.hash !== "#" + tab) location.hash = tab; } catch (e) { /* cadre sans accès à l'adresse */ } };
   const draftVide = () => ({ cat: null, sfpc: null, inter: null, partenaires: [], priorite: null, note: "" });
 
   /* ---------- Actions ---------- */
   const A = {
-    tab: (d) => { aller(d.t); if (d.t !== "medicaments") { S.cls = null; S.hl = null; } if (d.t === "accueil") autreReflexe(); render(true); },
+    tab: (d) => { aller(d.t); if (d.t !== "medicaments") S.med = null; render(true); },
     filtre: (d) => { S.filtre.niveau = +d.n; render(); },
     theme: (d) => { S.filtre.theme = d.n || null; render(); },
     dom: (d) => { S.filtre.dom = d.n || null; render(); },
@@ -559,11 +511,8 @@
       store.attempts.push({ kind: "cas", id: k.id, day: day(), score: sc.score, max: sc.max, details: sc.details });
       marquerJour(); save(); k.saved = true; k.err = ""; render();
     },
-    "med-open": (d) => { aller("medicaments"); S.cls = D.CLASSE_DE[d.id]; S.hl = D.DRUGS[d.id] ? D.DRUGS[d.id].dci : null; render(true); },
-    "cls-open": (d) => { aller("medicaments"); S.cls = d.id; S.hl = null; render(true); },
-    "cls-close": () => { S.cls = null; S.hl = null; render(true); },
-    "cartes-cls": (d) => { aller("cartes"); Object.assign(S.cartes, { drug: "cls:" + d.id, etat: "toutes", q: "", ouvert: null, edit: null }); render(true); },
-    "refl-autre": () => { autreReflexe(); render(); },
+    "med-open": (d) => { aller("medicaments"); S.med = d.id; render(true); },
+    "med-close": () => { S.med = null; render(true); },
     "rev-start": () => { S.rev = { file: C.fileRevision(store, DV(), day(), 8), montre: false, fait: 0 }; render(true); },
     "rev-close": () => { aller("accueil"); render(true); },
     "rev-montrer": () => { S.rev.montre = true; render(); },
@@ -580,7 +529,7 @@
     "carte-open": (d) => { S.cartes.ouvert = d.id; S.cartes.suppr = false; render(true); },
     "carte-close": () => { S.cartes.ouvert = null; render(true); },
     "carte-nav": (d) => { const i = S.cartes.ids.indexOf(S.cartes.ouvert) + +d.d; if (i >= 0 && i < S.cartes.ids.length) { S.cartes.ouvert = S.cartes.ids[i]; S.cartes.suppr = false; render(true); } },
-    "carte-new": () => { S.cartes.edit = { id: null, recto: "", cle: "", details: "", notion: "perso", drug: S.cartes.drug && S.cartes.drug.indexOf("cls:") !== 0 ? S.cartes.drug : "", err: "" }; render(true); },
+    "carte-new": () => { S.cartes.edit = { id: null, recto: "", cle: "", details: "", notion: "perso", drug: S.cartes.drug || "", err: "" }; render(true); },
     "carte-edit": (d) => { const c = toutesCartes().find((x) => x.id === d.id); if (!c) return; aller("cartes"); S.cartes.ouvert = c.id; S.cartes.edit = { id: c.id, recto: c.recto, cle: c.cle, details: pointsVersTexte(c.points), notion: c.notion, drug: c.drug || "", err: "" }; render(true); },
     "carte-cancel": () => { S.cartes.edit = null; render(true); },
     "carte-save": () => {
