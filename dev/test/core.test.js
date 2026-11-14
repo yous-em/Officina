@@ -1,6 +1,6 @@
 // Contrôle de la logique : correction, scores, répétition espacée, cohérence des données.
 const assert = require("assert");
-const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8"));
+const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8"));
 const D = require("/tmp/officina-data.cjs"), C = require("../src/core.js");
 let n = 0; const ok = (name, fn) => { fn(); n++; console.log("ok  " + name); };
 
@@ -22,7 +22,7 @@ ok("données : références valides", () => {
   assert.strictEqual(new Set(D.CARDS.map((k) => k.id)).size, D.CARDS.length);
   Object.values(D.RAPPELS).forEach((r) => { r.sources.forEach((x) => assert(D.SRC[x], x)); r.lignes.forEach((l) => assert.strictEqual(l.length, r.colonnes.length)); });
   Object.values(D.DRUGS).forEach((m) => { (m.rappels || []).forEach((x) => assert(D.RAPPELS[x])); if (m.complet) { m.complet.interactions.forEach((i) => assert(D.NIVEAUX[i[0]], i[0])); ['g', 'a'].forEach((k) => assert(['ci', 'asdec', 'pe', 'ok'].includes(m.complet.grossesse[k]))); ['identite', 'mecanisme', 'indications', 'posologies', 'administration', 'ci', 'surveillance', 'cinetique'].forEach((k) => assert(m.complet[k].length, k)); } });
-  assert.strictEqual(Object.values(D.DRUGS).filter((m) => m.complet).length, 11);
+  assert.strictEqual(Object.values(D.DRUGS).filter((m) => m.complet).length, Object.keys(D.DRUGS).length);
   D.ORDOS.forEach((o) => (o.rappels || []).forEach((x) => assert(D.RAPPELS[x])));
   assert.strictEqual(D.METHODE.length, 10);
   Object.values(D.DRUGS).forEach((m) => m.sources.forEach((s) => assert(D.SRC[s], s)));

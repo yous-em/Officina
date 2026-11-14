@@ -22,7 +22,7 @@ Elle sert pour les examens et pour la pratique clinique.
 - 21 cas de comptoir :
   - c1 à c7 : toux sous IEC, œil rouge sous lentilles, conjonctivite allergique, sevrage tabagique (×2), paludisme, fièvre au retour de voyage ;
   - c8 à c21 (lot 6) : deux par thème restant (otologie, dermatologie, sportif, anxiété, insomnie, fatigue, premiers soins et urgences).
-- 25 fiches médicaments : 11 détaillées (modèle ramipril) et 14 fiches courtes (amoxicilline, aciclovir, doxylamine, millepertuis, adrénaline, alendronate, lévothyroxine, clopidogrel, rifampicine, lévofloxacine, méthylphénidate, cefpodoxime, tramadol, lamotrigine).
+- 25 fiches médicaments, **toutes au format détaillé** (modèle ramipril) ; les 14 dernières (lot 9) sont marquées « vérifié en partie » ou « à vérifier » avec les points à relire.
 - 40 cartes FSRS, 5 rappels de cours (statines, médicaments à prendre à distance, inducteurs enzymatiques, benzodiazépines chez le sujet âgé, écrire au prescripteur).
 - Niveaux de problème : en plus des 5 niveaux d'interaction, « inap » (médicament inadapté au patient, pentagone marron) et « reg » (réglementation, document gris).
 - Tests : `node test/core.test.js` ; parcours navigateur : `NODE_PATH=<node_modules contenant playwright> node test/parcours.js` (Chrome dans /usr/bin/google-chrome).
@@ -33,7 +33,7 @@ Elle sert pour les examens et pour la pratique clinique.
   - ne rien inventer, signaler toute incertitude ;
   - le RCP est la source principale des interactions : le Thésaurus ANSM n'est plus mis à jour depuis septembre 2023 ;
   - consigne actuelle : vérifier un peu moins, produire plus.
-- Fiches médicaments dans l'ordre du modèle ramipril : identité, mécanisme, indications, posologies, plafonds, administration, contre-indications, interactions, grossesse et allaitement, effets indésirables, surveillance, cinétique.
+- Fiches médicaments : **toujours le format détaillé et complet** du modèle ramipril (identité, mécanisme, indications, posologies, plafonds, administration, contre-indications, interactions, grossesse et allaitement, effets indésirables, surveillance, cinétique). **Jamais de fiche « courte »** (l'ancien format posologie/alertes/conseils, jugé incomplet) : tout nouveau médicament reçoit directement sa fiche détaillée.
 - Dans chaque correction : rappeler les conseils au comptoir et les posologies usuelles.
 - Elle est très visuelle :
   - couleurs et formes réservées à la gravité (CI octogone rouge, déconseillé triangle orange, précaution losange jaune, à prendre en compte cercle bleu, posologie carré violet) ;
@@ -55,6 +55,7 @@ Elle sert pour les examens et pour la pratique clinique.
 ## À faire
 1. Documents du projet encore à exploiter (dans « Fusion cas cliniques » et « ED 1 Freppel ») : ordonnances de Mme Freppel (SEP, MICI, Basedow, diabète de type 1, épilepsie lamotrigine + Minidril, trouble bipolaire, migraine), AVC (3 cas de M. Fagnoni), goutte (2 cas), mucoviscidose (2 cas, ordre d'administration), infection ostéoarticulaire (relais oral), cas de gynécologie (Monazole, lupus, SEP sous fentanyl), ordonnance de la personne âgée (mirtazapine, Dépamide, rispéridone). Annales : capécitabine et résultat DPD (2021-22 partie 2), courrier clopidogrel + ésoméprazole. Les ordonnances sont des images dans les PDF : les lire avec `project_read` et `original: true`. Les annales 2023-24 ne sont pas dans le projet.
 2. Cas de comptoir : les 2 par thème sont faits ; en ajouter sur les thèmes de l'an dernier (rhinite allergique, douleurs, fièvre, diarrhée, constipation, hémorroïdes, toux, maux de gorge, RGO, nausées…).
-3. Fiches détaillées pour chaque nouveau médicament : les 14 fiches courtes restent à passer au modèle ramipril.
+3. Fiches : relire sur les RCP les points signalés dans les notes des 14 fiches du lot 9 ; chaque nouveau médicament reçoit directement une fiche détaillée.
 4. Nouveaux exercices tirés des annales : courrier ou mail au prescripteur, questions courtes notées, fiche SFPC à remplir, calcul de dose pédiatrique sans calculatrice, protocole de déprescription. Plus tard : CLEO.
 5. Points qu'elle doit vérifier : ils sont marqués dans l'appli (statut et note).
+6. **À rappeler à l'utilisateur** : les annales 2023-24 manquent dans les documents du projet ; lui demander de les ajouter (demande du 14/11/2026).
