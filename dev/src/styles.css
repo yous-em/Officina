@@ -211,3 +211,11 @@ main > * { flex-shrink: 0; }
 
 .grav.ok { background: var(--ok-bg); color: var(--ok); }
 .wrap > button.chip { white-space: normal; text-align: left; border-radius: 12px; max-width: 100%; }
+/* Lot 11 : molécules d'une classe */
+.groupe { margin-top: 14px; }
+.groupe .gtitre { padding: 6px 10px; border-radius: 8px; background: var(--accent-soft); color: var(--accent); }
+.mol { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; }
+.mol.ref { border-left: 4px solid var(--accent); }
+.mol .molt { display: flex; align-items: flex-start; gap: 8px; }
+.mol .noms { display: block; font-size: 13px; color: var(--ink-3); font-style: italic; }
+.mol ul { margin: 6px 0 0; padding-left: 16px; font-size: 14px; display: flex; flex-direction: column; gap: 4px; }

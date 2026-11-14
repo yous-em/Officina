@@ -24,6 +24,7 @@ Elle sert pour les examens et pour la pratique clinique.
   - c1 à c7 : toux sous IEC, œil rouge sous lentilles, conjonctivite allergique, sevrage tabagique (×2), paludisme, fièvre au retour de voyage ;
   - c8 à c21 (lot 6) : deux par thème restant (otologie, dermatologie, sportif, anxiété, insomnie, fatigue, premiers soins et urgences).
 - 41 fiches médicaments, **toutes au format détaillé** (modèle ramipril) ; celles des lots 9 et 10 sont marquées « vérifié en partie » avec les points à relire dans la note.
+- **Onglet Médicaments organisé par classe (lot 11, `src/data11.js`)** : 35 classes rangées en 13 familles (cœur et vaisseaux, douleur, anti-infectieux…). Chaque classe = la fiche détaillée de référence (modèle ramipril) + une section « Molécules de la classe » placée après le mécanisme : principe de la classe en chaîne de flèches, règles communes, puis les molécules par sous-groupe (ex. bêtabloquants cardiosélectifs / non cardiosélectifs) avec DCI, noms commerciaux français et particularités propres (posologie, voie, effets indésirables, interactions). Environ 260 molécules listées, statut « à vérifier » (écrites de mémoire, à relire sur la base publique). La recherche trouve une classe, une DCI ou un nom commercial (ex. « Prolia »).
 - 50 cartes FSRS, 6 rappels de cours (statines, médicaments à prendre à distance, inducteurs enzymatiques, benzodiazépines chez le sujet âgé, écrire au prescripteur, traitements qui imposent une contraception).
 - Niveaux de problème : en plus des 5 niveaux d'interaction, « inap » (médicament inadapté au patient, pentagone marron) et « reg » (réglementation, document gris).
 - Tests : `node test/core.test.js` ; parcours navigateur : `NODE_PATH=<node_modules contenant playwright> node test/parcours.js` (Chrome dans /usr/bin/google-chrome).
@@ -35,6 +36,7 @@ Elle sert pour les examens et pour la pratique clinique.
   - le RCP est la source principale des interactions : le Thésaurus ANSM n'est plus mis à jour depuis septembre 2023 ;
   - consigne actuelle : vérifier un peu moins, produire plus.
 - Fiches médicaments : **toujours le format détaillé et complet** du modèle ramipril (identité, mécanisme, indications, posologies, plafonds, administration, contre-indications, interactions, grossesse et allaitement, effets indésirables, surveillance, cinétique). **Jamais de fiche « courte »** (l'ancien format posologie/alertes/conseils, jugé incomplet) : tout nouveau médicament reçoit directement sa fiche détaillée.
+- **Organisation par classe** (demande du 14/11/2026) : tout médicament appartient à une classe. Une nouvelle classe reçoit une fiche détaillée de référence **et** la liste complète de ses molécules (DCI, noms commerciaux, particularités). Un nouveau médicament d'une classe existante : l'ajouter à la liste, et lui faire une fiche détaillée s'il sert dans une ordonnance ou un cas. Classes encore absentes à créer en priorité : ARA2, inhibiteurs calciques, AVK et héparines, antidiabétiques non insuliniques, antipsychotiques, opioïdes forts, laxatifs et antidiarrhéiques, bronchodilatateurs et corticoïdes inhalés.
 - Dans chaque correction : rappeler les conseils au comptoir et les posologies usuelles.
 - Elle est très visuelle :
   - couleurs et formes réservées à la gravité (CI octogone rouge, déconseillé triangle orange, précaution losange jaune, à prendre en compte cercle bleu, posologie carré violet) ;
@@ -56,7 +58,8 @@ Elle sert pour les examens et pour la pratique clinique.
 ## À faire
 1. Documents du projet encore à exploiter (dans « Fusion cas cliniques ») : AVC (3 cas de M. Fagnoni), goutte (2 cas), mucoviscidose (2 cas, ordre d'administration), infection ostéoarticulaire (relais oral), cas de gynécologie (Monazole, lupus, SEP sous fentanyl), ordonnances de la personne âgée (Meloux ; mirtazapine, Dépamide, rispéridone ; miansérine, prazépam), BPCO/ostéoporose cas 2 (Brintellix + tramadol). Annale 2021-22 : courrier clopidogrel + ésoméprazole (partie 2). Les ordonnances sont des images dans les PDF : les lire avec `project_read` et `original: true`. Les annales 2023-24 ne sont pas dans le projet.
 2. Cas de comptoir : les 2 par thème sont faits ; en ajouter sur les thèmes de l'an dernier (rhinite allergique, douleurs, fièvre, diarrhée, constipation, hémorroïdes, toux, maux de gorge, RGO, nausées…).
-3. Fiches : relire sur les RCP les points signalés dans les notes des fiches des lots 9 et 10 ; chaque nouveau médicament reçoit directement une fiche détaillée.
-4. Nouveaux exercices tirés des annales : courrier ou mail au prescripteur, questions courtes notées, fiche SFPC à remplir, calcul de dose pédiatrique sans calculatrice, protocole de déprescription. Plus tard : CLEO.
-5. Points qu'elle doit vérifier : ils sont marqués dans l'appli (statut et note).
-6. **À rappeler à l'utilisateur** : les annales 2023-24 manquent dans les documents du projet ; lui demander de les ajouter (demande du 14/11/2026).
+3. Relire sur la base publique les listes de molécules du lot 11 (noms commerciaux, commercialisation, chiffres marqués « à vérifier »), puis créer les classes manquantes (voir Règles).
+4. Fiches : relire sur les RCP les points signalés dans les notes des fiches des lots 9 et 10 ; chaque nouveau médicament reçoit directement une fiche détaillée.
+5. Nouveaux exercices tirés des annales : courrier ou mail au prescripteur, questions courtes notées, fiche SFPC à remplir, calcul de dose pédiatrique sans calculatrice, protocole de déprescription. Plus tard : CLEO.
+6. Points qu'elle doit vérifier : ils sont marqués dans l'appli (statut et note).
+7. **À rappeler à l'utilisateur** : les annales 2023-24 manquent dans les documents du projet ; lui demander de les ajouter (demande du 14/11/2026).

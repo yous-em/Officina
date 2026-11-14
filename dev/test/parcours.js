@@ -69,7 +69,7 @@ const path = require("path");
   // Médicaments
   await tap('nav [data-t="medicaments"]'); await page.fill("#recherche", "iec"); await txt("Ramipril");
   if ((await page.locator("#liste-meds .card").count()) !== 1) errors.push("recherche : résultat inattendu");
-  await tap('[data-a="med-open"]'); await txt("Conseils au comptoir"); await txt("Grossesse et allaitement"); await txt("Demi-vie du ramiprilate"); await noOverflow("fiche"); await shot("8-fiche");
+  await tap('[data-a="cls-open"][data-id="iec"]'); await txt("Conseils au comptoir"); await txt("Molécules de la classe"); await txt("Périndopril"); await txt("Coversyl"); await txt("Grossesse et allaitement"); await txt("Demi-vie du ramiprilate"); await noOverflow("fiche"); await shot("8-fiche");
   await tap('[data-a="saut"][data-s="grossesse"]'); await shot("8b-fiche-grossesse");
   await tap('[data-a="cartes-drug"]'); await txt("6 cartes"); await txt("Médicament : Ramipril"); await noOverflow("cartes"); await shot("10-cartes");
   await tap('[data-a="carte-open"]'); await txt("Carte 1 sur 6"); await tap('[data-a="carte-nav"][data-d="1"]'); await txt("Carte 2 sur 6"); await shot("11-carte");
@@ -83,8 +83,12 @@ const path = require("path");
   await tap('[data-a="carte-save"]'); await txt("Ma question <i>test</i> ?"); await txt("Mécanisme"); await shot("12-ma-carte");
   await tap('[data-a="carte-close"]'); await tap('[data-a="cartes-etat"][data-e="perso"]'); await txt("1 carte"); await page.fill("#carte-q", "zzz"); await txt("0 carte"); await page.fill("#carte-q", "");
   await page.selectOption("#carte-tri", "notion"); await tap('[data-a="cartes-etat"][data-e="toutes"]'); await txt("51 cartes");
-  await tap('nav [data-t="medicaments"]'); await tap('[data-a="med-close"]'); await page.fill("#recherche", "simva"); await tap('[data-a="med-open"]'); await txt("Métabolisme des statines"); await txt("OATP1B1"); await noOverflow("fiche simva"); await shot("13-simva");
-  for (const [q, t] of [["apixa", "facteur Xa"], ["omép", "pompe à protons"], ["potassium", "8 mmol"], ["paracé", "glutathion"], ["furo", "anse de Henlé"], ["biso", "cardiosélectif"], ["spiro", "canrénone"], ["ibu", "cyclo-oxygénases"], ["clari", "Macrolide"]]) { await tap('[data-a="med-close"]'); await page.fill("#recherche", q); await tap('[data-a="med-open"]'); await txt(t); await txt("Grossesse et allaitement"); await noOverflow("fiche " + q); }
+  await tap('nav [data-t="medicaments"]'); await tap('[data-a="cls-close"]'); await page.fill("#recherche", ""); await txt("Cœur et vaisseaux"); await txt("Phytothérapie"); await page.fill("#recherche", "prolia"); await txt("Dénosumab"); await tap('[data-a="cls-open"][data-id="osteo"]'); await txt("Romosozumab"); await txt("Tériparatide"); await txt("effet rebond"); await noOverflow("classe osteo"); await shot("16-classe-osteo");
+  await tap('[data-a="saut"][data-s="molecules"]'); await shot("16b-molecules");
+  await tap('[data-a="cls-close"]'); await page.fill("#recherche", "simva"); await tap('[data-a="cls-open"][data-id="statines"]'); await txt("Métabolisme des statines"); await txt("OATP1B1"); await noOverflow("fiche simva"); await shot("13-simva");
+  for (const [q, c, t] of [["apixa", "aod", "facteur Xa"], ["omép", "ipp", "pompe à protons"], ["potassium", "potassium", "8 mmol"], ["paracé", "antalg1", "glutathion"], ["furo", "diuretiques", "anse de Henlé"], ["biso", "bb", "cardiosélectif"], ["ibu", "ains", "cyclo-oxygénases"], ["clari", "macrolides", "Macrolide"]]) { await tap('[data-a="cls-close"]'); await page.fill("#recherche", q); await tap('[data-a="cls-open"][data-id="' + c + '"]'); await txt(t); await txt("Molécules de la classe"); await txt("Grossesse et allaitement"); await noOverflow("classe " + q); }
+  await tap('[data-a="cls-close"]'); await page.fill("#recherche", "aldactone"); await tap('[data-a="cls-open"][data-id="diuretiques"]'); await tap('[data-a="med-open"][data-id="spironolactone"]'); await txt("canrénone"); await txt("Diurétiques"); await tap('[data-a="med-close"]'); await txt("Molécules de la classe");
+  await tap('[data-a="cls-close"]'); await page.fill("#recherche", "macrolide"); await tap('[data-a="cls-open"][data-id="macrolides"]');
   await tap('[data-a="saut"][data-s="grossesse"]'); await shot("15-clari-grossesse");
 
   // Progrès, sauvegarde, rechargement

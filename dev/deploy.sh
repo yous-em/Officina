@@ -10,4 +10,4 @@ cp -r site/. "$R/"
 cd "$R" && git add -A && git -c user.name="Claude" -c user.email="noreply@anthropic.com" commit -q -m "${1:-Mise à jour}
 
 Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
-Claude-Session: https://claude.ai/code/session_01VKBHGRGns3S58H2xgn5oQF" && git -c push.negotiate=true push -q origin HEAD:main && echo "Déposé sur GitHub"
+Claude-Session: https://claude.ai/code/session_01VKBHGSoEyCBpQZ3n98Ce4X" && git -c push.negotiate=true push -q origin HEAD:main && echo "Déposé sur GitHub"

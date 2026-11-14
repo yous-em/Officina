@@ -100,7 +100,7 @@
   /* ---------- État ---------- */
   const TABS = ["accueil", "ordonnances", "cas", "cartes", "medicaments", "progres"];
   const TAB_LABEL = { accueil: "Accueil", ordonnances: "Ordonnances", cas: "Cas", cartes: "Cartes", medicaments: "Médicaments", progres: "Progrès" };
-  const S = { tab: "accueil", ordo: null, cas: null, med: null, rev: null, filtre: { niveau: 0 }, q: "", outil: null,
+  const S = { tab: "accueil", ordo: null, cas: null, med: null, cls: null, rev: null, filtre: { niveau: 0 }, q: "", outil: null,
     cartes: { q: "", etat: "toutes", tri: "echeance", drug: null, ouvert: null, edit: null, ids: [], suppr: false } };
 
   /* ---------- Cartes : celles de l'application, ses modifications, ses propres cartes ---------- */
@@ -137,11 +137,16 @@
   const GA = { ci: "Contre-indiqué", asdec: "Déconseillé", pe: "Avec précaution", ok: "Possible" };
   const ulf = (a) => `<ul>${a.map((x) => `<li>${fmt(x)}</li>`).join("")}</ul>`;
   const dlf = (a) => `<dl class="pts">${a.map(([l, t]) => `<div><dt>${fmt(l)}</dt><dd>${fmt(t)}</dd></div>`).join("")}</dl>`;
-  function ficheComplete(id) {
+  const molecules = (k) => `<p class="small">${statut(k.statut)} ${esc(k.note)} ${sources(k.sources)}</p>
+    <h3>Ce qui vaut pour toute la classe</h3>${ulf(k.classe)}
+    ${k.groupes.map((g) => `<div class="groupe stack"><h3 class="gtitre">${esc(g.titre)}</h3>${g.note ? `<p class="muted">${fmt(g.note)}</p>` : ""}
+      ${g.mols.map((x) => `<div class="mol${x.drug === k.ref ? " ref" : ""}"><div class="molt"><span class="grow"><strong>${esc(x.dci)}</strong><span class="noms">${esc(x.noms)}</span></span>${x.drug && x.drug !== k.ref ? `<button class="chip" data-a="med-open" data-id="${x.drug}">Fiche détaillée</button>` : x.drug ? `<span class="chip">Fiche ci-dessous</span>` : ""}</div>${x.pts.length ? ulf(x.pts) : ""}</div>`).join("")}</div>`).join("")}`;
+  function ficheComplete(id, k) {
     const m = D.DRUGS[id], c = m.complet, g = c.grossesse;
     const secs = [
       ["identite", "Identité", dlf(c.identite)],
-      ["mecanisme", "Mécanisme", chaine(c.mecanisme)],
+      ["mecanisme", "Mécanisme", (k ? `<h3>La classe</h3>${chaine(k.principe)}<h3>${esc(m.dci)}</h3>` : "") + chaine(c.mecanisme)],
+      ...(k ? [["molecules", "Molécules de la classe", molecules(k)]] : []),
       ["indications", "Indications", ulf(c.indications)],
       ["posologies", "Posologies", dlf(c.posologies) + (c.plafonds.length ? `<h3>Plafonds imposés par une association</h3>${dlf(c.plafonds)}` : "") + `<h3>Mode d'administration</h3>${ulf(c.administration)}`],
       ["ci", "Contre-indications", ulf(c.ci)],
@@ -151,9 +156,9 @@
       ["surveillance", "Surveillance", ulf(c.surveillance)],
       ["cinetique", "Cinétique", ulf(c.cinetique)]
     ];
-    return `<div class="wrap sommaire">${secs.map(([k, t]) => `<button class="chip" data-a="saut" data-s="${k}">${t}</button>`).join("")}</div>
-    <section class="stack"><h3>L'essentiel au comptoir</h3>${fiche(id)}</section>
-    ${secs.map(([k, t, corps]) => `<section class="fsec ${k}" id="f-${k}"><h2>${t}</h2>${corps}</section>`).join("")}
+    return `<div class="wrap sommaire">${secs.map(([s, t]) => `<button class="chip" data-a="saut" data-s="${s}">${t}</button>`).join("")}</div>
+    <section class="stack"><h3>L'essentiel au comptoir${k ? " : " + esc(m.dci) : ""}</h3>${fiche(id)}</section>
+    ${secs.map(([s, t, corps]) => `<section class="fsec ${s}" id="f-${s}"><h2>${t}</h2>${corps}</section>`).join("")}
     ${(m.rappels || []).map(rappelCours).join("")}`;
   }
 
@@ -317,20 +322,48 @@
     <section class="stack">${err}${k.saved ? `<p class="bandeau">Résultat enregistré : ${Math.round(sc.score / sc.max * 100)} %.</p><button class="btn block" data-a="cas-close">Retour aux cas</button>` : `<button class="btn primary block" data-a="cas-save">Enregistrer mon résultat</button>`}</section>`;
   }
 
-  /* ---------- Médicaments ---------- */
-  const medsFiltres = () => { const q = S.q.trim().toLowerCase(); return Object.keys(D.DRUGS).filter((id) => { const m = D.DRUGS[id]; return !q || (m.dci + " " + m.classe).toLowerCase().includes(q); }).sort((a, b) => D.DRUGS[a].dci.localeCompare(D.DRUGS[b].dci, "fr")); };
-  const medsListe = () => { const l = medsFiltres(); return l.length ? l.map((id) => `<button class="card tap" data-a="med-open" data-id="${id}"><span class="tile">${ic("medicaments")}</span><span class="grow"><span style="font-weight:600;display:block">${esc(D.DRUGS[id].dci)}</span><span class="small">${esc(D.DRUGS[id].classe)}${D.DRUGS[id].complet ? " · fiche détaillée" : ""}</span></span>${statut(D.DRUGS[id].statut)}</button>`).join("") : `<p class="muted">Aucun médicament ne correspond. La bibliothèque ne contient pour l'instant que ceux des exemples.</p>`; };
+  /* ---------- Médicaments (par classe) ---------- */
+  const CL = Object.fromEntries(D.CLASSES.map((k) => [k.id, k]));
+  const norm = (t) => String(t).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  const nbMols = (k) => k.groupes.reduce((n, g) => n + g.mols.length, 0);
+  const medsFiltres = () => {
+    const q = norm(S.q.trim());
+    return D.CLASSES.map((k) => {
+      if (!q) return { k, hits: [] };
+      const hits = [];
+      k.groupes.forEach((g) => g.mols.forEach((x) => { if (norm(x.dci + " " + x.noms).includes(q)) hits.push(x.dci + " (" + x.noms.split(/[;,(]/)[0].trim() + ")"); }));
+      const fiches = k.fiches.some((d) => norm(D.DRUGS[d].dci + " " + D.DRUGS[d].classe).includes(q));
+      return norm(k.nom).includes(q) || fiches || hits.length ? { k, hits } : null;
+    }).filter(Boolean);
+  };
+  const carteClasse = ({ k, hits }) => `<button class="card tap" data-a="cls-open" data-id="${k.id}"><span class="tile">${ic("medicaments")}</span><span class="grow"><span style="font-weight:600;display:block">${esc(k.nom)}</span><span class="small">${hits.length ? esc(hits.slice(0, 3).join(" · ")) + (hits.length > 3 ? " …" : "") : nbMols(k) + " molécule" + (nbMols(k) > 1 ? "s" : "") + " · fiche détaillée : " + esc(k.fiches.map((d) => D.DRUGS[d].dci).join(", "))}</span></span></button>`;
+  const medsListe = () => {
+    const l = medsFiltres();
+    if (!l.length) return `<p class="muted">Aucune classe ni molécule ne correspond.</p>`;
+    return D.FAMILLES.map(([f, nom]) => { const r = l.filter((x) => x.k.famille === f); return r.length ? `<section class="stack"><h2>${esc(nom)}</h2>${r.map(carteClasse).join("")}</section>` : ""; }).join("");
+  };
+  const retour = (a, t) => `<button class="back" data-a="${a}">${ic("retour").replace("<svg", '<svg width="18" height="18"')} ${esc(t)}</button>`;
+  const entrainement = (ids) => D.ORDOS.filter((o) => o.lignes.some((l) => ids.includes(l.drug))).map((o) => `<button class="chip" data-a="ordo-open" data-id="${o.id}">Ordonnance : ${esc(o.titre)}</button>`).concat(D.CAS.filter((c) => c.drugs.some((d) => ids.includes(d))).map((c) => `<button class="chip" data-a="cas-open" data-id="${c.id}">Cas : ${esc(c.titre)}</button>`));
   function vMeds() {
     if (S.med) {
-      const m = D.DRUGS[S.med];
-      const ou = D.ORDOS.filter((o) => o.lignes.some((l) => l.drug === S.med)).map((o) => `<button class="chip" data-a="ordo-open" data-id="${o.id}">Ordonnance : ${esc(o.titre)}</button>`).concat(D.CAS.filter((c) => c.drugs.includes(S.med)).map((c) => `<button class="chip" data-a="cas-open" data-id="${c.id}">Cas : ${esc(c.titre)}</button>`));
-      return `<div><button class="back" data-a="med-close">${ic("retour").replace("<svg", '<svg width="18" height="18"')} Médicaments</button><h1>${esc(m.dci)}</h1><p class="muted">${esc(m.classe)}</p></div>
-      <button class="btn block" data-a="cartes-drug" data-id="${S.med}">${ic("cartes").replace("<svg", '<svg width="18" height="18" style="vertical-align:-3px"')} Cartes liées (${toutesCartes().filter((k) => k.drug === S.med).length})</button>
-      ${m.complet ? ficheComplete(S.med) : fiche(S.med) + `<p class="bandeau">Fiche courte. La version détaillée arrive avec le prochain lot.</p>`}${ou.length ? `<section class="stack"><h3>Pour s'entraîner</h3><div class="wrap">${ou.join("")}</div></section>` : ""}`;
+      const m = D.DRUGS[S.med], k = CL[D.CLASSE_DE[S.med]];
+      const ou = entrainement([S.med]);
+      return `<div>${S.cls ? retour("med-close", CL[S.cls].nom) : retour("med-close", "Médicaments")}<h1>${esc(m.dci)}</h1><p class="muted">${esc(m.classe)}</p></div>
+      ${k && S.cls !== k.id ? `<button class="btn ghost block" data-a="cls-open" data-id="${k.id}">Voir la classe : ${esc(k.nom)}</button>` : ""}
+      <button class="btn block" data-a="cartes-drug" data-id="${S.med}">${ic("cartes").replace("<svg", '<svg width="18" height="18" style="vertical-align:-3px"')} Cartes liées (${toutesCartes().filter((x) => x.drug === S.med).length})</button>
+      ${ficheComplete(S.med)}${ou.length ? `<section class="stack"><h3>Pour s'entraîner</h3><div class="wrap">${ou.join("")}</div></section>` : ""}`;
     }
-    return `<header><h1>Médicaments</h1><p class="muted">Posologie, alertes et conseils, toujours au même endroit.</p></header>
-    <input type="search" id="recherche" data-i="med-q" placeholder="Ramipril, statine, AINS" value="${esc(S.q)}" aria-label="Rechercher un médicament ou une classe">
-    <section class="stack" id="liste-meds">${medsListe()}</section>`;
+    if (S.cls) {
+      const k = CL[S.cls], m = D.DRUGS[k.ref], ou = entrainement(k.fiches);
+      const autres = k.fiches.filter((d) => d !== k.ref);
+      return `<div>${retour("cls-close", "Médicaments")}<h1>${esc(k.nom)}</h1><p class="muted">${nbMols(k)} molécules · fiche détaillée de référence : ${esc(m.dci)}</p></div>
+      ${autres.length ? `<div class="wrap">${autres.map((d) => `<button class="chip" data-a="med-open" data-id="${d}">Autre fiche détaillée : ${esc(D.DRUGS[d].dci)}</button>`).join("")}</div>` : ""}
+      <button class="btn block" data-a="cartes-drug" data-id="${k.ref}">${ic("cartes").replace("<svg", '<svg width="18" height="18" style="vertical-align:-3px"')} Cartes liées à ${esc(m.dci)} (${toutesCartes().filter((x) => x.drug === k.ref).length})</button>
+      ${ficheComplete(k.ref, k)}${ou.length ? `<section class="stack"><h3>Pour s'entraîner</h3><div class="wrap">${ou.join("")}</div></section>` : ""}`;
+    }
+    return `<header><h1>Médicaments</h1><p class="muted">Rangés par classe. Chaque classe : une fiche détaillée et la liste de ses molécules, avec leurs noms commerciaux et leurs particularités.</p></header>
+    <input type="search" id="recherche" data-i="med-q" placeholder="Bêtabloquant, Prolia, rosuvastatine" value="${esc(S.q)}" aria-label="Rechercher une classe, une molécule ou un nom commercial">
+    <div class="stack" id="liste-meds">${medsListe()}</div>`;
   }
 
   /* ---------- Révisions ---------- */
@@ -456,7 +489,7 @@
 
   /* ---------- Actions ---------- */
   const A = {
-    tab: (d) => { aller(d.t); if (d.t !== "medicaments") S.med = null; render(true); },
+    tab: (d) => { aller(d.t); if (d.t !== "medicaments") { S.med = null; S.cls = null; } render(true); },
     filtre: (d) => { S.filtre.niveau = +d.n; render(); },
     theme: (d) => { S.filtre.theme = d.n || null; render(); },
     dom: (d) => { S.filtre.dom = d.n || null; render(); },
@@ -511,8 +544,10 @@
       store.attempts.push({ kind: "cas", id: k.id, day: day(), score: sc.score, max: sc.max, details: sc.details });
       marquerJour(); save(); k.saved = true; k.err = ""; render();
     },
-    "med-open": (d) => { aller("medicaments"); S.med = d.id; render(true); },
+    "med-open": (d) => { if (S.tab !== "medicaments") S.cls = null; aller("medicaments"); S.med = d.id; render(true); },
     "med-close": () => { S.med = null; render(true); },
+    "cls-open": (d) => { aller("medicaments"); S.med = null; S.cls = d.id; render(true); },
+    "cls-close": () => { S.cls = null; render(true); },
     "rev-start": () => { S.rev = { file: C.fileRevision(store, DV(), day(), 8), montre: false, fait: 0 }; render(true); },
     "rev-close": () => { aller("accueil"); render(true); },
     "rev-montrer": () => { S.rev.montre = true; render(); },

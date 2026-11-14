@@ -1,6 +1,6 @@
 // Contrôle de la logique : correction, scores, répétition espacée, cohérence des données.
 const assert = require("assert");
-const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8"));
+const fs = require("fs"); fs.writeFileSync("/tmp/officina-data.cjs", fs.readFileSync(__dirname + "/../src/data.js", "utf8") + fs.readFileSync(__dirname + "/../src/data2.js", "utf8") + fs.readFileSync(__dirname + "/../src/data3.js", "utf8") + fs.readFileSync(__dirname + "/../src/data4.js", "utf8") + fs.readFileSync(__dirname + "/../src/data5.js", "utf8") + fs.readFileSync(__dirname + "/../src/data6.js", "utf8") + fs.readFileSync(__dirname + "/../src/data7.js", "utf8") + fs.readFileSync(__dirname + "/../src/data8.js", "utf8") + fs.readFileSync(__dirname + "/../src/data9.js", "utf8") + fs.readFileSync(__dirname + "/../src/data10.js", "utf8") + fs.readFileSync(__dirname + "/../src/data11.js", "utf8"));
 const D = require("/tmp/officina-data.cjs"), C = require("../src/core.js");
 let n = 0; const ok = (name, fn) => { fn(); n++; console.log("ok  " + name); };
 
@@ -129,6 +129,20 @@ ok("lots 6 à 10 : copie parfaite = 100 % sur chaque nouvelle ordonnance", () =>
     o.problemes.forEach((p) => { auto[p.id] = { mecanisme: "juste", conduite: "juste" }; });
     const s = C.scoreOrdo(c, auto); assert.strictEqual(s.score, s.max, o.id); assert.strictEqual(c.nonAttendus.length, 0, o.id);
   });
+});
+
+ok("lot 11 : classes de médicaments", () => {
+  const vus = {};
+  D.CLASSES.forEach((c) => {
+    assert(D.DRUGS[c.ref] && D.DRUGS[c.ref].complet, c.id + " réf");
+    assert(c.fiches.includes(c.ref), c.id);
+    assert(D.FAMILLES.some((f) => f[0] === c.famille), c.famille);
+    assert(c.principe.length && c.classe.length && c.groupes.length, c.id);
+    c.sources.forEach((s) => assert(D.SRC[s], s));
+    c.fiches.forEach((d) => { assert(!vus[d], "fiche dans deux classes " + d); vus[d] = 1; });
+    c.groupes.forEach((g) => g.mols.forEach((x) => { assert(x.dci && x.noms !== undefined, c.id); assert(!x.drug || D.DRUGS[x.drug], x.drug); }));
+  });
+  Object.keys(D.DRUGS).forEach((d) => assert(D.CLASSE_DE[d], "sans classe " + d));
 });
 
 console.log(n + " contrôles passés");
