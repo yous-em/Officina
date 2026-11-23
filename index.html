@@ -273,6 +273,57 @@ main > * { flex-shrink: 0; }
 nav.tabs button{font-size:9px}nav.tabs button svg{width:20px;height:20px}
 .fc-travel-key{background:#ffe69b;color:#302509;border-radius:.18em;padding:.06em .16em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
 .fc-focus-pec mark,.fc-derm-orientation mark{font-weight:750;color:#302509;background:#ffe69b}
+
+/* Présentation des fiches de prise en charge */
+.fc-pec.pec-reading,.fc-travel.pec-reading {
+  display:grid; gap:10px; margin:0; padding:0;
+}
+.pec-reading .fc-family { margin:0; }
+.pec-reading .fc-guidance { margin:0 0 2px; color:var(--ink-2); }
+.pec-reading .fc-family > summary { padding:14px 15px; }
+.pec-reading .fc-family[open] > summary { background:var(--accent-soft); }
+.pec-reading .fc-family > .fc-detail { padding:7px 9px 10px; background:var(--paper); }
+.pec-reading .fc-condition { margin:6px 0 0; }
+.pec-reading .fc-condition > summary { padding:11px 13px; }
+.pec-reading .fc-condition > .fc-detail { padding:13px; }
+.pec-reading .fc-chevron { flex:none; }
+.pec-reading .fc-accordion[open] > summary > .fc-chevron { transform:rotate(180deg); }
+.pec-reading .fc-accordion:not([open]) > summary > .fc-chevron { transform:none; }
+.pec-reading .pec-content { display:grid; gap:13px; }
+.pec-reading .pec-notes { display:grid; gap:7px; margin:0; padding:0; list-style:none; }
+.pec-reading .pec-note { margin:0; padding-left:13px; position:relative; }
+.pec-reading .pec-note::before {
+  content:""; position:absolute; left:1px; top:.72em; width:4px; height:4px;
+  background:var(--accent); border-radius:50%;
+}
+.pec-reading .pec-note.pec-priority {
+  padding:8px 9px; background:#fff9e6; border-radius:7px;
+}
+.pec-reading .pec-note.pec-priority::before { display:none; }
+.pec-reading .pec-content > p,.pec-reading .pec-med p { margin:0; }
+.pec-reading .pec-notes + .pec-notes { border-top:1px solid var(--line); padding-top:12px; }
+.pec-reading .pec-block h4 {
+  margin:0 0 6px; font-size:13px; color:var(--ink-2);
+}
+.pec-reading .pec-med,.pec-reading .fc-product {
+  min-width:0; overflow-wrap:anywhere; margin:0; border:1px solid var(--line);
+  background:#f6faf8; padding:11px 12px; border-radius:9px;
+}
+.pec-reading .pec-med h4 {
+  margin:0 0 4px; font-size:15px; color:var(--accent); line-height:1.35;
+}
+.pec-reading .pec-med .pec-label {
+  margin:0 0 8px; font-size:12px; font-weight:700; color:var(--ink-2);
+}
+.pec-reading .pec-drug { color:#075844; font-weight:760; }
+.pec-reading .fc-product + .fc-product { margin-top:9px; }
+.pec-reading .fc-product > strong { color:var(--accent); }
+.pec-reading .fc-extra > .fc-prose { padding:10px 0 0; }
+.pec-reading .fc-detail .fc-secondary { color:var(--ink-2); }
+@media(max-width:370px) {
+  .pec-reading .fc-family > .fc-detail { padding:5px 6px 8px; }
+  .pec-reading .fc-condition > .fc-detail { padding:10px; }
+}
 </style>
 </head>
 <body>
@@ -6950,9 +7001,9 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
       <p class="fc-secondary">Source : CM Petit, p. 42–46.</p>
     </div></details>`;
     const pratiques=(PEC_PROTOCOLS[nom]||[]).map(([produit,dose,mode])=>'<div class="fc-product"><strong>'+esc(produit)+'</strong><span class="fc-dose">'+esc(dose)+'</span><p>'+esc(mode)+'</p></div>').join('');
-    return `<details class="fc-accordion fc-condition"><summary><span>${esc(nom)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><div class="fc-alert fc-derm-orientation"><strong>Orientation médicale</strong><p>${fmt(p.orientation)}</p></div><h4>Traitements · posologies et modes d’emploi</h4>${pratiques}<details class="fc-extra"><summary>Autres informations du cours</summary><div class="fc-prose">${fmt(p.traitement).replace(/\\n\\n/g,"</p><p>")}</div></details><h4>Conseils au comptoir</h4><div class="fc-prose">${fmt(p.conseils)}</div><p class="fc-secondary">${esc(p.titre.match(/p\\. .*/)?.[0] || "")} · CM Petit</p></div></details>`;
+    return `<details class="fc-accordion fc-condition"><summary><span>${esc(nom)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><div class="fc-alert fc-derm-orientation"><strong>Orientation médicale</strong><p>${formatPecNote(p.orientation)}</p></div><h4>Traitements · posologies et modes d’emploi</h4>${pratiques}<details class="fc-extra"><summary>Autres informations du cours</summary><div class="fc-prose">${fmt(p.traitement).replace(/\\n\\n/g,"</p><p>")}</div></details><h4>Conseils au comptoir</h4><div class="fc-prose">${renderPecPoints(p.conseils)}</div><p class="fc-secondary">${esc(p.titre.match(/p\\. .*/)?.[0] || "")} · CM Petit</p></div></details>`;
   };
-  const encartPEC = () => '<p class="fc-guidance">Ouvre une famille, puis une pathologie. <strong>Orientation → traitement → conseils</strong>. Les autres restent repliées.</p>' + PEC_GROUPES.map(g=>'<details class="fc-accordion fc-family"><summary><span>'+esc(g.titre)+' <small>('+g.cles.length+')</small></span><span class="fc-chevron">⌄</span></summary><div class="fc-family-body">'+g.cles.map(k=>{const p=PEC_DERMATO.find(x=>x.titre.split(" · p.")[0]===k);return p?fichePEC(p):''}).join('')+'</div></details>').join('');
+  const encartPEC = () => '' + PEC_GROUPES.map(g=>'<details class="fc-accordion fc-family"><summary><span>'+esc(g.titre)+' <small>('+g.cles.length+')</small></span><span class="fc-chevron">⌄</span></summary><div class="fc-family-body">'+g.cles.map(k=>{const p=PEC_DERMATO.find(x=>x.titre.split(" · p.")[0]===k);return p?fichePEC(p):''}).join('')+'</div></details>').join('');
   const DISP_DETAILS = {"osteoporose":{"source":"Prérequis Ostéoporose2026","groups":[["Évaluation et sécurité","Fractures de fragilité, risque de chute, corticothérapie, apport calcium/vitamine D, fonction rénale et santé bucco-dentaire à vérifier.","Douleur œsophagienne, mâchoire ou cuisse inhabituelle : orientation ; prévenir les chutes."],["Bisphosphonates oraux","Alendronate : 70 mg une fois/semaine ; risédronate : 5 mg/j, 35 mg/semaine ou 75 mg deux jours consécutifs/mois selon spécialité.","Au lever à jeun, grand verre d'eau plate, avaler entier ; rester debout/assis au moins 30 min ; respecter le délai avant aliments/autres médicaments selon RCP."],["Autres traitements","Acide zolédronique : 5 mg IV une fois/an ; raloxifène : 60 mg/j (risque thromboembolique) ; tériparatide FORSTEO : 20 µg SC/j, maximum 24 mois.","Tériparatide dans cuisse ou abdomen ; expliquer injection et vertiges/hypotension initiale. Raloxifène à n'importe quelle heure, avec ou sans repas."],["Dénosumab — point critique","PROLIA : 60 mg SC tous les 6 mois, cuisse, abdomen ou haut du bras.","Hypocalcémie, ostéonécrose de mâchoire, infections ; **ne jamais arrêter sans relais médical par bisphosphonate** : rebond osseux et fractures."]]},"goutte":{"source":"Prérequis Goutte2026","groups":[["Crise et colchicine","Colchicine, AINS ou corticoïde selon patient ; colchicine à marge thérapeutique étroite.","Diarrhée = signal de toxicité : cours demande réduction à 0,5 mg voire arrêt ; avis médical si signes importants. Contre-indiquée si clairance créatinine <30 mL/min."],["Interactions majeures","Colchicine : inhibiteurs CYP3A4/P-gp, notamment macrolides sauf spiramycine selon CM et pristinamycine ; statines = risque de myopathie.","COLCHIMAX contient tiémonium et opium : somnolence, symptômes digestifs potentiellement masqués."],["Allopurinol","Début progressif selon fonction rénale : cours 50–100 mg/j si Cl >60 ; 50 mg/j si Cl 30–60, titrer sur uricémie.","Prendre fin/après repas ; éruption surtout dans les deux premiers mois : arrêt et avis médical urgent (toxidermie grave)."],["Prévention des crises et cible","Colchicine 0,5–1 mg/j au moins 6 mois lors de l'instauration d'hypouricémiant ; 0,5 mg/j si IR légère, 0,5 mg un jour sur deux si IR modérée selon CM.","Cible uricémie <360 µmol/L ; <300 µmol/L dans les situations sévères. Fébuxostat : prudence pathologie cardiovasculaire sévère."]]},"anemies":{"source":"UE disp Boulin anémies2026","groups":[["Avant de traiter","NFS, VGM, ferritine, contexte clinique ; distinguer carence martiale, B9, B12 et autres causes.","Saignement actif ou anémie sévère/symptomatique : orientation. Ne pas donner systématiquement du fer à toute femme enceinte."],["Fer oral","**100–200 mg de fer élément/j** selon Boulin : vérifier le fer élément, non la masse du sel.","De préférence hors repas ; pendant repas si douleurs abdominales. Selles noires, goût métallique, troubles digestifs ; paille si poudre liquide pour éviter coloration dentaire."],["Interactions et suivi du fer","Éloigner de plus de 2 h : cyclines, fluoroquinolones, bisphosphonates, lévothyroxine, calcium, magnésium.","Éviter thé/café à proximité ; vitamine C peut améliorer absorption ; tenir hors de portée des enfants. Surveiller hémoglobine et ferritine."],["Folates","Carence : acide folique/folinique 5–15 mg/j en 1–2 prises selon CM.","Prévention grossesse : 400 µg/j de 1 mois avant conception jusqu'à 8 semaines ; 5 mg/j si haut risque. Rechercher déficit B12 avant traitement isolé d'une macrocytose."]]},"hbp":{"source":"UE disp Boulin HBP2026","groups":[["Orientation et signes d'alerte","Rétention aiguë d'urines, hématurie importante, fièvre avec symptômes urinaires, douleur intense : orientation urgente.","Rechercher dysurie, pollakiurie, nycturie, médicaments aggravants, fonction rénale."],["Alpha-bloquants","Relaxent prostate et col vésical ; alfuzosine LP 10 mg/j ; silodosine UROREC : 4 mg/j dans certains cas du CM, 4 mg si ClCr <50 mL/min selon Boulin.","Hypotension orthostatique, vertiges, chutes : lever progressif. Prudence âgés, coronariens, antihypertenseurs ; interactions inhibiteurs puissants CYP3A4, tamsulosine 3A4/2D6."],["Inhibiteurs 5-alpha-réductase","Finastéride et dutastéride, surtout prostate >40 g selon CM ; effet lent, réduction volume.","**PSA diminué d'environ 50 %** : le prescripteur en tient compte (CM : multiplier le PSA mesuré par 2 pour dépistage). Troubles sexuels."],["Alternatives et surveillance","PERMIXON/TADENAN cités ; bithérapie possible si monothérapie insuffisante mais effets indésirables se cumulent.","Chirurgie = traitement curatif selon support ; suivi symptômes, tension, observance, troubles sexuels."]]},"bipolaire":{"source":"UE disp Boulin troubles bipolaires2026","groups":[["Lithium : prise et surveillance","À heures fixes, plutôt le soir selon CM ; lithiémie régulière indispensable, respecter horaire du prélèvement et ordonnance.","Surveiller créatininémie, TSH, poids, glycémie, lipides et risque cardiaque selon patient."],["Lithium : toxicité","Déshydratation, diarrhée, vomissements, chaleur, régime désodé et diurétiques favorisent toxicité.","**Confusion, ataxie, tremblements importants, troubles neurologiques ou diarrhées sévères = avis médical immédiat**. Éviter AINS en automédication."],["Valproate et dérivés","DEPAKINE, DEPAMIDE, DEPAKOTE : sédation, prise de poids, troubles digestifs (prise au milieu du repas), tremblements.","Tératogénicité majeure, contraception et conditions réglementaires de prescription/délivrance à vérifier ; ne pas interchanger/associer arbitrairement les dérivés."],["Surveillance et sécurité","Risque hépatique, hématologique, éruption SJS/Lyell, interaction avec lamotrigine.","Contrôles ASAT/ALAT et NFS selon CM ; ne pas arrêter brutalement, évaluer observance et signes de rechute."]]},"inf-gyn":{"source":"Prérequis Infections gynécologiques2026","groups":[["Triage","Différencier vaginose bactérienne, candidose et trichomonase (IST).","Fièvre, douleurs pelviennes, grossesse, pertes atypiques, récidives ou suspicion IST : orientation."],["Vaginose bactérienne","Métronidazole FLAGYL 500 mg : **1 g/j en 2 prises pendant 7 jours**, pendant repas ; tinidazole FASIGYNE : **2 g dose unique** hors repas ; secnidazole SECNOL : **2 g dose unique** début repas.","Troubles digestifs, coloration urines, effet antabuse mentionné dans le CM ; vérifier les consignes de chaque RCP."],["Trichomonase","Métronidazole, secnidazole, tinidazole ou ornidazole ; ornidazole **1 g/j en 2 prises pendant 5 jours**, ou 1,5 g après repas du soir selon support.","IST : dépistage et prise en charge partenaires ; répétition d'une monodose à J15 uniquement selon schéma prescrit."],["Candidose, HSV, HPV","Antifongiques vaginaux : expliquer insertion le soir, renouvellement propre à chaque spécialité, crème externe si indiquée.","Fluconazole 150 mg hebdomadaire d'entretien pour certaines récidives = décision médicale. HSV : antiviraux dès prodromes ; HPV : vaccination GARDASIL 9 selon âge."]]},"mucoviscidose":{"source":"Prérequis et cas Mucoviscidose2026","groups":[["Analyse d'ordonnance","Vérifier génotype, âge, poids, fonction respiratoire, insuffisance pancréatique, infections, interactions et cohérence des associations.","Surveillance hépatique et CYP3A des modulateurs CFTR ; formes pédiatriques non interchangeables."],["Modulateurs CFTR","KAFTRIO + KALYDECO, SYMKEVI + KALYDECO, ORKAMBI et ALYFTREK : schémas différents, ordonnance spécialisée.","Prise avec aliments lipidiques lorsque RCP le demande ; ORKAMBI contient lumacaftor inducteur puissant CYP3A. Ne pas inventer dose sans âge, poids, génotype."],["Enzymes pancréatiques","CREON : <4 ans **1 000 unités lipase/kg/repas** au départ ; >4 ans **500 unités/kg/repas** ; ajustement selon clinique.","Pendant ou immédiatement après repas, ne pas écraser granulés gastro-résistants. Max **2 500 U/kg/repas, 10 000 U/kg/j ou 4 000 U/g de graisses** selon cours."],["Respiratoire et nutrition","PULMOZYME **2 500 U/2,5 mL : 1 nébulisation/j**, parfois 2/j après 21 ans selon cours ; vitamines A, D, E, K, NaCl, calcium selon ordonnance.","**Ne pas diluer ni mélanger PULMOZYME** dans cuve ; certains nébuliseurs ultrasoniques inadaptés ; expliquer hygiène matériel, surveiller stéatorrhée et poids."]]}};
   const encartDisp = f => { const d=DISP_DETAILS[f.id]; if(!d) return ""; return '<p class="fc-guidance">Fiche de dispensation : ouvre chaque sous-partie pour consulter les posologies, l’administration, les risques et les conseils.</p>'+d.groups.map(([titre,dose,conseil],i)=>'<details class="fc-accordion fc-family"><summary><span>'+(i+1)+'. '+esc(titre)+'</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><div class="fc-product"><strong>Traitement / points à vérifier</strong><p>'+fmt(dose)+'</p></div><div class="fc-product"><strong>Administration, risques et conseils</strong><p>'+fmt(conseil)+'</p></div></div></details>').join('')+'<p class="fc-secondary">Source : '+esc(d.source)+'. Adapter à la spécialité, au patient et à l’ordonnance ; vérifier les RCP.</p>'; };
   const VOYAGE_DETAIL = [
@@ -7200,7 +7251,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
       [
         "NAUSICALM® et NAUTAMINE®",
         "**NAUSICALM sirop (diménhydrinate)** 30 min avant : 2–6 ans 2,5–5 mL (max. 25 mL/24 h) ; >6–15 ans 5–10 mL (max. 50 mL/24 h) ; adulte 15–30 mL par prise. Utiliser la pipette fournie pour les doses pédiatriques.",
-        "**NAUTAMINE (diphénhydramine)** 30 min avant : 2–6 ans ½ comprimé écrasé (max. 4 demi-comprimés/j) ; 6–12 ans 1 (max. 4/j) ; >12 ans 1–1½ (max. 6/j). Intervalle d’au moins 6 h. Vérifier la forme, la grossesse/l’allaitement et les mêmes précautions de classe que MERCALM. Effets possibles : somnolence, sécheresse buccale, constipation, rétention et parfois agitation paradoxale.",
+        "**NAUTAMINE (diphénhydramine)** 30 min avant : 2–6 ans ½ comprimé écrasé (max. 4 demi-comprimés/j) ; 6–12 ans 1 (max. 4/j) ; >12 ans 1–1½ (max. 6/j). Intervalle d’au moins 6 h. Vérifier la forme et demander s’il y a grossesse ou allaitement. Rechercher un risque de glaucome par fermeture de l’angle, de rétention urinaire ou une prise de sédatifs, comme pour MERCALM. Effets possibles : somnolence, sécheresse buccale, constipation, rétention et parfois agitation paradoxale.",
         "nautamine"
       ],
       [
@@ -7314,6 +7365,409 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
     return fmt(text).replace(/==([^=]+)==/g, '<mark class="fc-travel-key"><strong>$1</strong></mark>');
   }
 
+
+  const PEC_MEDICATION_PANELS = {
+  "Bouchon de cérumen": [
+    [
+      "",
+      "Reconnaître et orienter",
+      "Oreille bouchée et baisse auditive progressive, parfois après la baignade.\n==Baisse auditive brutale : avis médical urgent.==\nNe pas instiller de produit si le tympan est perforé ou si son état est incertain, en cas de drain, de chirurgie, d’écoulement ou de douleur importante."
+    ],
+    [
+      "Xylène · CERULYSE",
+      "Administration",
+      "Réchauffer le flacon entre les mains. Bouchon mou : quelques gouttes. Bouchon dur : le CM donne 10 gouttes, oreille vers le haut pendant 10 min, 3 fois/j avant extraction."
+    ],
+    [
+      "Docusate · DOCULYSE",
+      "Administration",
+      "Le CM donne 1–2 pulvérisations et un temps de contact de 15–30 min. Suivre la notice du produit."
+    ],
+    [
+      "",
+      "Suivi",
+      "Pas de coton-tige dans le conduit. Si le bouchon persiste après 3–4 jours, orienter."
+    ]
+  ],
+  "Otite moyenne aiguë purulente : posologie à retenir": [
+    [
+      "",
+      "Avant toute délivrance",
+      "==Orienter pour une otoscopie. Ne pas conseiller de gouttes sans examen du tympan.=="
+    ],
+    [
+      "Amoxicilline",
+      "Posologie du cours",
+      "80–100 mg/kg/j en 2–3 prises, maximum 3 g/j.\nAvant 2 ans : 10 jours.\nAprès 2 ans, symptômes peu marqués : réévaluation à 48–72 h. Si symptômes importants : 5 jours selon le cours, ou 10 jours si récidive ou perforation."
+    ],
+    [
+      "Amoxicilline + acide clavulanique",
+      "Quand y penser ?",
+      "Syndrome otite–conjonctivite. Calculer la dose sur l’amoxicilline. Vérifier la durée selon l’âge et le tableau."
+    ],
+    [
+      "Cefpodoxime",
+      "Alternative sur prescription",
+      "8 mg/kg/j en 2 prises, maximum 400 mg/j, si indiqué en cas d’allergie documentée et en l’absence de contre-indication aux céphalosporines."
+    ],
+    [
+      "",
+      "Repère d’examen",
+      "Relier la dose au poids. Vérifier le nombre de prises et la durée sur l’ordonnance."
+    ]
+  ],
+  "Doxylamine · DONORMYL": [
+    [
+      "Doxylamine · DONORMYL",
+      "Indication et prise",
+      "Antihistaminique H1 sédatif pour une difficulté occasionnelle chez l’adulte.\n==15 mg le soir au coucher.== Le maximum cité est 30 mg/j ; il ne correspond pas à la dose de départ."
+    ],
+    [
+      "",
+      "Durée et orientation",
+      "La diapo 17 indique 5 jours ; le ronéo note 15 jours. Retenir la durée courte du diaporama et orienter si l’insomnie persiste."
+    ],
+    [
+      "",
+      "Vérifier avant de conseiller",
+      "Risque de glaucome aigu par fermeture de l’angle ou de rétention urinaire.\nVérifier les apnées du sommeil et les insuffisances rénale ou hépatique. Éviter les associations avec l’alcool, les opioïdes, les autres sédatifs ou les médicaments anticholinergiques."
+    ],
+    [
+      "",
+      "Effets indésirables",
+      "Somnolence, sécheresse buccale, constipation. Chez la personne âgée, surveiller aussi confusion et risque de chute."
+    ]
+  ],
+  "Mélatonine : distinguer les statuts": [
+    [
+      "Mélatonine · CIRCADIN LP 2 mg",
+      "Indication du cours",
+      "==Insomnie primaire avec sommeil de mauvaise qualité à partir de 55 ans.== Retenir la forme à libération prolongée."
+    ],
+    [
+      "Mélatonine · SLENYTO LP 1 ou 5 mg",
+      "Indication du cours",
+      "Prescription pédiatrique ciblée. Le cours donne l’exemple de l’insomnie associée à un trouble du spectre de l’autisme."
+    ],
+    [
+      "",
+      "Compléments alimentaires",
+      "Vérifier l’indication, la forme et la teneur. Limiter la durée et réévaluer en cas d’échec. La limite de 10 mg citée dans le cours correspond à certaines prescriptions."
+    ],
+    [
+      "",
+      "Effets et interactions",
+      "La mélatonine aide à synchroniser le rythme veille-sommeil. Somnolence, céphalées ou rêves inhabituels sont possibles.\nVérifier fluvoxamine, ciprofloxacine et autres sédatifs. Faire préciser une épilepsie, une grossesse ou un allaitement."
+    ]
+  ],
+  "Contraception d’urgence : délais": [
+    [
+      "Lévonorgestrel",
+      "Dose et délai",
+      "==1,5 mg en une prise, jusqu’à 72 h après le rapport à risque.=="
+    ],
+    [
+      "Ulipristal",
+      "Dose et délai",
+      "==30 mg en une prise, jusqu’à 120 h après le rapport à risque.=="
+    ],
+    [
+      "",
+      "Dispositif intra-utérin au cuivre",
+      "Option la plus efficace du cours. Organiser rapidement la pose avec un professionnel."
+    ],
+    [
+      "",
+      "Questions avant la délivrance",
+      "Date de chaque rapport à risque, contraception habituelle, heure de la dernière prise. Rechercher des inducteurs enzymatiques pris dans les 4 dernières semaines."
+    ],
+    [
+      "",
+      "Si inducteur ou vomissement",
+      "Inducteur : privilégier le DIU au cuivre ; s’il est impossible, lévonorgestrel 3 mg selon RCP. Éviter l’ulipristal.\nVomissement dans les 3 h : nouvelle dose selon notice."
+    ],
+    [
+      "",
+      "Conseils et suivi",
+      "Agir dès que possible. Si les règles sont en retard ou inhabituelles, faire un test de grossesse. Revoir avec la patiente le délai de contrôle à partir du rapport. Rappeler la protection contre les IST et les modalités de prise en charge."
+    ]
+  ],
+  "Reconnaître et utiliser la naloxone": [
+    [
+      "",
+      "Urgence",
+      "==Inconscience et respiration lente ou anormale, parfois myosis : appeler le 15/112.== Suivre les consignes de secours et rester sur place. La dépression respiratoire peut récidiver."
+    ],
+    [
+      "Naloxone intranasale · NYXOID 1,8 mg",
+      "Administration",
+      "Une unidose dans une narine. Sans réponse après 2–3 min, renouveler dans l’autre narine. En cas de rechute après une réponse, renouveler plus tôt selon la notice."
+    ],
+    [
+      "Naloxone intramusculaire · PRENOXAD",
+      "Administration",
+      "Dispositif gradué. Suivre sa notice et les consignes des secours."
+    ],
+    [
+      "",
+      "Repère d’examen",
+      "Le ronéo demande surtout de reconnaître le surdosage et d’alerter rapidement."
+    ]
+  ],
+  "Spray buccal 1 mg par pulvérisation": [
+    [
+      "Nicotine · NICORETTESPRAY",
+      "Prise à la demande",
+      "1 pulvérisation dès l’envie de fumer, une 2e si nécessaire. ==Maximum 2 par prise, 4 par heure, 64 par jour.=="
+    ],
+    [
+      "",
+      "Montrer le geste",
+      "Amorcer selon la notice. Viser l’intérieur de la joue en évitant d’inhaler. Attendre quelques secondes avant d’avaler."
+    ],
+    [
+      "",
+      "Tolérance et dispensation",
+      "Action rapide. Hoquet, irritation ou nausées possibles. Vérifier dans le RCP si le spray est adapté à une réduction progressive. Le remboursement dépend du conditionnement."
+    ]
+  ],
+  "Varénicline et bupropion : reconnaître en deuxième intention": [
+    [
+      "Varénicline",
+      "Schéma du cours",
+      "Commencer avant le jour d’arrêt. J1–J3 : 0,5 mg/j. J4–J7 : 0,5 mg deux fois/j. Puis 1 mg deux fois/j selon prescription, généralement 12 semaines au total.\nSurveiller nausées, rêves anormaux et humeur. Vérifier si la fonction rénale impose une adaptation."
+    ],
+    [
+      "Bupropion LP 150 mg",
+      "Schéma du cours",
+      "1 comprimé/j pendant 6 jours, puis 1 comprimé deux fois/j, avec au moins 8 h d’écart. Durée de 7–9 semaines selon prescription.\nSurveiller insomnie et tension artérielle. Vérifier le risque de convulsions et les interactions."
+    ],
+    [
+      "",
+      "Repère d’examen",
+      "Varénicline : agoniste partiel des récepteurs nicotiniques. Ces deux traitements sont présentés en deuxième intention. Le ronéo place les listes détaillées des contre-indications en second plan."
+    ]
+  ],
+  "Antalgie et produits locaux": [
+    [
+      "Paracétamol",
+      "Posologie du cours",
+      "Adulte ≥50 kg et sans facteur de risque : 500 mg à 1 g par prise, à au moins 4 h d’intervalle, maximum 3 g/j sans avis médical.\nVérifier le poids, le risque hépatique et la présence de paracétamol dans les autres traitements."
+    ],
+    [
+      "AINS",
+      "Avant la délivrance",
+      "Si un AINS est indiqué, utiliser la dose efficace la plus faible le moins longtemps possible. Vérifier grossesse, fonction rénale, antécédents digestifs, anticoagulants et autres AINS."
+    ],
+    [
+      "",
+      "Application d’un gel",
+      "Appliquer sur peau saine. Se laver les mains ensuite. Vérifier les précautions d’exposition au soleil propres à la spécialité."
+    ]
+  ],
+  "Racécadotril · TIORFAST®": [
+    [
+      "Racécadotril 100 mg · TIORFAST",
+      "Posologie adulte",
+      "1 gélule d’emblée, puis répartir les prises de préférence avant les repas. ==Maximum 3 gélules en 24 h, prise initiale comprise.== Arrêter après 2 selles moulées ou 12 h sans selle. RCP : maximum 3 jours."
+    ],
+    [
+      "",
+      "Place du traitement",
+      "Antisécrétoire par inhibition de l’enképhalinase. La réhydratation reste indispensable."
+    ],
+    [
+      "",
+      "Sécurité et orientation",
+      "Réévaluer à 48 h selon le CM. Orienter en cas de fièvre, de sang ou de pus dans les selles, de diarrhée chronique ou après antibiothérapie. Éviter pendant la grossesse et l’allaitement. Céphalées et réactions cutanées possibles.\nVérifier la prise d’un IEC. ==Si le visage ou la langue gonfle, ou si la respiration devient difficile : arrêt et urgence.=="
+    ]
+  ],
+  "Lopéramide · IMODIUM®": [
+    [
+      "Lopéramide 2 mg · IMODIUMCAPS",
+      "Posologie dès 15 ans",
+      "2 gélules d’emblée, puis 1 après chaque selle non moulée. ==Maximum 6 gélules/j et 2 jours.== Le chiffre de 8/j dans le CM concerne certaines formes prescrites."
+    ],
+    [
+      "",
+      "Quand l’utiliser ?",
+      "Réserver à une diarrhée aqueuse gênante. Le lopéramide ralentit le transit via les récepteurs opioïdes périphériques."
+    ],
+    [
+      "",
+      "Quand l’écarter ou l’arrêter ?",
+      "Éviter en cas de fièvre, de sang dans les selles, de colite après antibiothérapie ou de poussée de rectocolite. Arrêter si constipation ou ventre distendu. Vérifier itraconazole, quinidine et ritonavir. Un surdosage peut provoquer des troubles du rythme."
+    ]
+  ],
+  "Atovaquone + proguanil": [
+    [
+      "Atovaquone + proguanil · MALARONE",
+      "Posologie selon le poids",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "Méfloquine": [
+    [
+      "Méfloquine · LARIAM",
+      "Posologie et calendrier",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "Doxycycline": [
+    [
+      "Doxycycline · DOXYPALU",
+      "Posologie et calendrier",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "MERCALM® · dimenhydrinate + caféine": [
+    [
+      "Diménhydrinate + caféine · MERCALM",
+      "Posologie et délai avant le départ",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "Hépatite A · AVAXIM®, HAVRIX®, VAQTA®": [
+    [
+      "Vaccins de l’hépatite A · AVAXIM, HAVRIX, VAQTA",
+      "Âge et calendrier",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "Hépatite B · ENGERIX®, HBVAXPRO®": [
+    [
+      "Vaccins de l’hépatite B · ENGERIX, HBVAXPRO",
+      "Indication et calendrier",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "Patch : couvrir le besoin de fond": [
+    [
+      "Nicotine · Patch transdermique",
+      "Choix et application",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "Gomme : mâcher lentement puis mettre en joue": [
+    [
+      "Nicotine · Gomme 2 ou 4 mg",
+      "Mode d’emploi",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "SRO · ADIARIL®, VIATOL®": [
+    [
+      "Solution de réhydratation orale · ADIARIL, VIATOL",
+      "Délution et conservation",
+      0
+    ],
+    [
+      "",
+      "Conseils et points de vigilance",
+      1
+    ]
+  ],
+  "NAUSICALM® et NAUTAMINE®": [
+    [
+      "Diménhydrinate · NAUSICALM sirop",
+      "Posologie et administration",
+      0
+    ],
+    [
+      "Diphénhydramine · NAUTAMINE",
+      "Posologie et précautions",
+      1
+    ]
+  ],
+  "Anaphylaxie : stylo d’adrénaline": [
+    [
+      "Adrénaline · Stylo auto-injecteur",
+      "Geste immédiat",
+      0
+    ],
+    [
+      "",
+      "Surveillance",
+      1
+    ]
+  ]
+};
+  const PEC_DRUG_NAMES = /(?<![\p{L}\p{N}])(?:amoxicilline[–-]acide clavulanique|atovaquone\s*\+\s*proguanil|amoxicilline|céthexonium|cefpo[dD]oxime|cefpodoxime|latanoprost|timolol|phényléphrine|cyclopentolate|tropicamide|atropine|ranibizumab|aflibercept|lévocabastine|cromoglicate|docusate|xylène|ofloxacine|hexamidine|chlorhexidine|ondansétron|doxylamine|mélatonine|zopiclone|zolpidem|oxazépam|alprazolam|lorazépam|bromazépam|diazépam|fluvoxamine|ciprofloxacine|magnésium|lévothyroxine|lévonorgestrel|ulipristal|adrénaline|glucagon|naloxone|nicotine|varénicline|bupropion|clozapine|propranolol|méthadone|paracétamol|ibuprofène|kétoprofène|racécadotril|lopéramide|diosmectite|azithromycine|atovaquone|proguanil|méfloquine|doxycycline|diménhydrinate|diphénhydramine|dompéridone|cétirizine|amorolfine|ciclopirox|bifonazole|terbinafine|éconazole|sertaconazole|clotrimazole|fenticonazole|diméthicone|perméthrine|ivermectine|benzoate de benzyle|mupirocine|aciclovir|valaciclovir|podophyllotoxine|calcipotriol|minoxidil|peroxyde de benzoyle|HYDRALIN|MYDRIATICUM|SKIACOL|DESOMEDINE|BIOCIDAN|ALLERGIFLASH|ARTELAC|CELLUVISC|AQUAREST|LARMABAK|VISMED|OFLOCET|CERULYSE|DOCULYSE|DONORMYL|CIRCADIN|SLENYTO|NYXOID|PRENOXAD|BAQSIMI|NICORETTESPRAY|ADIARIL|VIATOL|TIORFAST|IMODIUM(?:CAPS)?|SMECTA|MALARONE|LARIAM|DOXYPALU|AVAXIM|HAVRIX|VAQTA|ENGERIX|HBVAXPRO|TWINRIX|NIMENRIX|MENQUADFI|MENVEO|STAMARIL|IXIARO|TICOVAC|ENCEPUR|TYPHIM VI|VIVOTIF|TYAVAX|QDENGA|MERCALM|NAUSICALM|NAUTAMINE|LOCERYL|MYCONAIL|TOPISCAB|ASCABIOL|STROMECTOL|POUXIT|PARANIX|COMPEED)(?:®)?(?![\p{L}\p{N}])/giu;
+
+  function formatPecNote(text) {
+    return formatVoyage(text).replace(PEC_DRUG_NAMES, '<strong class="pec-drug">$&</strong>');
+  }
+
+  function renderPecPoints(text) {
+    // Keep the spelling of abbreviations and the span of each highlight intact.
+    const protectedText = String(text ?? "").trim()
+      .replace(/\b(?:p\.\s*ex\.|max\.|min\.(?=\s+\d)|ex\.|Dr\.)/gi, value => value.replaceAll(".", "\uE000"))
+      .replace(/==[^=]+==/g, value => value
+        .replace(/\.(?!==)/g, "\uE000").replace(/\?(?!==)/g, "\uE001").replace(/!(?!==)/g, "\uE002"));
+    if (!protectedText) return "";
+    const points = protectedText
+      .split(/\n+|(?<=[.!?])\s+(?=(?:==|\*\*)?[\p{Lu}«“])|(?<=[.!?]==)\s+(?=(?:==|\*\*)?[\p{Lu}«“])/u)
+      .map(line => line.replaceAll("\uE000", ".").replaceAll("\uE001", "?").replaceAll("\uE002", "!").trim()).filter(Boolean);
+    if (points.length === 1 && !/^==.+==[.!?]?$/.test(points[0])) {
+      return '<p>' + formatPecNote(points[0]) + '</p>';
+    }
+    return '<ul class="pec-notes">' + points.map(point => {
+      const emphasis = /^==.+==[.!?]?$/.test(point) ? " pec-priority" : "";
+      return '<li class="pec-note' + emphasis + '">' + formatPecNote(point) + '</li>';
+    }).join("") + '</ul>';
+  }
+
+  function renderPecBody(name, paragraphs) {
+    const panels = PEC_MEDICATION_PANELS[name];
+    if (!panels) return '<div class="pec-content">' + paragraphs.map(renderPecPoints).join("") + '</div>';
+    return '<div class="pec-content">' + panels.map(([medicine, heading, content]) => {
+      const text = typeof content === "number" ? paragraphs[content] : content;
+      const title = medicine ? '<h4>' + esc(medicine) + '</h4><p class="pec-label">' + esc(heading) + '</p>'
+        : '<h4>' + esc(heading) + '</h4>';
+      return '<div class="pec-block' + (medicine ? ' pec-med' : '') + '">' + title + renderPecPoints(text) + '</div>';
+    }).join("") + '</div>';
+  }
+
   function encartVoyage() {
     const renderItem = ([name, main, detail, source]) => {
       const reference = VOYAGE_SOURCES[source];
@@ -7322,10 +7776,10 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
       const nausicalm = source === "nautamine" ? '<p class="fc-secondary"><a href="https://base-donnees-publique.medicaments.gouv.fr/medicament/63137902/extrait" target="_blank" rel="noopener noreferrer">ANSM · RCP de NAUSICALM sirop</a></p>' : "";
       return '<details class="fc-accordion fc-condition"><summary><span>' + esc(name) +
         '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
-        '<p>' + formatVoyage(main) + '</p><p>' + formatVoyage(detail) + '</p>' + link + nausicalm + '</div></details>';
+        renderPecBody(name, [main, detail]) + link + nausicalm + '</div></details>';
     };
-    return '<section class="fc-travel" aria-label="Fiche du voyageur">' +
-      '<p class="fc-guidance">Diaporama de Thomas Petit (45 pages) et ronéo du CM2 du 18/09/2026. Les écarts avec les références officielles sont précisés dans les sous-parties.</p>' +
+    return '<section class="fc-travel pec-reading" aria-label="Fiche du voyageur">' +
+      '<p class="fc-guidance">Diaporama de Thomas Petit (45 pages) et ronéo du CM2 du 18/09/2026. </p>' +
       VOYAGE_DETAIL.map(([title, entries]) => '<details class="fc-accordion fc-family"><summary><span>' + esc(title) +
         '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
         entries.map(renderItem).join("") + '</div></details>').join("") + '</section>';
@@ -7388,7 +7842,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
           "Zona ophtalmique et kératite",
           [
             "==Vésicules ou douleur du front dans le territoire du trijumeau avec gêne oculaire : urgence ophtalmologique.== Kératite : œil rouge douloureux, photophobie, baisse d’acuité et sensation de corps étranger. Le port de lentilles renforce l’urgence.",
-            "Retirer les lentilles. Aucun corticoïde ni anesthésique local en conseil. Le cours distingue l’exposition UV typique bilatérale (repos à l’abri de la lumière et antalgie), avec avis urgent si douleur forte, baisse d’acuité ou doute."
+            "Faire retirer les lentilles et orienter. Éviter les collyres corticoïdes ou anesthésiques en automédication. Le cours distingue l’exposition UV typique bilatérale (repos à l’abri de la lumière et antalgie), avec avis urgent si douleur forte, baisse d’acuité ou doute."
           ]
         ]
       ]
@@ -7548,7 +8002,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
           "Mélatonine : distinguer les statuts",
           [
             "==CIRCADIN LP 2 mg : insomnie primaire avec mauvais sommeil à partir de 55 ans==. Le cours demande de reconnaître l’indication et la forme à libération prolongée. SLENYTO LP 1 ou 5 mg : indication pédiatrique ciblée sur prescription (le CM cite l’insomnie dans le trouble du spectre de l’autisme). Compléments : indication, galénique et teneur à vérifier, durée courte et réévaluation si échec.",
-            "Synchronise les rythmes veille-sommeil. Risque de somnolence, céphalées et rêves inhabituels. Vérifier particulièrement fluvoxamine et ciprofloxacine (CYP1A2), autres sédatifs, épilepsie, grossesse/allaitement et traitements associés. La limite de 10 mg du cours correspond à certaines prescriptions, pas au conseil général."
+            "Synchronise les rythmes veille-sommeil. Risque de somnolence, céphalées et rêves inhabituels. Vérifier particulièrement fluvoxamine et ciprofloxacine (CYP1A2), autres sédatifs, épilepsie, grossesse/allaitement et traitements associés. Le repère de 10 mg cité par le cours concerne certaines prescriptions. En conseil, choisir la dose en fonction du produit et de son indication."
           ]
         ],
         [
@@ -7738,7 +8192,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
         [
           "Oubli, reprise hormonale et situations particulières",
           [
-            "==Relever le nom de la contraception, l’heure de l’oubli, la semaine de plaquette et les rapports à risque.== Ne pas appliquer un délai universel : seuils différents pour combinés, microprogestatifs, patch et anneau. Vérifier notice et protocole ; proposer protection barrière et CU selon situation.",
+            "==Relever le nom de la contraception, l’heure de l’oubli, la semaine de plaquette et les rapports à risque.== Le délai qui déclenche la conduite à tenir dépend du produit : pilule combinée, pilule microprogestative, patch ou anneau. Vérifier notice et protocole ; proposer protection barrière et CU selon situation.",
             "Après LNG, la contraception hormonale peut généralement être reprise immédiatement. Après UPA, le ronéo signale l’interaction avec les progestatifs dans les 5 jours suivant la prise. Vérifier le protocole de reprise pour la contraception utilisée et les modalités de protection barrière. Ne pas associer les deux CU hormonales. Si allaitement, vérifier la consigne officielle actuelle de la spécialité."
           ]
         ]
@@ -7818,7 +8272,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
         [
           "Interactions et terrains particuliers",
           [
-            "==La fumée induit des enzymes ; l’arrêt de fumer peut augmenter l’exposition à certains médicaments, même sous patch.== Le ronéo demande de retenir clozapine, propranolol et méthadone comme exemples de traitements à vérifier auprès du prescripteur. Réduire le café si nervosité depuis l’arrêt.",
+            "==La fumée du tabac accélère l’élimination de certains médicaments. À l’arrêt, leurs concentrations peuvent augmenter, même si le patient utilise un patch.== Le ronéo demande de retenir clozapine, propranolol et méthadone comme exemples de traitements à vérifier auprès du prescripteur. Réduire le café si nervosité depuis l’arrêt.",
             "Grossesse : accompagnement et orientation vers médecin/sage-femme, TNS si nécessaire après évaluation. Chez l’adolescent, vérifier la notice de la présentation. Tabac et contraception estroprogestative (surtout après 35 ans) : risque vasculaire, réévaluation médicale."
           ]
         ]
@@ -7845,7 +8299,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
           "Cigarette électronique et accès aux substituts",
           [
             "Les TNS disposent d’une AMM et sont l’option médicamenteuse de première intention du cours. La cigarette électronique n’a pas d’AMM de sevrage. Si le patient l’utilise, évaluer le double usage, continuer l’accompagnement et discuter son objectif d’arrêt du tabac.",
-            "Des TNS peuvent être dispensés sans ordonnance ; la prise en charge dépend d’une prescription par un professionnel habilité et du produit éligible. Vérifier la liste des spécialités remboursables au moment de la dispensation."
+            "Certains substituts nicotiniques sont disponibles sans ordonnance. Pour le remboursement, vérifier que le produit est éligible et que l’ordonnance vient d’un professionnel habilité. Vérifier la liste des spécialités remboursables au moment de la dispensation."
           ]
         ]
       ]
@@ -7903,8 +8357,8 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
         [
           "GREC, orthèse et rééducation",
           [
-            "==Glace protégée, repos relatif, élévation, compression adaptée.== Le CM donne 10 min de froid jusqu’à 4 fois/j. Réévaluer douleur, gonflement et appui. Compression : surveiller couleur, chaleur et sensibilité des orteils ; desserrer si gêne.",
-            "Stades du cours : I étirement, II rupture partielle, III rupture complète. Les repères 10, 21–42 et ≥42 jours sont des durées indicatives de cicatrisation, pas des prescriptions d’orthèse. Aide à l’appui et orthèse selon diagnostic, mesure et prescription ; reprise fonctionnelle et rééducation guidées."
+            "==Glace protégée, repos relatif, élévation, compression adaptée.== Le CM donne 10 min de froid jusqu’à 4 fois/j. Réévaluer douleur, gonflement et appui. Après avoir posé la bande, vérifier que les orteils restent normalement colorés, chauds et sensibles. Desserrer si la bande comprime.",
+            "Repères du cours : stade I, ligament étiré ; stade II, rupture partielle ; stade III, rupture complète. Les repères 10, 21–42 et ≥42 jours sont des durées indicatives de cicatrisation, pas des prescriptions d’orthèse. Aide à l’appui et orthèse selon diagnostic, mesure et prescription ; reprise fonctionnelle et rééducation guidées."
           ]
         ]
       ]
@@ -7953,12 +8407,12 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
   function encartCoursPEC(id) {
     const families = COURS_PEC[id];
     if (!families) return "";
-    return '<section class="fc-pec" aria-label="Prise en charge à l’officine">' +
+    return '<section class="fc-pec pec-reading" aria-label="Prise en charge à l’officine">' +
       families.map(([title, items]) => '<details class="fc-accordion fc-family"><summary><span>' +
         esc(title) + '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
         items.map(([name, paragraphs]) => '<details class="fc-accordion fc-condition"><summary><span>' +
           esc(name) + '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
-          paragraphs.map(paragraph => '<p>' + formatVoyage(paragraph) + '</p>').join("") +
+          renderPecBody(name, paragraphs) +
           '</div></details>').join("") + '</div></details>').join("") + '</section>';
   }
   function vFichesCours() {
@@ -7966,10 +8420,10 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
     if (f) return `<div class="fc-sticky"><button class="back" data-a="fiche-retour">${ic("retour")} Toutes les fiches</button><p class="fc-eyebrow">FICHE DE RÉVISION · PH5</p><h1>${esc(f.title)}</h1><p class="muted">${esc(f.source)}</p></div>
       ${f.priority ? `<section class="fc-focus${COURS_PEC[f.id] ? " fc-focus-pec" : ""}"><strong>À retenir en priorité</strong><p>${fmt(f.priority)}</p></section>` : ""}
       ${f.exam ? `<section class="fc-exam"><strong>Annales / ED</strong><p>${fmt(f.exam)}</p></section>` : ""}
-      ${f.id === "dermato" ? encartCoursPEC(f.id) + encartPEC() : f.id === "voyage" ? encartVoyage() : COURS_PEC[f.id] ? encartCoursPEC(f.id) : encartDisp(f)}
+      ${f.id === "dermato" ? encartCoursPEC(f.id) + `<section class="fc-pec pec-reading" aria-label="Pathologies dermatologiques">${encartPEC()}</section>` : f.id === "voyage" ? encartVoyage() : COURS_PEC[f.id] ? encartCoursPEC(f.id) : encartDisp(f)}
       ${f.id === "dermato" || f.id === "voyage" || COURS_PEC[f.id] || DISP_DETAILS[f.id] ? "" : f.sections.map((section,i) => `<details class="fc-accordion fc-family"><summary><span>${i+1}. ${esc(section.title)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><ul>${section.items.map(item => `<li>${fmt(item)}</li>`).join("")}</ul></div></details>`).join("")}
       ${f.informative ? `<section class="fc-info"><strong>À titre informatif — ne pas apprendre les détails signalés</strong><p>${fmt(f.informative)}</p></section>` : ""}
-      <p class="muted fc-source">Sources : ${esc(f.source)}. Synthèse pédagogique ciblée : consulter les supports pour les détails de situations non couverts. Les ED non corrigés ne sont pas traités comme des corrigés.</p>`;
+      <p class="muted fc-source">Sources : ${esc(f.source)}.${COURS_PEC[f.id] || f.id === "voyage" ? "" : " Synthèse pédagogique ciblée : consulter les supports pour les détails de situations non couverts. Les ED non corrigés ne sont pas traités comme des corrigés."}</p>`;
     const q = norm(S.ficheRecherche || "");
     const liste = FICHES_COURS.filter(x => norm(x.title + " " + x.source + " " + x.sections.map(y => y.title).join(" ")).includes(q));
     return `<header><p class="fc-eyebrow">BIBLIOTHÈQUE PH5</p><h1>Fiches de cours</h1><p class="muted">L'essentiel par thème, avec les priorités des ED et des annales. Les mentions « à titre informatif » sont distinguées des notions à apprendre.</p></header>
