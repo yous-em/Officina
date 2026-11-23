@@ -272,6 +272,7 @@ main > * { flex-shrink: 0; }
 .fc-focus,.fc-exam,.fc-info{padding:14px 15px;border-radius:13px;margin:12px 0;border:1px solid var(--line);background:var(--accent-soft)}.fc-focus strong,.fc-exam strong,.fc-info strong{display:block;font-size:14px}.fc-focus p,.fc-exam p,.fc-info p{margin:6px 0 0;line-height:1.6;font-size:14px}.fc-exam{background:#f2f4f8}.fc-info{background:#f8f5ed}.fc-source{font-size:12px;line-height:1.5;margin:14px 0}
 nav.tabs button{font-size:9px}nav.tabs button svg{width:20px;height:20px}
 .fc-travel-key{background:#ffe69b;color:#302509;border-radius:.18em;padding:.06em .16em;box-decoration-break:clone;-webkit-box-decoration-break:clone}
+.fc-focus-pec mark,.fc-derm-orientation mark{font-weight:750;color:#302509;background:#ffe69b}
 </style>
 </head>
 <body>
@@ -6889,7 +6890,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
   const doms = (ds) => ds.map((d) => `<span class="chip">${esc(D.DOMAINES[d].label)}</span>`).join("");
 
   /* ---------- État ---------- */
-  const FICHES_COURS = [{"id":"dermato","title":"Dermatologie","source":"Petit · Dermatologie PH6 2026–27, p. 3–129 ; ronéo CM4 Petit","sections":[{"title":"Dermatoses virales","items":["Verrues : lésions hyperkératosiques contagieuses, guérison spontanée possible ; traiter surtout si gêne/douleur ; attention diabète, neuropathie, artériopathie, grossesse, enfant jeune.","Condylomes : infection à HPV, atteinte génitale ; avis médical, dépistage/prévention et vaccination selon contexte.","Molluscum contagiosum : papules ombiliquées, contagion par contact ; éviter grattage et partage de linge.","Herpès labial : vésicules groupées puis croûtes ; antiviraux locaux précoces selon indication ; orientation si atteinte oculaire, immunodépression, forme étendue.","Varicelle : éruption vésiculeuse en poussées ; vigilance grossesse, nouveau-né et immunodépression ; éviter AINS et aspirine en automédication.","Zona : éruption douloureuse unilatérale métamérique ; consultation rapide, urgence si territoire ophtalmique."]},{"title":"Dermatoses parasitaires","items":["Pédiculose : rechercher poux vivants et lentes ; traitement mécanique/physique selon produit, contrôle et renouvellement selon notice ; peigne fin.","Gale : prurit nocturne, sillons et localisation évocatrice ; traitement du patient et des contacts selon protocole ; décontamination du linge/environnement.","Tiques : retrait rapide au tire-tique, désinfection et surveillance ; consulter en cas d’érythème migrant ou de symptômes généraux."]},{"title":"Dermatoses fongiques","items":["Onychomycose : confirmer le diagnostic si nécessaire ; traitement local prolongé pour atteintes limitées, prise en charge médicale si atteinte étendue/matrice.","Mycoses cutanées : pied d’athlète, intertrigos, teigne, dermatophytie circinée, pityriasis versicolor ; adapter l’antifongique à la localisation et à la gravité.","Mycoses génitales : distinguer candidose et diagnostics différentiels ; rechercher facteurs favorisants et critères d’orientation."]},{"title":"Dermatoses bactériennes — à apprendre","items":["Impétigo : contagiosité et mesures d’hygiène ; mupirocine locale selon situation ; formes graves : recours à l’antibiothérapie orale.","Érysipèle = dermohypodermite bactérienne non nécrosante (DHBNN) : consultation médicale ; **amoxicilline 50 mg/kg/j en 3 prises, max. 6 g/j, pendant 7 jours chez l’adulte**.","Allergie aux pénicillines : **pristinamycine 1 g × 3/j** ou **clindamycine 1,8 g/j en 3 prises** (jusqu’à 2,4 g/j si >100 kg), pendant **7 jours**.","Porte d’entrée par morsure : retenir **amoxicilline + acide clavulanique** (sans posologie supplémentaire exigée dans le CM4).","Furoncle et panaris : distinguer forme simple et signes de complication ; ne pas presser/inciser soi-même ; orientation si signes généraux, extension ou localisation à risque."]},{"title":"Dermatoses inflammatoires et autres","items":["Acné : distinguer comédons, papules/pustules et formes sévères ; traitement adapté à la gravité, tolérance et observance.","Rosacée : érythème centrofacial, flushs et papulopustules ; éviter facteurs déclenchants et corticoïdes locaux inadaptés.","Psoriasis : plaques érythémato-squameuses ; émollients et traitements locaux adaptés ; attention aux formes étendues et atteintes articulaires.","Eczéma atopique/de contact : émollients, éviction des irritants/allergènes, dermocorticoïdes en poussée selon prescription.","Autres thèmes du diaporama : hyperhidrose, gelures/engelures, tatouage/piercing, hyperkératoses, kératose actinique, chenilles processionnaires, urticaire, alopécies, lucite estivale bénigne."]},{"title":"Protection solaire et dermocorticoïdes","items":["Photoprotection : vêtements, ombre, application/réapplication adaptée de la protection solaire, attention aux phototypes et UV.","Dermocorticoïdes : choisir puissance, galénique, localisation, durée et fréquence ; risque d’atrophie et d’effets indésirables si mésusage ; prudence visage/plis."]}],"priority":"CM4 : retenir surtout le schéma adulte de DHBNN, la morsure comme cas particulier et les critères d’orientation ; apprendre aussi les conseils officinaux.","informative":"Impétigo grave : **savoir qu’une antibiothérapie orale est indiquée** ; selon l’annotation orale signalée dans le ronéo, **ne pas apprendre le nom ni la posologie de l’antibiotique oral**.","exam":"L’analyse d’ordonnance exige de vérifier indication, dose, durée, terrain, allergies et conseils ; les ED sont des entraînements prioritaires.","status":"Synthèse ciblée"},{"id":"mucoviscidose","title":"Mucoviscidose","source":"Cransac · Prérequis mucoviscidose (56 p.) + cas clinique (14 p.)","sections":[{"title":"Comprendre le terrain","items":["Maladie génétique liée à CFTR ; sécrétions visqueuses, atteintes respiratoires et digestives, infections bronchiques répétées.","Repérer génotype et éligibilité aux modulateurs CFTR ; distinguer traitement de fond et traitement d’exacerbation."]},{"title":"Traitements rencontrés dans le cas","items":["Ivacaftor (Kalydeco) : modulateur CFTR ; vérifier prises, repas et interactions.","Colistiméthate inhalé (Colobreathe) : antibiothérapie inhalée contre Pseudomonas aeruginosa ; maîtrise du dispositif.","Dornase alfa (Pulmozyme) : fluidification des sécrétions bronchiques ; technique et conservation à vérifier.","Pancréatine (Créon) : substitution enzymatique en cas d’insuffisance pancréatique ; à prendre avec repas et collations selon prescription.","Supplémentation nutritionnelle et vitaminique, bronchodilatateurs et autres traitements associés selon patient."]},{"title":"Analyse d’ordonnance et conseil","items":["Vérifier l’ordre et la technique des inhalations, les dispositifs (Turbospin, Diskus, chambre d’inhalation), la tolérance et l’observance.","Distinguer dose d’entretien et doses de secours ; vérifier antibiotiques chroniques et traitements interrompus.","Surveiller interactions, atteinte hépatique, nutrition, selles, symptômes respiratoires et exacerbations selon prescription."]}],"priority":"Le cas clinique Cransac est un ED à reprendre médicament par médicament, surtout inhalation, enzymes pancréatiques et modulateur CFTR.","informative":"","exam":"Cas fourni : ordonnance polymédicamentée, historique des dispensations et technique des dispositifs.","status":"Synthèse ciblée"},{"id":"osteoporose","title":"Ostéoporose","source":"Cransac · Prérequis ostéoporose (42 p.)","sections":[{"title":"Diagnostic et risques","items":["Fragilité osseuse, fractures de faible énergie, facteurs de risque de chute ; interpréter DMO/T-score avec le contexte clinique.","Identifier antécédents de fractures, corticothérapie, âge, fonction rénale et apports calcium/vitamine D."]},{"title":"Traitements et conseils","items":["Bisphosphonates oraux : modalités strictes de prise (à jeun, eau, position debout/assise, délai avant alimentation/autres médicaments) selon molécule.","Dénosumab : injections programmées ; **ne pas interrompre sans relais adapté** du fait du rebond du remodelage et du risque de fractures vertébrales multiples.","Calcium/vitamine D : vérifier apports et indication ; attention aux interactions d’absorption avec d’autres médicaments.","Évaluer observance, durée, prévention des chutes, santé bucco-dentaire et réévaluation du risque fracturaire."]}],"priority":"Point majeur des diapositives : phénomène de rebond à l’arrêt du dénosumab ; modalités de prise des bisphosphonates.","informative":"","exam":"Pour une ordonnance : vérifier âge, fonction rénale, contre-indications, modalités de prise et continuité du traitement.","status":"Synthèse ciblée"},{"id":"goutte","title":"Goutte","source":"Cransac · Prérequis goutte (40 p.)","sections":[{"title":"Crise aiguë","items":["Reconnaître monoarthrite aiguë douloureuse, inflammatoire ; éliminer arthrite septique en cas de doute.","Traitement précoce selon ordonnance : colchicine, AINS ou corticoïde selon terrain et contre-indications."]},{"title":"Colchicine : sécurité","items":["**Marge thérapeutique étroite** ; vérifier interactions, insuffisance rénale/hépatique et erreurs de prise.","Diarrhée, nausées/vomissements : signes de toxicité possibles ; le cours insiste sur la réduction à 0,5 mg voire l’arrêt en cas de diarrhée.","Vigilance renforcée chez le patient âgé, notamment au-delà de 75 ans."]},{"title":"Traitement de fond","items":["Allopurinol/fébuxostat : hypo-uricémiants ; adapter à la fonction rénale, titrer selon uricémie et recommandations du cours.","Prévention des crises lors de l’introduction du traitement de fond, notamment colchicine à faible dose selon prescription.","Conseils : hydratation, facteurs déclenchants, observance et suivi de l’uricémie."]}],"priority":"Colchicine : toxicité, interactions, conduite à tenir devant une diarrhée ; adaptation rénale des hypo-uricémiants.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"inf-gyn","title":"Infections gynécologiques","source":"Cransac · Prérequis infections gynécologiques (44 p.)","sections":[{"title":"Reconnaissance","items":["Distinguer infections génitales basses (vulvovaginites) et hautes (salpingite, endométrite) ; les formes hautes sont plus à risque de complications.","Différencier candidose, vaginose bactérienne, trichomonase et IST selon symptômes et contexte ; orientation en cas de doute."]},{"title":"Traitements et sécurité","items":["Antifongiques locaux ou systémiques selon infection et terrain ; conseils d’application et d’hygiène.","Herpès génital : aciclovir, valaciclovir, famciclovir selon indication ; traitement primo-infection/récurrences et prévention selon contexte.","Infections hautes : prise en charge médicale, antibiothérapie adaptée et évaluation des partenaires/IST.","Grossesse, douleur pelvienne, fièvre ou récidives : critères d’orientation prioritaires."]}],"priority":"Savoir identifier les signes d’infection haute, les diagnostics différentiels et les précautions en grossesse.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"anemies","title":"Anémies","source":"Boulin · Anémies (34 p.) + support Anémies (12 p.)","sections":[{"title":"Raisonnement biologique","items":["Une anémie est une diminution de l’hémoglobine, pas un diagnostic étiologique.","Orienter selon VGM (microcytaire/normocytaire/macrocytaire), réticulocytes, ferritine et contexte clinique.","Anémie ferriprive : classiquement microcytaire, hypochrome et arégénérative ; rechercher la cause du déficit."]},{"title":"Fer oral : conseil officinal","items":["Le cours mentionne une supplémentation en fer de **100 à 200 mg/j** selon prescription ; vérifier sel, fer élément et tolérance.","Effets fréquents : troubles digestifs et selles noires ; interactions d’absorption avec thé/café, cyclines, fluoroquinolones, bisphosphonates, lévothyroxine, sels de calcium/magnésium.","Espacer les prises concernées selon recommandations ; garder le fer hors de portée des enfants."]},{"title":"Folates et vitamine B12","items":["Rechercher causes de carence B9/B12 et médicaments antifolates (méthotrexate, cotrimoxazole, etc.).","Anémie de Biermer : cours mentionnant un entretien par **cyanocobalamine 1 000 µg/mois IM** ; vérifier indication, phase initiale et voie d’administration."]}],"priority":"Interprétation VGM/réticulocytes, fer élément, interactions d’absorption, conseils au comptoir.","informative":"","exam":"Cas Boulin : vérifier le schéma de vitamine B12 et la cohérence de l’indication.","status":"Synthèse ciblée"},{"id":"hbp","title":"Hypertrophie bénigne de la prostate","source":"Boulin · HBP (30 p.) + cas HBP du 13/11/2026","sections":[{"title":"Reconnaissance","items":["Symptômes obstructifs : dysurie, retard au démarrage, jet faible ; symptômes irritatifs : pollakiurie, urgenturie.","Rechercher complications, hématurie, rétention, infections et retentissement sur qualité de vie."]},{"title":"Traitements","items":["Surveillance si symptômes minimes sans gêne ; traitement médical si retentissement ; chirurgie si complication/échec.","Alpha-bloquants : amélioration des symptômes ; vigilance hypotension orthostatique, chutes et association antihypertenseurs.","Inhibiteurs de la 5-alpha-réductase : plutôt si prostate volumineuse (>40 g selon diapo) ; baisse du PSA d’environ 50 %, à intégrer à l’interprétation."]},{"title":"Analyse d’ordonnance","items":["Vérifier terrain cardiovasculaire, hypotension, associations et chronologie de l’effet attendu.","Conseils : symptômes d’alerte, hydratation adaptée, éviter automédication aggravant la rétention."]}],"priority":"Alpha-bloquants : hypotension orthostatique ; inhibiteurs 5-alpha-réductase : effet sur PSA.","informative":"","exam":"Cas clinique Boulin du 13 novembre : appliquer l’analyse au patient âgé polymédiqué.","status":"Synthèse ciblée"},{"id":"bipolaire","title":"Troubles bipolaires","source":"Boulin · Troubles bipolaires (33 p.) + cas du 12/11/2026","sections":[{"title":"Reconnaissance et objectifs","items":["Alternance possible d’épisodes maniaques/hypomaniaques et dépressifs ; risque suicidaire important.","Distinguer traitement d’épisode et prévention des rechutes ; évaluer observance et signes de décompensation."]},{"title":"Médicaments et surveillance","items":["Lithium : marge thérapeutique étroite, lithémie, fonction rénale, thyroïde, hydratation et interactions ; attention aux modifications de consommation de sel et de caféine.","Valproate/valpromide/divalproate : risques tératogènes majeurs et restrictions de prescription ; vérifier programme de prévention de grossesse et réglementation applicable.","Quétiapine et autres antipsychotiques : sédation, métabolisme, hypotension, effets extrapyramidaux selon molécule."]},{"title":"Conseils","items":["Ne pas interrompre brutalement ; identifier symptômes d’alerte, troubles du sommeil et signes de toxicité.","Vérifier les co-prescriptions (AINS, diurétiques, IEC/ARA2 avec lithium notamment)."]}],"priority":"Sécurité du lithium, risques des dérivés valproïques et conseils de surveillance.","informative":"","exam":"Cas du 12/11 : analyse d’un patient hospitalisé de 68 ans.","status":"Synthèse ciblée"},{"id":"ophtalmo","title":"Ophtalmologie et otologie","source":"Petit · Ophtalmologie–Otologie (94 p.)","sections":[{"title":"Signes d’urgence","items":["Œil rouge douloureux avec baisse visuelle, photophobie importante, traumatisme chimique, suspicion de glaucome aigu : orientation urgente.","Zona ophtalmique, baisse brutale de vision, décollement de rétine suspecté : ne pas banaliser."]},{"title":"Situations fréquentes","items":["Orgelet, chalazion, blépharite : distinguer et conseiller hygiène adaptée ; consultation si aggravation.","Sécheresse oculaire : larmes artificielles selon symptômes ; technique d’instillation et hygiène.","Otologie : distinguer otalgie, otorrhée, signes de complication et besoin d’examen médical."]},{"title":"Ordonnances","items":["Vérifier collyres, conservateurs, intervalle entre gouttes, durée d’utilisation après ouverture, lentilles et terrain.","Ne pas extrapoler une antibiothérapie pédiatrique : contrôler dose au poids, durée et formulation."]}],"priority":"Signes de gravité ophtalmologique + technique des collyres.","informative":"","exam":"Annales 2021–22 et 2022–23 : cas d’otite pédiatrique et contrôle des posologies.","status":"Synthèse ciblée"},{"id":"anxiete","title":"Anxiété, insomnie et fatigue","source":"Petit · Anxiété, insomnie & fatigue (46 p.)","sections":[{"title":"Interrogatoire","items":["Pour qui, depuis quand, type de plainte (endormissement, réveils, sommeil non réparateur), retentissement, médicaments et excitants.","Rechercher causes environnementales, douleur, syndrome des jambes sans repos et iatrogénie (corticoïdes, stimulants, certains antidépresseurs…)."]},{"title":"Traitements et conseil","items":["Mesures d’hygiène du sommeil en première intention selon situation ; distinguer insomnie transitoire et chronique.","Hypnotiques/BZD : risque sédation, chutes, dépendance et rebond ; prudence chez la personne âgée.","Déprescription progressive : évaluer indication, durée, risques, motivation et paliers individualisés ; ne pas imposer un protocole unique sans dossier."]}],"priority":"Chez la personne âgée : balance bénéfice-risque BZD, alternatives et déprescription.","informative":"","exam":"Annales 2024–25, p. 3–4 : BZD inadaptée chez une patiente de 79 ans, paroxétine et protocole de réduction de zopiclone.","status":"Synthèse ciblée"},{"id":"urgence","title":"Premiers soins et urgences","source":"Petit · Premiers soins & Urgences (132 p.)","sections":[{"title":"Triage officinal","items":["Évaluer gravité, conscience, respiration, saignement, signes neurologiques et nécessité d’appeler les secours.","Plaie : profondeur, contamination, localisation, risque infectieux, vaccination antitétanique ; distinguer soins simples et orientation."]},{"title":"Thèmes à connaître","items":["Brûlures, épistaxis, piqûres et morsures : premiers gestes et signes d’alerte.","Urgences, malaises, surdosage opioïdes, autotests et traçabilité : appliquer les protocoles vus au cours.","Ajustement des AVK : vérifier INR, indication, risque hémorragique et prescription ; ne pas improviser une adaptation sans protocole."]},{"title":"Trousse d’urgence officinale","items":["Le diaporama cite antihistaminiques H1, corticoïdes per os, bronchodilatateurs et dispositifs d’administration, stylos d’adrénaline adultes/enfants."]}],"priority":"Savoir reconnaître une urgence et décider de la conduite à tenir avant tout conseil produit.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"sevrage","title":"Sevrage tabagique","source":"Petit · Sevrage tabagique (54 p.)","sections":[{"title":"Évaluation","items":["Motivation, consommation, dépendance nicotinique, tentatives antérieures, grossesse et comorbidités."]},{"title":"Prise en charge","items":["Substituts nicotiniques : formes transdermiques et orales ; adapter dose au besoin, symptômes de manque et tolérance.","Conseiller utilisation des dispositifs, stratégies contre envies impérieuses et suivi régulier.","Distinguer échec, sous-dosage et mauvaise technique ; prise en charge comportementale associée."]}],"priority":"Savoir conduire un entretien bref, choisir une substitution et adapter le conseil.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"voyage","title":"Le voyageur","source":"Thomas Petit · Diaporama Le voyageur (45 p.) et ronéo CM2 du 18/09/2026","sections":[{"title":"Diarrhée du voyageur","items":["Évaluer fréquence, déshydratation, fièvre, sang/glaires, terrain et durée.","**Réhydratation orale en première intention** ; conseil hygiéno-diététique et traitements symptomatiques selon contexte.","Orientation : déshydratation, altération de l’état général, vomissements incoercibles, selles sanglantes, fièvre, grossesse, jeune enfant, personne âgée, absence d’amélioration après 48 h."]},{"title":"Autres risques","items":["Vaccinations selon destination, prévention vectorielle, répulsifs et vêtements, trousse à pharmacie.","Mal des transports, chaleur et décalage horaire : adapter les conseils et prises de médicaments."]}],"priority":"**Fièvre après zone impaludée : urgence. Diarrhée : rechercher les signes de gravité et réhydrater. Hyperthermie brutale avec troubles neurologiques : appeler le 15/112.**","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"sport","title":"Pathologies du sportif","source":"Petit · Pathologies du sportif (46 p.)","sections":[{"title":"Conseil","items":["Interroger type/intensité d’activité, hydratation, alimentation, traitements et symptômes.","Hydratation avant, pendant et après l’effort ; attention chaleur, déshydratation et signes de gravité.","Repérer les douleurs ou blessures nécessitant une orientation ; éviter la banalisation de douleurs persistantes."]},{"title":"Produits et interactions","items":["Vérifier composition des compléments, risques de surdosage, dopage et interactions.","Différencier besoins nutritionnels usuels et situations particulières (effort prolongé, conditions extrêmes)."]}],"priority":"Conseil individualisé et repérage des situations à risque.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"commentaire","title":"Méthode du commentaire d’ordonnance","source":"Petit · CO1 (60 p.) ; ED1 ; annales 2021–25 ; Boulin, cas et courriers","sections":[{"title":"Analyse systématique","items":["1. Patient : âge, poids, grossesse, antécédents, allergies, fonction rénale/hépatique.","2. Conformité : date, identité, prescripteur, ordonnance sécurisée/bizone, durée et renouvellement.","3. Pathologies et pertinence de chaque indication.","4. Pour chaque ligne : DCI/classe, dose, fréquence, durée, voie, modalités de prise, adaptation au terrain.","5. Interactions, contre-indications, redondances, médicaments potentiellement inappropriés, effets indésirables.","6. Plan de prise, conseils au patient, surveillance biologique/clinique et observance.","7. Intervention pharmaceutique : problème prioritaire, proposition argumentée, communication au prescripteur et traçabilité SFPC."]},{"title":"Situations réellement vues aux annales","items":["**2024–25** : Parkinson, paroxétine/interactions, BZD chez la personne âgée, déprescription zopiclone, grossesse, méthylphénidate, cefpodoxime pédiatrique, courrier prescripteur.","**2021–22** : otites pédiatriques, tramadol buvable, clopidogrel–ésoméprazole, moclobémide–triptan, courrier.","**2022–23** : diabète/gliclazide/HbA1c, antalgiques pédiatriques, Parkinson/olanzapine, cefpodoxime au poids et lamotrigine–contraception."]},{"title":"ED et corrections","items":["ED1 Meloux : deux cas d’ordonnance à analyser, en conservant la distinction énoncé/correction.","ED2 Meloux : ordonnance du 23/11/2026 à préparer ; **ne pas présenter comme déjà corrigée**.","Boulin : lettres au prescripteur et cas du 5/11 et 10/11 ; identifier et hiérarchiser les interventions."]}],"priority":"Priorité très élevée : les annales testent surtout le raisonnement, les posologies au poids, les interactions et la rédaction d’une intervention argumentée.","informative":"","exam":"Sujets réellement identifiés dans les annales jointes ; leur récurrence ne garantit pas qu’ils retomberont.","status":"Synthèse ciblée"}];
+  const FICHES_COURS = [{"id":"dermato","title":"Dermatologie","source":"Thomas Petit · Dermatologie PH6 (129 diapos) et ronéos CM4–CM5","sections":[{"title":"Dermatoses virales","items":["Verrues : lésions hyperkératosiques contagieuses, guérison spontanée possible ; traiter surtout si gêne/douleur ; attention diabète, neuropathie, artériopathie, grossesse, enfant jeune.","Condylomes : infection à HPV, atteinte génitale ; avis médical, dépistage/prévention et vaccination selon contexte.","Molluscum contagiosum : papules ombiliquées, contagion par contact ; éviter grattage et partage de linge.","Herpès labial : vésicules groupées puis croûtes ; antiviraux locaux précoces selon indication ; orientation si atteinte oculaire, immunodépression, forme étendue.","Varicelle : éruption vésiculeuse en poussées ; vigilance grossesse, nouveau-né et immunodépression ; éviter AINS et aspirine en automédication.","Zona : éruption douloureuse unilatérale métamérique ; consultation rapide, urgence si territoire ophtalmique."]},{"title":"Dermatoses parasitaires","items":["Pédiculose : rechercher poux vivants et lentes ; traitement mécanique/physique selon produit, contrôle et renouvellement selon notice ; peigne fin.","Gale : prurit nocturne, sillons et localisation évocatrice ; traitement du patient et des contacts selon protocole ; décontamination du linge/environnement.","Tiques : retrait rapide au tire-tique, désinfection et surveillance ; consulter en cas d’érythème migrant ou de symptômes généraux."]},{"title":"Dermatoses fongiques","items":["Onychomycose : confirmer le diagnostic si nécessaire ; traitement local prolongé pour atteintes limitées, prise en charge médicale si atteinte étendue/matrice.","Mycoses cutanées : pied d’athlète, intertrigos, teigne, dermatophytie circinée, pityriasis versicolor ; adapter l’antifongique à la localisation et à la gravité.","Mycoses génitales : distinguer candidose et diagnostics différentiels ; rechercher facteurs favorisants et critères d’orientation."]},{"title":"Dermatoses bactériennes — à apprendre","items":["Impétigo : contagiosité et mesures d’hygiène ; mupirocine locale selon situation ; formes graves : recours à l’antibiothérapie orale.","Érysipèle = dermohypodermite bactérienne non nécrosante (DHBNN) : consultation médicale ; **amoxicilline 50 mg/kg/j en 3 prises, max. 6 g/j, pendant 7 jours chez l’adulte**.","Allergie aux pénicillines : **pristinamycine 1 g × 3/j** ou **clindamycine 1,8 g/j en 3 prises** (jusqu’à 2,4 g/j si >100 kg), pendant **7 jours**.","Porte d’entrée par morsure : retenir **amoxicilline + acide clavulanique** (sans posologie supplémentaire exigée dans le CM4).","Furoncle et panaris : distinguer forme simple et signes de complication ; ne pas presser/inciser soi-même ; orientation si signes généraux, extension ou localisation à risque."]},{"title":"Dermatoses inflammatoires et autres","items":["Acné : distinguer comédons, papules/pustules et formes sévères ; traitement adapté à la gravité, tolérance et observance.","Rosacée : érythème centrofacial, flushs et papulopustules ; éviter facteurs déclenchants et corticoïdes locaux inadaptés.","Psoriasis : plaques érythémato-squameuses ; émollients et traitements locaux adaptés ; attention aux formes étendues et atteintes articulaires.","Eczéma atopique/de contact : émollients, éviction des irritants/allergènes, dermocorticoïdes en poussée selon prescription.","Autres thèmes du diaporama : hyperhidrose, gelures/engelures, tatouage/piercing, hyperkératoses, kératose actinique, chenilles processionnaires, urticaire, alopécies, lucite estivale bénigne."]},{"title":"Protection solaire et dermocorticoïdes","items":["Photoprotection : vêtements, ombre, application/réapplication adaptée de la protection solaire, attention aux phototypes et UV.","Dermocorticoïdes : choisir puissance, galénique, localisation, durée et fréquence ; risque d’atrophie et d’effets indésirables si mésusage ; prudence visage/plis."]}],"priority":"**Reconnaître les signes d’orientation, expliquer le geste et distinguer une infection locale d’une infection grave.**","informative":"Impétigo grave : **savoir qu’une antibiothérapie orale est indiquée** ; selon l’annotation orale signalée dans le ronéo, **ne pas apprendre le nom ni la posologie de l’antibiotique oral**.","exam":"L’analyse d’ordonnance exige de vérifier indication, dose, durée, terrain, allergies et conseils ; les ED sont des entraînements prioritaires.","status":"Synthèse ciblée"},{"id":"mucoviscidose","title":"Mucoviscidose","source":"Cransac · Prérequis mucoviscidose (56 p.) + cas clinique (14 p.)","sections":[{"title":"Comprendre le terrain","items":["Maladie génétique liée à CFTR ; sécrétions visqueuses, atteintes respiratoires et digestives, infections bronchiques répétées.","Repérer génotype et éligibilité aux modulateurs CFTR ; distinguer traitement de fond et traitement d’exacerbation."]},{"title":"Traitements rencontrés dans le cas","items":["Ivacaftor (Kalydeco) : modulateur CFTR ; vérifier prises, repas et interactions.","Colistiméthate inhalé (Colobreathe) : antibiothérapie inhalée contre Pseudomonas aeruginosa ; maîtrise du dispositif.","Dornase alfa (Pulmozyme) : fluidification des sécrétions bronchiques ; technique et conservation à vérifier.","Pancréatine (Créon) : substitution enzymatique en cas d’insuffisance pancréatique ; à prendre avec repas et collations selon prescription.","Supplémentation nutritionnelle et vitaminique, bronchodilatateurs et autres traitements associés selon patient."]},{"title":"Analyse d’ordonnance et conseil","items":["Vérifier l’ordre et la technique des inhalations, les dispositifs (Turbospin, Diskus, chambre d’inhalation), la tolérance et l’observance.","Distinguer dose d’entretien et doses de secours ; vérifier antibiotiques chroniques et traitements interrompus.","Surveiller interactions, atteinte hépatique, nutrition, selles, symptômes respiratoires et exacerbations selon prescription."]}],"priority":"Le cas clinique Cransac est un ED à reprendre médicament par médicament, surtout inhalation, enzymes pancréatiques et modulateur CFTR.","informative":"","exam":"Cas fourni : ordonnance polymédicamentée, historique des dispensations et technique des dispositifs.","status":"Synthèse ciblée"},{"id":"osteoporose","title":"Ostéoporose","source":"Cransac · Prérequis ostéoporose (42 p.)","sections":[{"title":"Diagnostic et risques","items":["Fragilité osseuse, fractures de faible énergie, facteurs de risque de chute ; interpréter DMO/T-score avec le contexte clinique.","Identifier antécédents de fractures, corticothérapie, âge, fonction rénale et apports calcium/vitamine D."]},{"title":"Traitements et conseils","items":["Bisphosphonates oraux : modalités strictes de prise (à jeun, eau, position debout/assise, délai avant alimentation/autres médicaments) selon molécule.","Dénosumab : injections programmées ; **ne pas interrompre sans relais adapté** du fait du rebond du remodelage et du risque de fractures vertébrales multiples.","Calcium/vitamine D : vérifier apports et indication ; attention aux interactions d’absorption avec d’autres médicaments.","Évaluer observance, durée, prévention des chutes, santé bucco-dentaire et réévaluation du risque fracturaire."]}],"priority":"Point majeur des diapositives : phénomène de rebond à l’arrêt du dénosumab ; modalités de prise des bisphosphonates.","informative":"","exam":"Pour une ordonnance : vérifier âge, fonction rénale, contre-indications, modalités de prise et continuité du traitement.","status":"Synthèse ciblée"},{"id":"goutte","title":"Goutte","source":"Cransac · Prérequis goutte (40 p.)","sections":[{"title":"Crise aiguë","items":["Reconnaître monoarthrite aiguë douloureuse, inflammatoire ; éliminer arthrite septique en cas de doute.","Traitement précoce selon ordonnance : colchicine, AINS ou corticoïde selon terrain et contre-indications."]},{"title":"Colchicine : sécurité","items":["**Marge thérapeutique étroite** ; vérifier interactions, insuffisance rénale/hépatique et erreurs de prise.","Diarrhée, nausées/vomissements : signes de toxicité possibles ; le cours insiste sur la réduction à 0,5 mg voire l’arrêt en cas de diarrhée.","Vigilance renforcée chez le patient âgé, notamment au-delà de 75 ans."]},{"title":"Traitement de fond","items":["Allopurinol/fébuxostat : hypo-uricémiants ; adapter à la fonction rénale, titrer selon uricémie et recommandations du cours.","Prévention des crises lors de l’introduction du traitement de fond, notamment colchicine à faible dose selon prescription.","Conseils : hydratation, facteurs déclenchants, observance et suivi de l’uricémie."]}],"priority":"Colchicine : toxicité, interactions, conduite à tenir devant une diarrhée ; adaptation rénale des hypo-uricémiants.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"inf-gyn","title":"Infections gynécologiques","source":"Cransac · Prérequis infections gynécologiques (44 p.)","sections":[{"title":"Reconnaissance","items":["Distinguer infections génitales basses (vulvovaginites) et hautes (salpingite, endométrite) ; les formes hautes sont plus à risque de complications.","Différencier candidose, vaginose bactérienne, trichomonase et IST selon symptômes et contexte ; orientation en cas de doute."]},{"title":"Traitements et sécurité","items":["Antifongiques locaux ou systémiques selon infection et terrain ; conseils d’application et d’hygiène.","Herpès génital : aciclovir, valaciclovir, famciclovir selon indication ; traitement primo-infection/récurrences et prévention selon contexte.","Infections hautes : prise en charge médicale, antibiothérapie adaptée et évaluation des partenaires/IST.","Grossesse, douleur pelvienne, fièvre ou récidives : critères d’orientation prioritaires."]}],"priority":"Savoir identifier les signes d’infection haute, les diagnostics différentiels et les précautions en grossesse.","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"anemies","title":"Anémies","source":"Boulin · Anémies (34 p.) + support Anémies (12 p.)","sections":[{"title":"Raisonnement biologique","items":["Une anémie est une diminution de l’hémoglobine, pas un diagnostic étiologique.","Orienter selon VGM (microcytaire/normocytaire/macrocytaire), réticulocytes, ferritine et contexte clinique.","Anémie ferriprive : classiquement microcytaire, hypochrome et arégénérative ; rechercher la cause du déficit."]},{"title":"Fer oral : conseil officinal","items":["Le cours mentionne une supplémentation en fer de **100 à 200 mg/j** selon prescription ; vérifier sel, fer élément et tolérance.","Effets fréquents : troubles digestifs et selles noires ; interactions d’absorption avec thé/café, cyclines, fluoroquinolones, bisphosphonates, lévothyroxine, sels de calcium/magnésium.","Espacer les prises concernées selon recommandations ; garder le fer hors de portée des enfants."]},{"title":"Folates et vitamine B12","items":["Rechercher causes de carence B9/B12 et médicaments antifolates (méthotrexate, cotrimoxazole, etc.).","Anémie de Biermer : cours mentionnant un entretien par **cyanocobalamine 1 000 µg/mois IM** ; vérifier indication, phase initiale et voie d’administration."]}],"priority":"Interprétation VGM/réticulocytes, fer élément, interactions d’absorption, conseils au comptoir.","informative":"","exam":"Cas Boulin : vérifier le schéma de vitamine B12 et la cohérence de l’indication.","status":"Synthèse ciblée"},{"id":"hbp","title":"Hypertrophie bénigne de la prostate","source":"Boulin · HBP (30 p.) + cas HBP du 13/11/2026","sections":[{"title":"Reconnaissance","items":["Symptômes obstructifs : dysurie, retard au démarrage, jet faible ; symptômes irritatifs : pollakiurie, urgenturie.","Rechercher complications, hématurie, rétention, infections et retentissement sur qualité de vie."]},{"title":"Traitements","items":["Surveillance si symptômes minimes sans gêne ; traitement médical si retentissement ; chirurgie si complication/échec.","Alpha-bloquants : amélioration des symptômes ; vigilance hypotension orthostatique, chutes et association antihypertenseurs.","Inhibiteurs de la 5-alpha-réductase : plutôt si prostate volumineuse (>40 g selon diapo) ; baisse du PSA d’environ 50 %, à intégrer à l’interprétation."]},{"title":"Analyse d’ordonnance","items":["Vérifier terrain cardiovasculaire, hypotension, associations et chronologie de l’effet attendu.","Conseils : symptômes d’alerte, hydratation adaptée, éviter automédication aggravant la rétention."]}],"priority":"Alpha-bloquants : hypotension orthostatique ; inhibiteurs 5-alpha-réductase : effet sur PSA.","informative":"","exam":"Cas clinique Boulin du 13 novembre : appliquer l’analyse au patient âgé polymédiqué.","status":"Synthèse ciblée"},{"id":"bipolaire","title":"Troubles bipolaires","source":"Boulin · Troubles bipolaires (33 p.) + cas du 12/11/2026","sections":[{"title":"Reconnaissance et objectifs","items":["Alternance possible d’épisodes maniaques/hypomaniaques et dépressifs ; risque suicidaire important.","Distinguer traitement d’épisode et prévention des rechutes ; évaluer observance et signes de décompensation."]},{"title":"Médicaments et surveillance","items":["Lithium : marge thérapeutique étroite, lithémie, fonction rénale, thyroïde, hydratation et interactions ; attention aux modifications de consommation de sel et de caféine.","Valproate/valpromide/divalproate : risques tératogènes majeurs et restrictions de prescription ; vérifier programme de prévention de grossesse et réglementation applicable.","Quétiapine et autres antipsychotiques : sédation, métabolisme, hypotension, effets extrapyramidaux selon molécule."]},{"title":"Conseils","items":["Ne pas interrompre brutalement ; identifier symptômes d’alerte, troubles du sommeil et signes de toxicité.","Vérifier les co-prescriptions (AINS, diurétiques, IEC/ARA2 avec lithium notamment)."]}],"priority":"Sécurité du lithium, risques des dérivés valproïques et conseils de surveillance.","informative":"","exam":"Cas du 12/11 : analyse d’un patient hospitalisé de 68 ans.","status":"Synthèse ciblée"},{"id":"ophtalmo","title":"Ophtalmologie et otologie","source":"Thomas Petit · Ophtalmologie–Otologie (94 diapos) et ronéo du 22/09/2026","sections":[{"title":"Signes d’urgence","items":["Œil rouge douloureux avec baisse visuelle, photophobie importante, traumatisme chimique, suspicion de glaucome aigu : orientation urgente.","Zona ophtalmique, baisse brutale de vision, décollement de rétine suspecté : ne pas banaliser."]},{"title":"Situations fréquentes","items":["Orgelet, chalazion, blépharite : distinguer et conseiller hygiène adaptée ; consultation si aggravation.","Sécheresse oculaire : larmes artificielles selon symptômes ; technique d’instillation et hygiène.","Otologie : distinguer otalgie, otorrhée, signes de complication et besoin d’examen médical."]},{"title":"Ordonnances","items":["Vérifier collyres, conservateurs, intervalle entre gouttes, durée d’utilisation après ouverture, lentilles et terrain.","Ne pas extrapoler une antibiothérapie pédiatrique : contrôler dose au poids, durée et formulation."]}],"priority":"**Œil rouge douloureux ou avec baisse d’acuité : urgence. Réviser le bouchon, l’otite externe, l’OMA et l’instillation.**","informative":"","exam":"Le ronéo demande de connaître les schémas de l’OMA de l’enfant et insiste sur bouchon, otite externe et OMA. Annales 2021–22 et 2022–23 : cas d’otite pédiatrique et contrôle des posologies.","status":"Synthèse ciblée"},{"id":"anxiete","title":"Anxiété, insomnie et fatigue","source":"Thomas Petit · Anxiété, insomnie et fatigue (46 diapos) et ronéo CM6 du 02/10/2026","sections":[{"title":"Interrogatoire","items":["Pour qui, depuis quand, type de plainte (endormissement, réveils, sommeil non réparateur), retentissement, médicaments et excitants.","Rechercher causes environnementales, douleur, syndrome des jambes sans repos et iatrogénie (corticoïdes, stimulants, certains antidépresseurs…)."]},{"title":"Traitements et conseil","items":["Mesures d’hygiène du sommeil en première intention selon situation ; distinguer insomnie transitoire et chronique.","Hypnotiques/BZD : risque sédation, chutes, dépendance et rebond ; prudence chez la personne âgée.","Déprescription progressive : évaluer indication, durée, risques, motivation et paliers individualisés ; ne pas imposer un protocole unique sans dossier."]}],"priority":"**Chercher la cause et mesurer le retentissement. Réviser les signes d’orientation, la doxylamine et la déprescription des hypnotiques.**","informative":"","exam":"Annales 2024–25, p. 3–4 : BZD inadaptée chez une patiente de 79 ans, paroxétine et protocole de réduction de zopiclone.","status":"Synthèse ciblée"},{"id":"urgence","title":"Premiers soins et urgences","source":"Thomas Petit · Premiers soins et urgences (132 diapos) et ronéo CM7 du 02/10/2026","sections":[{"title":"Triage officinal","items":["Évaluer gravité, conscience, respiration, saignement, signes neurologiques et nécessité d’appeler les secours.","Plaie : profondeur, contamination, localisation, risque infectieux, vaccination antitétanique ; distinguer soins simples et orientation."]},{"title":"Thèmes à connaître","items":["Brûlures, épistaxis, piqûres et morsures : premiers gestes et signes d’alerte.","Urgences, malaises, surdosage opioïdes, autotests et traçabilité : appliquer les protocoles vus au cours.","Ajustement des AVK : vérifier INR, indication, risque hémorragique et prescription ; ne pas improviser une adaptation sans protocole."]},{"title":"Trousse d’urgence officinale","items":["Le diaporama cite antihistaminiques H1, corticoïdes per os, bronchodilatateurs et dispositifs d’administration, stylos d’adrénaline adultes/enfants."]}],"priority":"**Sécuriser, vérifier conscience et respiration, puis alerter si gravité. Savoir utiliser le stylo d’adrénaline et expliquer les gestes de premiers soins.**","informative":"","exam":"Le ronéo souligne les trois réactions aux piqûres et le geste avec le stylo d’adrénaline. Pour la naloxone, retenir surtout la reconnaissance et l’alerte.","status":"Synthèse ciblée"},{"id":"sevrage","title":"Sevrage tabagique","source":"Thomas Petit · Sevrage tabagique (54 diapos) et ronéo CM1 du 18/09/2026","sections":[{"title":"Évaluation","items":["Motivation, consommation, dépendance nicotinique, tentatives antérieures, grossesse et comorbidités."]},{"title":"Prise en charge","items":["Substituts nicotiniques : formes transdermiques et orales ; adapter dose au besoin, symptômes de manque et tolérance.","Conseiller utilisation des dispositifs, stratégies contre envies impérieuses et suivi régulier.","Distinguer échec, sous-dosage et mauvaise technique ; prise en charge comportementale associée."]}],"priority":"**Évaluer la dépendance, montrer la technique des substituts, distinguer manque et surdosage, proposer un suivi.**","informative":"","exam":"Le ronéo conseille de savoir citer deux ou trois signes de manque et de surdosage, et de maîtriser la démarche complète au comptoir.","status":"Synthèse ciblée"},{"id":"voyage","title":"Le voyageur","source":"Thomas Petit · Diaporama Le voyageur (45 p.) et ronéo CM2 du 18/09/2026","sections":[{"title":"Diarrhée du voyageur","items":["Évaluer fréquence, déshydratation, fièvre, sang/glaires, terrain et durée.","**Réhydratation orale en première intention** ; conseil hygiéno-diététique et traitements symptomatiques selon contexte.","Orientation : déshydratation, altération de l’état général, vomissements incoercibles, selles sanglantes, fièvre, grossesse, jeune enfant, personne âgée, absence d’amélioration après 48 h."]},{"title":"Autres risques","items":["Vaccinations selon destination, prévention vectorielle, répulsifs et vêtements, trousse à pharmacie.","Mal des transports, chaleur et décalage horaire : adapter les conseils et prises de médicaments."]}],"priority":"**Fièvre après zone impaludée : urgence. Diarrhée : rechercher les signes de gravité et réhydrater. Hyperthermie brutale avec troubles neurologiques : appeler le 15/112.**","informative":"","exam":"","status":"Synthèse ciblée"},{"id":"sport","title":"Pathologies du sportif","source":"Thomas Petit · Pathologies du sportif (46 diapos) et ronéos CM5–CM6","sections":[{"title":"Conseil","items":["Interroger type/intensité d’activité, hydratation, alimentation, traitements et symptômes.","Hydratation avant, pendant et après l’effort ; attention chaleur, déshydratation et signes de gravité.","Repérer les douleurs ou blessures nécessitant une orientation ; éviter la banalisation de douleurs persistantes."]},{"title":"Produits et interactions","items":["Vérifier composition des compléments, risques de surdosage, dopage et interactions.","Différencier besoins nutritionnels usuels et situations particulières (effort prolongé, conditions extrêmes)."]}],"priority":"**Cheville : critères d’orientation et GREC. Lombalgie : drapeaux rouges et maintien de l’activité si douleur mécanique simple.**","informative":"","exam":"Le ronéo insiste sur l’entorse de cheville et les drapeaux rouges de lombalgie. Les orthèses détaillées du genou sont des repères de dispensation.","status":"Synthèse ciblée"},{"id":"commentaire","title":"Méthode du commentaire d’ordonnance","source":"Petit · CO1 (60 p.) ; ED1 ; annales 2021–25 ; Boulin, cas et courriers","sections":[{"title":"Analyse systématique","items":["1. Patient : âge, poids, grossesse, antécédents, allergies, fonction rénale/hépatique.","2. Conformité : date, identité, prescripteur, ordonnance sécurisée/bizone, durée et renouvellement.","3. Pathologies et pertinence de chaque indication.","4. Pour chaque ligne : DCI/classe, dose, fréquence, durée, voie, modalités de prise, adaptation au terrain.","5. Interactions, contre-indications, redondances, médicaments potentiellement inappropriés, effets indésirables.","6. Plan de prise, conseils au patient, surveillance biologique/clinique et observance.","7. Intervention pharmaceutique : problème prioritaire, proposition argumentée, communication au prescripteur et traçabilité SFPC."]},{"title":"Situations réellement vues aux annales","items":["**2024–25** : Parkinson, paroxétine/interactions, BZD chez la personne âgée, déprescription zopiclone, grossesse, méthylphénidate, cefpodoxime pédiatrique, courrier prescripteur.","**2021–22** : otites pédiatriques, tramadol buvable, clopidogrel–ésoméprazole, moclobémide–triptan, courrier.","**2022–23** : diabète/gliclazide/HbA1c, antalgiques pédiatriques, Parkinson/olanzapine, cefpodoxime au poids et lamotrigine–contraception."]},{"title":"ED et corrections","items":["ED1 Meloux : deux cas d’ordonnance à analyser, en conservant la distinction énoncé/correction.","ED2 Meloux : ordonnance du 23/11/2026 à préparer ; **ne pas présenter comme déjà corrigée**.","Boulin : lettres au prescripteur et cas du 5/11 et 10/11 ; identifier et hiérarchiser les interventions."]}],"priority":"Priorité très élevée : les annales testent surtout le raisonnement, les posologies au poids, les interactions et la rédaction d’une intervention argumentée.","informative":"","exam":"Sujets réellement identifiés dans les annales jointes ; leur récurrence ne garantit pas qu’ils retomberont.","status":"Synthèse ciblée"}];
   /* Compléments cliniques vérifiés dans les diapositives Petit (p. 3–64).
      Les orientations sont volontairement placées AVANT les traitements. */
   const PEC_DERMATO = [
@@ -6945,11 +6946,11 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
       <div class="fc-product"><strong>Bifonazole + urée · AMYCOR ONYCHOSET®</strong><span class="fc-dose">1 fois/jour · 1 à 3 semaines</span><p>Pansement occlusif 24 h → bain chaud → retirer la partie ramollie. Puis crème antifongique sans urée pendant <strong>4 à 8 semaines</strong>.</p></div>
       <div class="fc-product"><strong>Terbinafine orale</strong><span class="fc-dose">250 mg/jour · plusieurs mois</span><p>Vigilance : hépatotoxicité, réactions cutanées graves, troubles du goût/de l'odorat, myalgies.</p></div>
       <h4>3. Conseils au comptoir</h4><ul><li>Bien sécher les pieds et limiter la transpiration</li><li>Privilégier le coton ; poudre ou spray antifongique dans les chaussures</li><li>Repousse lente : environ 6 mois (mains), plus de 12 mois (pieds)</li></ul>
-      <p class="fc-secondary"><em>À titre informatif :</em> EXCILOR®, NAILNER®, URGO ONGLES ABÎMÉS® : efficacité peu établie (CM Petit, p. 45).</p>
+      <p class="fc-secondary">Le cours signale une efficacité insuffisamment établie pour les solutions non médicamenteuses citées p. 45.</p>
       <p class="fc-secondary">Source : CM Petit, p. 42–46.</p>
     </div></details>`;
     const pratiques=(PEC_PROTOCOLS[nom]||[]).map(([produit,dose,mode])=>'<div class="fc-product"><strong>'+esc(produit)+'</strong><span class="fc-dose">'+esc(dose)+'</span><p>'+esc(mode)+'</p></div>').join('');
-    return `<details class="fc-accordion fc-condition"><summary><span>${esc(nom)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><div class="fc-alert"><strong>⚠️ Orientation médicale</strong><p>${fmt(p.orientation)}</p></div><h4>Traitements · posologies et modes d’emploi</h4>${pratiques}<details class="fc-extra"><summary>Autres informations du cours</summary><div class="fc-prose">${fmt(p.traitement).replace(/\\n\\n/g,"</p><p>")}</div></details><h4>Conseils au comptoir</h4><div class="fc-prose">${fmt(p.conseils)}</div><p class="fc-secondary">${esc(p.titre.match(/p\\. .*/)?.[0] || "")} · CM Petit</p></div></details>`;
+    return `<details class="fc-accordion fc-condition"><summary><span>${esc(nom)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><div class="fc-alert fc-derm-orientation"><strong>Orientation médicale</strong><p>${fmt(p.orientation)}</p></div><h4>Traitements · posologies et modes d’emploi</h4>${pratiques}<details class="fc-extra"><summary>Autres informations du cours</summary><div class="fc-prose">${fmt(p.traitement).replace(/\\n\\n/g,"</p><p>")}</div></details><h4>Conseils au comptoir</h4><div class="fc-prose">${fmt(p.conseils)}</div><p class="fc-secondary">${esc(p.titre.match(/p\\. .*/)?.[0] || "")} · CM Petit</p></div></details>`;
   };
   const encartPEC = () => '<p class="fc-guidance">Ouvre une famille, puis une pathologie. <strong>Orientation → traitement → conseils</strong>. Les autres restent repliées.</p>' + PEC_GROUPES.map(g=>'<details class="fc-accordion fc-family"><summary><span>'+esc(g.titre)+' <small>('+g.cles.length+')</small></span><span class="fc-chevron">⌄</span></summary><div class="fc-family-body">'+g.cles.map(k=>{const p=PEC_DERMATO.find(x=>x.titre.split(" · p.")[0]===k);return p?fichePEC(p):''}).join('')+'</div></details>').join('');
   const DISP_DETAILS = {"osteoporose":{"source":"Prérequis Ostéoporose2026","groups":[["Évaluation et sécurité","Fractures de fragilité, risque de chute, corticothérapie, apport calcium/vitamine D, fonction rénale et santé bucco-dentaire à vérifier.","Douleur œsophagienne, mâchoire ou cuisse inhabituelle : orientation ; prévenir les chutes."],["Bisphosphonates oraux","Alendronate : 70 mg une fois/semaine ; risédronate : 5 mg/j, 35 mg/semaine ou 75 mg deux jours consécutifs/mois selon spécialité.","Au lever à jeun, grand verre d'eau plate, avaler entier ; rester debout/assis au moins 30 min ; respecter le délai avant aliments/autres médicaments selon RCP."],["Autres traitements","Acide zolédronique : 5 mg IV une fois/an ; raloxifène : 60 mg/j (risque thromboembolique) ; tériparatide FORSTEO : 20 µg SC/j, maximum 24 mois.","Tériparatide dans cuisse ou abdomen ; expliquer injection et vertiges/hypotension initiale. Raloxifène à n'importe quelle heure, avec ou sans repas."],["Dénosumab — point critique","PROLIA : 60 mg SC tous les 6 mois, cuisse, abdomen ou haut du bras.","Hypocalcémie, ostéonécrose de mâchoire, infections ; **ne jamais arrêter sans relais médical par bisphosphonate** : rebond osseux et fractures."]]},"goutte":{"source":"Prérequis Goutte2026","groups":[["Crise et colchicine","Colchicine, AINS ou corticoïde selon patient ; colchicine à marge thérapeutique étroite.","Diarrhée = signal de toxicité : cours demande réduction à 0,5 mg voire arrêt ; avis médical si signes importants. Contre-indiquée si clairance créatinine <30 mL/min."],["Interactions majeures","Colchicine : inhibiteurs CYP3A4/P-gp, notamment macrolides sauf spiramycine selon CM et pristinamycine ; statines = risque de myopathie.","COLCHIMAX contient tiémonium et opium : somnolence, symptômes digestifs potentiellement masqués."],["Allopurinol","Début progressif selon fonction rénale : cours 50–100 mg/j si Cl >60 ; 50 mg/j si Cl 30–60, titrer sur uricémie.","Prendre fin/après repas ; éruption surtout dans les deux premiers mois : arrêt et avis médical urgent (toxidermie grave)."],["Prévention des crises et cible","Colchicine 0,5–1 mg/j au moins 6 mois lors de l'instauration d'hypouricémiant ; 0,5 mg/j si IR légère, 0,5 mg un jour sur deux si IR modérée selon CM.","Cible uricémie <360 µmol/L ; <300 µmol/L dans les situations sévères. Fébuxostat : prudence pathologie cardiovasculaire sévère."]]},"anemies":{"source":"UE disp Boulin anémies2026","groups":[["Avant de traiter","NFS, VGM, ferritine, contexte clinique ; distinguer carence martiale, B9, B12 et autres causes.","Saignement actif ou anémie sévère/symptomatique : orientation. Ne pas donner systématiquement du fer à toute femme enceinte."],["Fer oral","**100–200 mg de fer élément/j** selon Boulin : vérifier le fer élément, non la masse du sel.","De préférence hors repas ; pendant repas si douleurs abdominales. Selles noires, goût métallique, troubles digestifs ; paille si poudre liquide pour éviter coloration dentaire."],["Interactions et suivi du fer","Éloigner de plus de 2 h : cyclines, fluoroquinolones, bisphosphonates, lévothyroxine, calcium, magnésium.","Éviter thé/café à proximité ; vitamine C peut améliorer absorption ; tenir hors de portée des enfants. Surveiller hémoglobine et ferritine."],["Folates","Carence : acide folique/folinique 5–15 mg/j en 1–2 prises selon CM.","Prévention grossesse : 400 µg/j de 1 mois avant conception jusqu'à 8 semaines ; 5 mg/j si haut risque. Rechercher déficit B12 avant traitement isolé d'une macrocytose."]]},"hbp":{"source":"UE disp Boulin HBP2026","groups":[["Orientation et signes d'alerte","Rétention aiguë d'urines, hématurie importante, fièvre avec symptômes urinaires, douleur intense : orientation urgente.","Rechercher dysurie, pollakiurie, nycturie, médicaments aggravants, fonction rénale."],["Alpha-bloquants","Relaxent prostate et col vésical ; alfuzosine LP 10 mg/j ; silodosine UROREC : 4 mg/j dans certains cas du CM, 4 mg si ClCr <50 mL/min selon Boulin.","Hypotension orthostatique, vertiges, chutes : lever progressif. Prudence âgés, coronariens, antihypertenseurs ; interactions inhibiteurs puissants CYP3A4, tamsulosine 3A4/2D6."],["Inhibiteurs 5-alpha-réductase","Finastéride et dutastéride, surtout prostate >40 g selon CM ; effet lent, réduction volume.","**PSA diminué d'environ 50 %** : le prescripteur en tient compte (CM : multiplier le PSA mesuré par 2 pour dépistage). Troubles sexuels."],["Alternatives et surveillance","PERMIXON/TADENAN cités ; bithérapie possible si monothérapie insuffisante mais effets indésirables se cumulent.","Chirurgie = traitement curatif selon support ; suivi symptômes, tension, observance, troubles sexuels."]]},"bipolaire":{"source":"UE disp Boulin troubles bipolaires2026","groups":[["Lithium : prise et surveillance","À heures fixes, plutôt le soir selon CM ; lithiémie régulière indispensable, respecter horaire du prélèvement et ordonnance.","Surveiller créatininémie, TSH, poids, glycémie, lipides et risque cardiaque selon patient."],["Lithium : toxicité","Déshydratation, diarrhée, vomissements, chaleur, régime désodé et diurétiques favorisent toxicité.","**Confusion, ataxie, tremblements importants, troubles neurologiques ou diarrhées sévères = avis médical immédiat**. Éviter AINS en automédication."],["Valproate et dérivés","DEPAKINE, DEPAMIDE, DEPAKOTE : sédation, prise de poids, troubles digestifs (prise au milieu du repas), tremblements.","Tératogénicité majeure, contraception et conditions réglementaires de prescription/délivrance à vérifier ; ne pas interchanger/associer arbitrairement les dérivés."],["Surveillance et sécurité","Risque hépatique, hématologique, éruption SJS/Lyell, interaction avec lamotrigine.","Contrôles ASAT/ALAT et NFS selon CM ; ne pas arrêter brutalement, évaluer observance et signes de rechute."]]},"inf-gyn":{"source":"Prérequis Infections gynécologiques2026","groups":[["Triage","Différencier vaginose bactérienne, candidose et trichomonase (IST).","Fièvre, douleurs pelviennes, grossesse, pertes atypiques, récidives ou suspicion IST : orientation."],["Vaginose bactérienne","Métronidazole FLAGYL 500 mg : **1 g/j en 2 prises pendant 7 jours**, pendant repas ; tinidazole FASIGYNE : **2 g dose unique** hors repas ; secnidazole SECNOL : **2 g dose unique** début repas.","Troubles digestifs, coloration urines, effet antabuse mentionné dans le CM ; vérifier les consignes de chaque RCP."],["Trichomonase","Métronidazole, secnidazole, tinidazole ou ornidazole ; ornidazole **1 g/j en 2 prises pendant 5 jours**, ou 1,5 g après repas du soir selon support.","IST : dépistage et prise en charge partenaires ; répétition d'une monodose à J15 uniquement selon schéma prescrit."],["Candidose, HSV, HPV","Antifongiques vaginaux : expliquer insertion le soir, renouvellement propre à chaque spécialité, crème externe si indiquée.","Fluconazole 150 mg hebdomadaire d'entretien pour certaines récidives = décision médicale. HSV : antiviraux dès prodromes ; HPV : vaccination GARDASIL 9 selon âge."]]},"mucoviscidose":{"source":"Prérequis et cas Mucoviscidose2026","groups":[["Analyse d'ordonnance","Vérifier génotype, âge, poids, fonction respiratoire, insuffisance pancréatique, infections, interactions et cohérence des associations.","Surveillance hépatique et CYP3A des modulateurs CFTR ; formes pédiatriques non interchangeables."],["Modulateurs CFTR","KAFTRIO + KALYDECO, SYMKEVI + KALYDECO, ORKAMBI et ALYFTREK : schémas différents, ordonnance spécialisée.","Prise avec aliments lipidiques lorsque RCP le demande ; ORKAMBI contient lumacaftor inducteur puissant CYP3A. Ne pas inventer dose sans âge, poids, génotype."],["Enzymes pancréatiques","CREON : <4 ans **1 000 unités lipase/kg/repas** au départ ; >4 ans **500 unités/kg/repas** ; ajustement selon clinique.","Pendant ou immédiatement après repas, ne pas écraser granulés gastro-résistants. Max **2 500 U/kg/repas, 10 000 U/kg/j ou 4 000 U/g de graisses** selon cours."],["Respiratoire et nutrition","PULMOZYME **2 500 U/2,5 mL : 1 nébulisation/j**, parfois 2/j après 21 ans selon cours ; vitamines A, D, E, K, NaCl, calcium selon ordonnance.","**Ne pas diluer ni mélanger PULMOZYME** dans cuve ; certains nébuliseurs ultrasoniques inadaptés ; expliquer hygiène matériel, surveiller stéatorrhée et poids."]]}};
@@ -7329,13 +7330,644 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
         '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
         entries.map(renderItem).join("") + '</div></details>').join("") + '</section>';
   }
+  const COURS_PEC = {
+  "dermato": [
+    [
+      "Repères pour le cas de comptoir",
+      [
+        [
+          "Identifier, orienter, conseiller",
+          [
+            "==Localisation, étendue, douleur, délai, fièvre, terrain et traitements déjà tentés== orientent d’abord la décision. Décrire la lésion avant de proposer une spécialité : vésicule, croûte, squame, macération, nodule, prurit ou plaque chaude.",
+            "Rechercher grossesse, âge, diabète, mauvaise circulation ou immunodépression. Savoir expliquer un geste complet (cryothérapie, vernis, antipoux, gale, dermocorticoïde) et donner un délai de réévaluation. CM4 et CM5 Petit."
+          ]
+        ],
+        [
+          "Dermatoses bactériennes : savoir les différencier",
+          [
+            "==Impétigo : croûtes mélicériques. Érysipèle : placard chaud douloureux avec fièvre. Furoncle : lésion centrée sur un follicule. Panaris : inflammation péri-unguéale.==",
+            "Pour l’impétigo, examiner l’étendue, le nombre de lésions et la vitesse d’extension. Le cours demande de distinguer la forme localisée de celle qui justifie un antibiotique oral. La mupirocine prescrite s’applique 2–3 fois/j pendant 5 jours. Abcès du panaris ou évolution défavorable : évaluation pour drainage. Extension rapide, douleur disproportionnée ou signes généraux : urgence."
+          ]
+        ],
+        [
+          "Parasitoses : trois erreurs à éviter",
+          [
+            "==Ne pas traiter les poux préventivement. Traiter les contacts de gale en même temps. Pas d’antibiotique systématique après une piqûre de tique.==",
+            "Poux : confirmer la présence de poux vivants et suivre le délai du produit. Gale : préciser au patient où appliquer, quand renouveler et comment traiter linge et contacts. Tique : retirer au tire-tique, désinfecter et surveiller l’apparition d’une plaque qui s’étend dans les semaines suivantes. Le renouvellement de la gale dépend du produit : vérifier l’ordonnance et expliquer séparément le traitement du patient, des contacts et de l’environnement."
+          ]
+        ],
+        [
+          "Dermocorticoïdes : raisonnement avant la liste des marques",
+          [
+            "==Choisir selon localisation, âge et activité.== L’unité phalangette (environ 0,5 g chez l’adulte) couvre environ deux surfaces de main adulte. Fine couche sur les plaques, selon prescription.",
+            "CM5 : les tableaux détaillés d’activité selon la forme galénique sont à consulter si nécessaire. Retenir que la concentration seule ne suffit pas. Surveiller atrophie, vergetures, télangiectasies et surinfection. Éviter visage, plis et paupières avec un fort corticoïde sans consigne spécialisée."
+          ]
+        ],
+        [
+          "Pour réviser sans surcharger",
+          [
+            "CM4 : le traitement antiviral détaillé du zona est présenté pour la culture. L’orientation rapide, notamment si atteinte oculaire, est prioritaire. CM5 : comprendre le choix du photoprotecteur, la quantité et le renouvellement. Le détail des tableaux de phototypes et d’activités n’est pas à mémoriser selon le ronéo.",
+            "Garder comme repères pratiques : ==critères ABCDE, renouvellement de la photoprotection et modalités d’application des dermocorticoïdes.=="
+          ]
+        ]
+      ]
+    ]
+  ],
+  "ophtalmo": [
+    [
+      "Triage au comptoir · diapos 3–9 et 21–22",
+      [
+        [
+          "Œil rouge : urgence ou conseil ?",
+          [
+            "==Baisse brutale d’acuité, douleur franche, photophobie, traumatisme ou projection, chirurgie récente, œil rouge douloureux sous lentilles : orientation urgente.==",
+            "Tester la vision œil par œil, demander la chronologie et l’existence d’un traitement local, d’un corps étranger, de lentilles ou d’un terrain fragile. Projection chimique : rincer immédiatement et abondamment à l’eau, retirer les lentilles si possible sans retarder le rinçage, puis contacter les urgences. Traumatisme pénétrant : ne pas manipuler ni exercer de pression."
+          ]
+        ],
+        [
+          "Zona ophtalmique et kératite",
+          [
+            "==Vésicules ou douleur du front dans le territoire du trijumeau avec gêne oculaire : urgence ophtalmologique.== Kératite : œil rouge douloureux, photophobie, baisse d’acuité et sensation de corps étranger. Le port de lentilles renforce l’urgence.",
+            "Retirer les lentilles. Aucun corticoïde ni anesthésique local en conseil. Le cours distingue l’exposition UV typique bilatérale (repos à l’abri de la lumière et antalgie), avec avis urgent si douleur forte, baisse d’acuité ou doute."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Rétine, cristallin et glaucome · diapos 10–20 et 44–48",
+      [
+        [
+          "Corps flottants, décollement, DMLA",
+          [
+            "Corps flottants isolés et anciens : expliquer le phénomène et proposer un bilan si gênants. ==Voile noir, éclairs et apparition soudaine de nombreux corps flottants ou baisse visuelle : urgence rétinienne.==",
+            "Métamorphopsies (lignes ondulées), tache centrale ou baisse visuelle récente : orienter rapidement. DMLA humide : néovaisseaux, anti-VEGF intravitréens (ranibizumab, aflibercept). Après injection : douleur, rougeur croissante ou baisse d’acuité font recontacter immédiatement l’ophtalmologiste. Grille d’Amsler œil par œil, avec correction de près."
+          ]
+        ],
+        [
+          "Cataracte et fond d’œil",
+          [
+            "Cataracte : opacification du cristallin, baisse progressive, traitement chirurgical. Dilatation pour fond d’œil : tropicamide (MYDRIATICUM), phényléphrine, cyclopentolate (SKIACOL) ou atropine selon l’examen. Les antimuscariniques diffèrent par la durée de cycloplégie.",
+            "Chez l’enfant : ==respecter strictement âge, dose et délai ; comprimer le coin interne 1 à 2 min, essuyer l’excès et surveiller==. Troubles neurologiques, cardiaques ou respiratoires après instillation : urgence. Prévenir vision trouble et sensibilité à la lumière."
+          ]
+        ],
+        [
+          "Glaucome par fermeture de l’angle",
+          [
+            "==Œil rouge très douloureux, halos ou baisse brutale de vision, parfois nausées/vomissements : urgence.==",
+            "La fermeture bloque l’évacuation de l’humeur aqueuse. Repérer le risque induit par certains anticholinergiques ou sympathomimétiques chez un patient prédisposé. Ne pas confondre avec le glaucome à angle ouvert chronique."
+          ]
+        ],
+        [
+          "Glaucome à angle ouvert",
+          [
+            "Neuropathie optique progressive souvent silencieuse. Les analogues des prostaglandines augmentent l’évacuation (p. ex. latanoprost, 1 goutte le soir). Les bêtabloquants (timolol) diminuent la production. Le schéma du timolol dépend de la forme. Autres classes : inhibiteurs de l’anhydrase carbonique, agonistes alpha-2.",
+            "==Observance quotidienne et technique d’instillation.== Avec timolol, vérifier asthme, bradycardie, blocs auriculoventriculaires et médicaments bradycardisants. Prostaglandines : hyperhémie, modification progressive de l’iris et des cils. Espacer les collyres et comprimer le point lacrymal. Suivi de la pression, du nerf optique et du champ visuel."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Conjonctive et paupières · diapos 23–43",
+      [
+        [
+          "Conjonctivites virale, bactérienne, irritative",
+          [
+            "Bactérienne : sécrétions purulentes, paupières collées. Virale : larmoiement clair, souvent contagieuse. Irritative : repérer puis écarter le déclencheur. ==Douleur, photophobie ou baisse d’acuité font rechercher une autre atteinte.==",
+            "Lavage au sérum physiologique, compresse différente pour chaque œil, hygiène des mains et du linge, pas de lentilles. Orienter si lentilles, immunodépression, chirurgie récente, symptômes marqués ou absence d’amélioration à 48–72 h. BIOCIDAN (céthexonium) et DESOMEDINE (hexamidine) sont les antiseptiques cités par le cours ; vérifier l’indication et la notice de la présentation avant de les proposer."
+          ]
+        ],
+        [
+          "Conjonctivite allergique",
+          [
+            "==Prurit bilatéral dominant + larmoiement, souvent avec rhinite.== Éviction, lavage et compresses fraîches. Lévocabastine (ALLERGIFLASH) : antihistaminique local. Le cours présente 1 goutte jusqu’à 4 fois/j dès 6 ans ; vérifier la posologie et la durée de la présentation délivrée. Le cromoglicate agit sur la dégranulation mastocytaire.",
+            "Distinguer les présentations. Lavage avant le traitement, arrêter les lentilles pendant l’épisode, ne pas se frotter les yeux. Consulter si douleur, atteinte visuelle ou évolution atypique."
+          ]
+        ],
+        [
+          "Orgelet, chalazion, blépharite",
+          [
+            "==Orgelet : follicule d’un cil, douloureux, parfois point de pus. Chalazion : obstruction d’une glande de Meibomius, nodule plus profond.== Compresses tièdes 5–15 min selon le cours, massage doux du chalazion vers le bord de la paupière, sans percer ni presser. Blépharite : chaleur douce puis hygiène des bords libres, larmes artificielles au besoin.",
+            "Orienter si récidives, lésion persistante ou atypique. Douleur importante, exophtalmie, diplopie, fièvre ou vision diminuée : urgence."
+          ]
+        ],
+        [
+          "Hémorragie sous-conjonctivale, ectropion, entropion, dacryocystite",
+          [
+            "Tache rouge bien limitée sans douleur ni baisse d’acuité : souvent bénigne ; rechercher traumatisme, récidive, traitement anticoagulant et autres saignements. Ectropion : paupière vers l’extérieur, larmoiement ; entropion : vers l’intérieur, frottement des cils.",
+            "Dacryocystite : tuméfaction rouge douloureuse au coin interne, parfois pus. ==Orienter pour traitement médical.== Si fièvre, douleur profonde ou baisse d’acuité, avis urgent."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Sécheresse, lentilles et techniques · diapos 49–69",
+      [
+        [
+          "Sécheresse : choisir la viscosité",
+          [
+            "Picotements, sable, fatigue visuelle. Rechercher écrans, vent, air sec, lentilles, médicaments anticholinergiques et syndrome sec. LARMABAK, hypromellose ARTELAC, carmellose CELLUVISC, carbomère AQUAREST, hyaluronate VISMED : choisir selon fréquence et viscosité.",
+            "Préférer sans conservateur si usage fréquent. Plus visqueux = séjour plus long et possible flou transitoire. Pauses, clignement et moindre exposition à l’air sec. Douleur, baisse d’acuité ou gêne persistante : examen."
+          ]
+        ],
+        [
+          "Lentilles : manipulation et réflexes de sécurité",
+          [
+            "==Retirer les lentilles dès gêne ou rougeur. Rougeur douloureuse : avis urgent.== Pas d’eau du robinet, de salive ni de réemploi de la solution. Mains propres et sèches, étui nettoyé avec le produit prescrit et renouvelé.",
+            "Multifonction : respecter le temps de trempage indiqué ; oxydant au peroxyde : neutralisation complète dans l’étui compatible avant tout contact avec l’œil. Pas de collyre sur les lentilles à moins que la notice le permette."
+          ]
+        ],
+        [
+          "Collyre, pommade et bain oculaire",
+          [
+            "==Une goutte dans le cul-de-sac inférieur, sans toucher l’œil avec l’embout.== Mains propres, tête en arrière, tirer la paupière, fermer doucement et comprimer l’angle interne 1–2 min. Espacer les collyres d’au moins 5 min selon leurs notices ; pommade à la fin.",
+            "Pommade : appliquer un petit ruban selon prescription, possible flou passager. Unidose : jeter après usage selon la notice. Bain : œillère propre et solution dédiée ; ne pas réutiliser la solution ou partager le dispositif."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Otologie · diapos 70–94",
+      [
+        [
+          "Bouchon de cérumen",
+          [
+            "Oreille bouchée, baisse auditive progressive, parfois après baignade. ==Éviter nettoyage profond et toute instillation si tympan perforé ou incertain, drain, chirurgie, écoulement ou douleur importante.== Baisse auditive brutale : avis médical urgent.",
+            "CERULYSE (xylène) : quelques gouttes si bouchon mou. Pour bouchon dur, le CM indique 10 gouttes, oreille vers le haut 10 min, 3 fois/j avant extraction. Réchauffer le flacon entre les mains. DOCULYSE (docusate) : le cours indique 1–2 pulvérisations et attendre 15–30 min selon notice. Aucun coton-tige. Si échec après 3–4 jours, orienter."
+          ]
+        ],
+        [
+          "Otite externe",
+          [
+            "==Douleur provoquée par traction du pavillon ou pression sur le tragus==, après baignade ou irritation, parfois otorrhée. Médecin pour examiner le conduit et le tympan. Diabète/immunodépression avec douleur intense : avis urgent.",
+            "Le CM présente un exemple d’ofloxacine auriculaire à 1 unidose matin et soir pendant 7 jours. En pratique, vérifier la spécialité, son indication exacte et l’ordonnance. L’examen du tympan guide le choix des gouttes. Réchauffer, allonger oreille vers le haut, instiller sans toucher le conduit et attendre quelques minutes. Garder au sec, sans coton-tige ; paracétamol si adapté."
+          ]
+        ],
+        [
+          "Otite moyenne aiguë purulente : posologie à retenir",
+          [
+            "==Otoscopie médicale : pas de goutte avant d’avoir évalué le tympan.== Amoxicilline, repère du cours : 80–100 mg/kg/j en 2–3 prises, max. 3 g/j, 10 jours avant 2 ans. Après 2 ans si peu symptomatique : réévaluation à 48–72 h. Si symptômes importants : 5 jours selon le cours, 10 jours si récidive ou perforation.",
+            "Syndrome otite–conjonctivite : penser amoxicilline–acide clavulanique, calcul sur l’amoxicilline et durée selon âge et tableau. Cefpodoxime 8 mg/kg/j en 2 prises, max. 400 mg/j, si indication et allergie documentée sans contre-indication aux céphalosporines. Le ronéo demande de connaître ce raisonnement et de contrôler dose, poids et durée sur l’ordonnance."
+          ]
+        ],
+        [
+          "Autres otites, audition et protection",
+          [
+            "Séro-muqueuse : épanchement, baisse auditive sans infection aiguë. Barotraumatique : après variation de pression. Labyrinthite : vertiges marqués, parfois symptômes auditifs. Orienter en cas de persistance, douleur, vertige marqué ou baisse auditive brusque.",
+            "Presbyacousie : progressive ; évaluation auditive. Acouphène pulsatile, unilatéral récent ou avec surdité brusque : avis médical, urgent si baisse brutale. Pour les protections anti-bruit, choisir selon usage et indice SNR. Priorités annoncées du ronéo : bouchon, otite externe, OMA."
+          ]
+        ]
+      ]
+    ]
+  ],
+  "anxiete": [
+    [
+      "Insomnie · diapos 3–25",
+      [
+        [
+          "Interrogatoire et orientation",
+          [
+            "Préciser endormissement, réveils, lever précoce, fréquence/durée, possibilité de dormir et retentissement (fatigue, irritabilité, concentration, conduite). Rechercher caféine, alcool, nicotine, prise tardive de stimulants, corticoïdes, douleur, nocturie, anxiété, dépression, horaires et environnement.",
+            "==Conseil si insomnie aiguë, peu sévère et peu invalidante. Orienter si chronique (>3 mois), handicapante, résistante ou évocatrice d’apnées ou de jambes sans repos.== Ronflement avec pauses observées + somnolence diurne : rechercher une apnée avant tout sédatif."
+          ]
+        ],
+        [
+          "Hygiène, agenda et TCC",
+          [
+            "==Heure de lever régulière, lit réservé au sommeil, se relever si on reste éveillé et revenir quand la somnolence apparaît.== Diminuer stimulants 4–6 h avant, alcool et écrans le soir, pratiquer une activité physique régulière, chambre fraîche et sombre.",
+            "Le cours demande un agenda matinal et vespéral sur au moins 3 semaines : coucher, délai, réveils, lever, siestes et consommations. La TCC de l’insomnie travaille le contrôle du stimulus, les croyances et les comportements. À privilégier dans une prise en charge durable."
+          ]
+        ],
+        [
+          "Doxylamine · DONORMYL",
+          [
+            "Adulte, difficulté occasionnelle : antihistaminique H1 sédatif, ==15 mg le soir au coucher, traitement bref.== La diapo 17 retient 5 jours alors que le ronéo note 15 jours. Pour réviser, retenir la durée courte du diaporama et orienter si l’insomnie persiste. Le maximum cité est 30 mg/j, sans en faire une dose de départ.",
+            "Contre-indications : antécédents personnels/familiaux de glaucome aigu par fermeture de l’angle, troubles urétroprostatiques à risque de rétention. Somnolence, constipation, sécheresse, confusion/chutes (sujet âgé). Éviter alcool, opioïdes/sédatifs et cumul atropinique. Prudence si apnées, chez la personne âgée ou en cas d’insuffisance rénale/hépatique."
+          ]
+        ],
+        [
+          "Mélatonine : distinguer les statuts",
+          [
+            "==CIRCADIN LP 2 mg : insomnie primaire avec mauvais sommeil à partir de 55 ans==. Le cours demande de reconnaître l’indication et la forme à libération prolongée. SLENYTO LP 1 ou 5 mg : indication pédiatrique ciblée sur prescription (le CM cite l’insomnie dans le trouble du spectre de l’autisme). Compléments : indication, galénique et teneur à vérifier, durée courte et réévaluation si échec.",
+            "Synchronise les rythmes veille-sommeil. Risque de somnolence, céphalées et rêves inhabituels. Vérifier particulièrement fluvoxamine et ciprofloxacine (CYP1A2), autres sédatifs, épilepsie, grossesse/allaitement et traitements associés. La limite de 10 mg du cours correspond à certaines prescriptions, pas au conseil général."
+          ]
+        ],
+        [
+          "Hypnotiques et déprescription",
+          [
+            "Benzodiazépines et apparentés (zopiclone, zolpidem) : potentialisation GABA-A, sédation, amnésie, chutes, dépendance, effets majorés par alcool/opioïdes. Prescription courte ; pour zolpidem et zopiclone, durée maximale 4 semaines en incluant la réduction éventuelle.",
+            "==Ne pas arrêter brutalement après usage prolongé.== Évaluer indication, ancienneté, chutes, somnolence ; discuter une diminution progressive avec le prescripteur, un suivi et des méthodes non médicamenteuses. Les mnémotechniques de familles sont des repères de reconnaissance, sans apprendre toutes les demi-vies."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Anxiété · diapos 26–36",
+      [
+        [
+          "Distinguer stress ponctuel et retentissement important",
+          [
+            "Quel déclencheur, depuis quand, quels troubles du sommeil ou symptômes corporels, quel impact sur études/travail/vie sociale ? Rechercher consommation de stimulants, traitements psychotropes, antécédents et humeur.",
+            "==Orienter si symptômes chroniques, sévères, invalidants, avec amaigrissement, dépression, échec du conseil ou traitements psychotropes à réévaluer.== Pour un stress léger : écoute, relaxation, activité, réduction des excitants, organisation et point de suivi. TCC si indiqué."
+          ]
+        ],
+        [
+          "Magnésium et produits à preuve limitée",
+          [
+            "Le CM propose un ordre de grandeur de 200–400 mg/j de magnésium élément pour les exemples présentés. Une supplémentation se discute selon indication et produit. ==Lire les mg de magnésium élément et vérifier les interactions.== Les arguments de supériorité des sels ne sont pas une priorité d’examen.",
+            "Diarrhée possible. Éviter en insuffisance rénale sévère selon RCP. Prises espacées avec cyclines, fluoroquinolones et lévothyroxine selon la spécialité. Le ronéo insiste sur la chélation et l’espacement ; éviter d’appliquer le même délai à tous les produits. Valériane et associations du cours : efficacité variable, vigilance sédatifs et alcool ; homéopathie et aromathérapie sans bénéfice établi à mettre en avant."
+          ]
+        ],
+        [
+          "Anxiolytiques sur ordonnance",
+          [
+            "Repérer oxazépam, alprazolam, lorazépam, bromazépam, diazépam. Même vigilance GABA-A que pour les hypnotiques : somnolence, chute, dépendance, cumul avec alcool/opioïdes et risque respiratoire.",
+            "La durée maximale réglementaire pour les benzodiazépines anxiolytiques est généralement 12 semaines, réduction comprise. Au comptoir, vérifier durée, renouvellement, bénéfice et signes d’iatrogénie."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Fatigue et asthénie · diapos 37–46",
+      [
+        [
+          "Rechercher une cause et savoir orienter",
+          [
+            "==Fatigue non soulagée par le repos, persistante, pâleur, amaigrissement, fièvre, symptômes dépressifs ou retentissement marqué : évaluation médicale.== Le seuil de 6 mois du cours décrit la chronicité ; il n’est pas un délai pour attendre devant un signe d’alerte.",
+            "Rechercher surmenage, troubles du sommeil, infection, carence, cause iatrogène, alimentation ou substances. Apnée : ronflements, pauses, somnolence. Jambes sans repos : besoin de bouger au repos surtout le soir, soulagé en bougeant. Pour fatigue passagère améliorée par le repos : sommeil, apports équilibrés, activité et réévaluation."
+          ]
+        ],
+        [
+          "Vitamines, stimulants, adaptogènes : raisonnement d’examen",
+          [
+            "==Réviser les familles et les risques plutôt que les gammes.== Le cours distingue vitamines/minéraux, caféine ou guarana, produits dits adaptogènes (ginseng) et autres. Rechercher un déficit ou une cause avant de supplémenter.",
+            "Caféine/guarana : majoration d’insomnie et palpitations, interaction avec certaines fluoroquinolones. Ginseng : vérifier AVK et traitement du diabète. Vitamine C fortement dosée : vérifier antécédents de lithiase. Magnésium : vérifier reins et interactions. N’attribuer aucun effet curatif à ces produits en l’absence de diagnostic."
+          ]
+        ]
+      ]
+    ]
+  ],
+  "urgence": [
+    [
+      "Organiser l’urgence · diapos 3–5, 61–91, 130–132",
+      [
+        [
+          "Évaluer et transmettre",
+          [
+            "==Sécuriser, vérifier conscience et respiration, appeler le 15/112 si gravité.== Indiquer adresse précise, âge, signes, évolution, heure de début, traitements, paramètres disponibles et gestes réalisés. Rester auprès de la personne et suivre les instructions.",
+            "Si inconsciente et respire normalement : position latérale de sécurité, surveillance. Si respiration absente ou anormale : alerte, compressions et défibrillateur selon guidage. Ne rien donner par la bouche à une personne dont la vigilance est altérée."
+          ]
+        ],
+        [
+          "Trousse et traçabilité",
+          [
+            "Trousse de vaccination du CM : stylos d’adrénaline adaptés, matériel de secours et moyens d’alerte. Le cours recense aussi anti-H1, corticoïde oral et dispositif d’inhalation. Pour l’anaphylaxie, ces traitements complémentaires ne remplacent jamais l’adrénaline IM.",
+            "Vérifier accessibilité, péremptions, doses disponibles, responsabilités et conditions de conservation. Tracer heure, symptômes, paramètres, appel, geste, médicament, dose et orientation. Garder les données confidentielles."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Plaies, brûlures et saignement · diapos 6–32",
+      [
+        [
+          "Plaie superficielle, tétanos et cicatrice",
+          [
+            "==Plaie profonde, étendue, souillée, béante, avec corps étranger, surinfection ou située près de l’œil, au cou, thorax ou abdomen : orienter.== Diabète, immunodépression et statut tétanique incertain abaissent le seuil.",
+            "Mains propres, irrigation eau potable ou sérum physiologique, savon si adapté, séchage avec compresse et pansement. Le lavage suffit souvent pour une plaie propre ; antiseptique aqueux si indiqué, éviter mélanges. Pansement simple, stérile ou non adhérent selon la plaie ; bandelettes uniquement sur plaie propre et superficielle à berges rapprochables. Tracer le statut tétanique, orienter pour vaccin et éventuellement immunoglobulines selon type de plaie. Sur cicatrice fermée : protéger du soleil."
+          ]
+        ],
+        [
+          "Hémorragie, morsure animale, doigt sectionné",
+          [
+            "==Saignement abondant : compression directe si absence de corps étranger et appeler les secours.== En cas de morsure/griffure, laver abondamment, protéger, orienter selon site et profondeur, très tôt pour morsure de chat à la main. Évaluer tétanos et risque rabique.",
+            "Section : appeler les secours, couvrir et comprimer le moignon selon leurs consignes. Emballer le segment dans un linge propre ou une compresse, dans un sac étanche posé sur de la glace, sans contact direct avec elle."
+          ]
+        ],
+        [
+          "Brûlure",
+          [
+            "==Refroidir rapidement à l’eau tempérée, sans glace.== Le diaporama propose environ 15 min pour une brûlure limitée. Retirer bagues et vêtements non collés, protéger du refroidissement général. Ne pas percer les cloques, ni appliquer de corps gras.",
+            "Profonde, étendue, circulaire, sur visage/mains/articulations/génitaux ou liée à chimique, électricité ou inhalation : demander un avis urgent. Une brûlure profonde peut être indolore. Petite brûlure superficielle : pansement protecteur non adhérent si besoin et surveillance de l’évolution."
+          ]
+        ],
+        [
+          "Épistaxis",
+          [
+            "==Assis, tête en avant, pincer la partie molle du nez 10 minutes sans relâcher.== Refaire une compression si nécessaire. Éviter de basculer la tête en arrière ou de se moucher après l’arrêt.",
+            "Si saignement abondant, bilatéral avec sang dans la gorge, malaise, traumatisme important, persistance ou risque hémorragique : évaluation urgente selon gravité. Si dispositif hémostatique conseillé, vérifier sa notice et le délai de retrait (résorbable ou non)."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Piqûres et morsures · diapos 33–53",
+      [
+        [
+          "Hyménoptères : les trois réactions à distinguer",
+          [
+            "==Locale : douleur, rougeur ou œdème limité. Toxique : nombreuses piqûres avec signes généraux. Anaphylaxie : atteinte respiratoire, circulatoire ou pluriviscérale d’installation rapide.== Piqûre dans la bouche ou la gorge, malaise, signes respiratoires ou nombreuses piqûres : appeler le 15/112. Le cours donne plus de 20 piqûres comme repère de risque toxique.",
+            "Réaction locale simple : enlever le dard rapidement si présent, laver, froid protégé, retirer bagues en cas de gonflement et surveiller. Anti-H1 pour prurit selon terrain ; aucune place à faire passer avant l’adrénaline si anaphylaxie."
+          ]
+        ],
+        [
+          "Anaphylaxie : stylo d’adrénaline",
+          [
+            "==Adrénaline IM dans la face antérolatérale de la cuisse et appel au 15/112.== Utiliser le stylo prescrit adapté au poids ; faire une démonstration du dispositif. Seconde dose selon évolution, notice et régulation ; prévoir un deuxième stylo si prescrit.",
+            "Allonger et éviter le lever ; adapter la position en cas de gêne respiratoire ou de vomissement selon les secours. Toute réaction nécessite une surveillance médicale, même si amélioration. Le ronéo demande de savoir utiliser le stylo."
+          ]
+        ],
+        [
+          "Vipère, animaux marins et autres piqûres",
+          [
+            "==Vipère suspectée : 15/112, repos, immobiliser le membre, retirer bagues ; ni garrot, ni incision, ni aspiration.== Pour méduse : sortir de l’eau, ne pas frotter, rincer à l’eau de mer et demander conseil au poste de secours ; toute réaction générale impose l’urgence.",
+            "Vive : douleur immédiate, poste de secours et chaleur contrôlée sans brûler selon consigne. Oursin : laver et orienter si épines profondes, articulaires ou impossibles à enlever. Punaises de lit, aoûtats, fourmis, araignée/scolopendre : soins locaux si simple, orienter si signes généraux, extension, infection ou douleur importante. Punaises : traiter aussi l’environnement."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Urgences et malaises · diapos 54–91",
+      [
+        [
+          "AVC, douleur thoracique, jambe rouge, abdomen, respiration",
+          [
+            "==AVC suspecté : visage déformé, faiblesse d’un bras ou trouble de la parole → 15/112, noter l’heure du début.== Même réflexe pour douleur thoracique évocatrice avec dyspnée/sueurs, ou difficulté respiratoire sévère. En attendant, repos, surveillance, rien à faire avaler si trouble de déglutition.",
+            "Jambe rouge unilatérale : différencier DHBNN fébrile et thrombose suspectée ; médecin rapidement, 15/112 si dyspnée ou douleur thoracique associée. Douleur pelvienne avec retard de règles, saignement ou malaise : penser grossesse extra-utérine, orienter en urgence. Décollement cutané ou atteinte muqueuse sous médicament avec fièvre : urgence (Stevens–Johnson/Lyell)."
+          ]
+        ],
+        [
+          "AVK : lire INR et cible",
+          [
+            "==Demander la cible, le dernier INR, les prises et rechercher tout saignement ou traumatisme.== Pour hémorragie significative, traumatisme crânien, malaise ou signes neurologiques : urgences. En cas d’INR excessif sans saignement grave : joindre prescripteur/régulation, prévoir contrôle rapproché.",
+            "Pour cible 2–3 seulement, le tableau repris dans le diaporama donne <4 : pas de saut ; 4 à <6 : saut d’une prise ; 6 à <10 : interruption et vitamine K orale 1–2 mg ; ≥10 : interruption et 5 mg. Ce sont les repères de la décision médicale avec contrôle de l’INR le lendemain. Si cible plus élevée, conduite différente, notamment valves : vérifier l’algorithme, pas de décision isolée."
+          ]
+        ],
+        [
+          "Syncope, hypotension orthostatique, hyperventilation",
+          [
+            "Évaluer circonstances, durée, pouls, TA, récupération et traitements. Hypotension orthostatique : baisse d’au moins 20 mmHg systolique ou 10 mmHg diastolique dans les 3 min debout. Mesure après repos, puis debout si sûr. Rechercher déshydratation, antihypertenseurs et diurétiques.",
+            "Malaise vagal typique : allonger, surveiller, se relever progressivement après récupération. Douleur thoracique, trouble neurologique, syncope à l’effort, persistance ou récupération incomplète : urgence. En cas d’hyperventilation présumée, rassurer et guider une respiration calme après exclusion d’un signe de gravité."
+          ]
+        ],
+        [
+          "Hypoglycémie, convulsion et coup de chaleur",
+          [
+            "==Hypoglycémie <0,70 g/L : resucrage seulement si conscient et capable d’avaler.== Chez l’adulte, le ronéo indique trois morceaux de sucre, puis un contrôle rapproché (20 min dans le CM7). Si la glycémie ne remonte pas ou si l’état s’aggrave, appeler les secours. Si inconscience, 15/112 et glucagon selon dispositif et formation, rien par bouche.",
+            "Convulsion : protéger la tête, chronométrer, ne pas contenir et ne rien mettre dans la bouche. Appeler si première crise, crise qui se prolonge, crises répétées sans réveil, blessure ou mauvaise récupération. Hyperthermie + confusion/convulsions : secours et refroidissement immédiat, sans antipyrétique."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Autotests et contraception · diapos 93–122",
+      [
+        [
+          "Autotests à utilité clinique",
+          [
+            "VIH : fenêtre de 3 mois pour l’autotest sanguin ; positif à confirmer et exposition récente à orienter sans attendre. Infection urinaire : bandelette leucocytes/nitrites et limites, suivre le protocole selon symptômes et terrain. Protéinurie : ne suffit pas au diagnostic et résultat à confirmer.",
+            "Ovulation : détecte le pic de LH ; ne sert pas de contraception. Grossesse : respecter la notice et le moment du test ; si négatif trop tôt, répéter. Douleur/saignement avec retard de règles : ne pas attendre un test. Distinguer les autotests et leurs prélèvements des tests faits en laboratoire."
+          ]
+        ],
+        [
+          "Contraception d’urgence : délais",
+          [
+            "==Lévonorgestrel 1,5 mg en une prise jusqu’à 72 h ; ulipristal 30 mg en une prise jusqu’à 120 h ; DIU cuivre, option la plus efficace, à organiser rapidement.== Agir dès que possible. Vomissement dans les 3 h : nouvelle dose selon notice.",
+            "Rechercher date de tous les rapports à risque, contraception habituelle, dernière prise et inducteurs des quatre dernières semaines. Si inducteur : privilégier DIU cuivre ; LNG 3 mg si DIU impossible, selon RCP. Éviter l’ulipristal avec un inducteur. En cas de retard ou règles inhabituelles, faire un test ; revenir sur la date du rapport et le délai de contrôle. Rappeler la protection contre les IST et la prise en charge française."
+          ]
+        ],
+        [
+          "Oubli, reprise hormonale et situations particulières",
+          [
+            "==Relever le nom de la contraception, l’heure de l’oubli, la semaine de plaquette et les rapports à risque.== Ne pas appliquer un délai universel : seuils différents pour combinés, microprogestatifs, patch et anneau. Vérifier notice et protocole ; proposer protection barrière et CU selon situation.",
+            "Après LNG, la contraception hormonale peut généralement être reprise immédiatement. Après UPA, le ronéo signale l’interaction avec les progestatifs dans les 5 jours suivant la prise. Vérifier le protocole de reprise pour la contraception utilisée et les modalités de protection barrière. Ne pas associer les deux CU hormonales. Si allaitement, vérifier la consigne officielle actuelle de la spécialité."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Surdosage aux opioïdes · diapos 123–129",
+      [
+        [
+          "Reconnaître et utiliser la naloxone",
+          [
+            "==Inconscience et respiration lente ou anormale, parfois myosis : appel immédiat 15/112.== Suivre les gestes de secours, administrer la naloxone disponible et rester sur place : la dépression respiratoire peut récidiver.",
+            "NYXOID 1,8 mg : une unidose dans une narine, répéter après 2–3 min si absence de réponse, dans l’autre narine, ou plus tôt si rechute après réponse selon la notice. PRENOXAD : dispositif IM gradué, suivre sa notice et les secours. Le ronéo précise que le détail des modes d’emploi n’est pas à réciter ; savoir reconnaître et déclencher le secours."
+          ]
+        ]
+      ]
+    ]
+  ],
+  "sevrage": [
+    [
+      "Évaluer et accompagner · diapos 3–16 et 37–47",
+      [
+        [
+          "Conseil minimal et interrogatoire",
+          [
+            "==« Fumez-vous ? Souhaitez-vous arrêter ou réduire ? »== Relever cigarettes/j, délai avant la première, formes (roulées, vapotage), essais antérieurs, déclencheurs, motivation, comorbidités, tabac de l’entourage et traitements. Laisser le choix du rythme, encourager et convenir d’un objectif.",
+            "Nicotine : agoniste nicotinique et dépendance. CO de la fumée : baisse du transport d’oxygène. Le sevrage peut entraîner irritabilité, appétit accru, insomnie et envies brèves. Orienter si échecs répétés, coaddictions, pathologie lourde ou dépression instable ; proposer un suivi adapté pendant la grossesse."
+          ]
+        ],
+        [
+          "Fagerström et choix de la stratégie",
+          [
+            "Dans l’algorithme CM1, score 0–2 : arrêt possible sans substitut ; 3–6 : aide à l’officine adaptée ; ≥7 : forte dépendance, proposer un soutien renforcé et/ou orienter, sans retarder les substituts s’ils sont appropriés.",
+            "Arrêt immédiat, réduction vers l’arrêt ou abstinence temporaire : convenir d’un plan. ==1 cigarette manufacturée ≈ 1 mg de nicotine est un repère de départ==. Le délai avant la première, les roulées, les bouffées compensatoires et les symptômes modifient le besoin."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Substituts : modalités et sécurité · diapos 17–36",
+      [
+        [
+          "Patch : couvrir le besoin de fond",
+          [
+            "==Patch de fond + forme orale pour les envies ponctuelles.== Gammes 7/14/21 mg sur 24 h et 10/15/25 mg sur 16 h. Poser le matin sur peau saine, sèche, peu pileuse, alterner les sites. Retirer en fin de journée pour 16 h ou le lendemain pour 24 h. Vérifier la tenue, ne pas découper sans consigne du RCP.",
+            "Un patch 24 h peut aider si manque au réveil ; si rêves intenses ou insomnie, revoir dose, durée et intérêt du 16 h. Replier face collante sur elle-même et éliminer hors de portée des enfants/animaux. Irritation locale fréquente ; ne pas superposer ou changer de gamme sans recalcul."
+          ]
+        ],
+        [
+          "Gomme : mâcher lentement puis mettre en joue",
+          [
+            "Formes habituelles 2 et 4 mg. ==Mâcher lentement jusqu’au goût, mettre contre la joue, reprendre par intermittence pendant environ 30 min.== Éviter les boissons acides dans les 15 min précédant la prise.",
+            "Le ronéo donne 8–12/j seules ou environ 5–6/j en renfort, selon les envies et le RCP. Le maximum n’est pas commun à toutes les spécialités (ex. 30/j à 2 mg et 15/j à 4 mg pour certaines gommes). Hoquet, brûlure, nausées si mâchées trop vite. Vérifier prothèses dentaires et tolérance."
+          ]
+        ],
+        [
+          "Comprimés à sucer, pastilles et sublinguaux",
+          [
+            "Laisser fondre lentement, déplacer la pastille dans la bouche ou tenir sous la langue selon la galénique. Ne pas croquer ni avaler le comprimé entier ; éviter les boissons acides juste avant. Utiliser dès l’envie. Choisir dosage et maximum selon présentation.",
+            "Surveiller irritation buccale, hoquet, dyspepsie. Le cours cite aussi l’inhaleur : administration buccale avec la cartouche adaptée, selon disponibilité et notice. Respecter l’âge minimal propre à chaque produit."
+          ]
+        ],
+        [
+          "Spray buccal 1 mg par pulvérisation",
+          [
+            "Exemple NICORETTESPRAY : 1 pulvérisation au moment de l’envie, une 2e si besoin. ==Maximum 2 par prise, 4 par heure, 64 par jour== pour cette spécialité. Amorcer selon la notice, viser la joue, éviter d’inhaler et attendre quelques secondes avant de déglutir.",
+            "Action rapide. Hoquet, irritation et nausées possibles. Les conseils sur réduction progressive et remboursement dépendent du RCP et du conditionnement, à vérifier à la délivrance."
+          ]
+        ],
+        [
+          "Sous-dosage, surdosage, suivi",
+          [
+            "==Sous-dosage : envies persistantes, irritabilité, poursuite du tabac. Surdosage : nausées, céphalées, vertiges.== Vérifier quantité, horaire et technique avant de modifier. Cauchemars : examiner le rôle du patch de nuit. Si signes importants ou exposition d’un enfant, demander un avis urgent.",
+            "Proposer un point à 7 jours puis vers J14 comme dans le ronéo. Adapter le dosage, poursuivre assez longtemps et diminuer progressivement lorsque le manque est contrôlé. Un écart se travaille sans culpabiliser."
+          ]
+        ],
+        [
+          "Interactions et terrains particuliers",
+          [
+            "==La fumée induit des enzymes ; l’arrêt de fumer peut augmenter l’exposition à certains médicaments, même sous patch.== Le ronéo demande de retenir clozapine, propranolol et méthadone comme exemples de traitements à vérifier auprès du prescripteur. Réduire le café si nervosité depuis l’arrêt.",
+            "Grossesse : accompagnement et orientation vers médecin/sage-femme, TNS si nécessaire après évaluation. Chez l’adolescent, vérifier la notice de la présentation. Tabac et contraception estroprogestative (surtout après 35 ans) : risque vasculaire, réévaluation médicale."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Relais et deuxième intention · diapos 45–54",
+      [
+        [
+          "Suivi comportemental et outils",
+          [
+            "Identifier les cigarettes automatiques et préparer des alternatives. Pour envie brève : attendre, boire de l’eau, changer d’activité ou prendre la forme orale. Anticiper alcool et routines ; structurer repas et activité sans imposer de restriction.",
+            "Entretien motivationnel : questions ouvertes, écoute, reformulation et objectifs négociés. TCC, soutien téléphonique (Tabac Info Service, 39 89) et fiches Cespharm. La rechute permet d’ajuster le plan."
+          ]
+        ],
+        [
+          "Varénicline et bupropion : reconnaître en deuxième intention",
+          [
+            "Varénicline, agoniste partiel des récepteurs nicotiniques : 0,5 mg/j J1–J3, 0,5 mg 2 fois/j J4–J7, puis 1 mg 2 fois/j selon prescription, généralement 12 semaines au total. Début avant le jour d’arrêt. Nausées, rêves anormaux, surveillance de l’humeur et adaptation rénale.",
+            "Bupropion LP 150 mg : 1 comprimé/j les 6 premiers jours, puis 1 comprimé 2 fois/j à 8 h ou plus d’intervalle pendant 7–9 semaines selon prescription. Risque de convulsions, insomnie et HTA ; vérifier les antécédents, le risque convulsif et les interactions. Le ronéo précise que les listes détaillées ne sont pas prioritaires."
+          ]
+        ],
+        [
+          "Cigarette électronique et accès aux substituts",
+          [
+            "Les TNS disposent d’une AMM et sont l’option médicamenteuse de première intention du cours. La cigarette électronique n’a pas d’AMM de sevrage. Si le patient l’utilise, évaluer le double usage, continuer l’accompagnement et discuter son objectif d’arrêt du tabac.",
+            "Des TNS peuvent être dispensés sans ordonnance ; la prise en charge dépend d’une prescription par un professionnel habilité et du produit éligible. Vérifier la liste des spécialités remboursables au moment de la dispensation."
+          ]
+        ]
+      ]
+    ]
+  ],
+  "sport": [
+    [
+      "Effort et récupération · diapos 2–9",
+      [
+        [
+          "Alimentation et hydratation",
+          [
+            "Adapter repas, boisson et apports à la durée, à l’intensité et à la chaleur. Avant : repas habituel à 2–4 h, collation glucidique digeste si délai plus court. Après : eau, glucides pour restaurer le glycogène, protéines via l’alimentation.",
+            "==Effort habituel : eau ; effort prolongé/intense : discuter glucides et électrolytes ; diarrhée : SRO médical.== Le cotransport sodium-glucose facilite l’absorption d’eau ; les boissons de sport diffèrent par leur composition. Ne pas apprendre les comparatifs de marques. Boire régulièrement, sans surconsommation imposée."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Douleurs et tendinopathies · diapos 10–19",
+      [
+        [
+          "Crampe, courbature, contracture et lésion",
+          [
+            "==Crampe pendant l’effort, courbature retardée, contracture localisée, claquage brutal avec impotence.== Préciser geste, douleur, début, claquement, hématome, blessure antérieure, traitements et effort inhabituel.",
+            "Crampe : arrêt, étirement doux progressif et réhydratation adaptée. Courbature habituelle : reprise progressive. Claquage suspecté, déficit de force, hématome important, impotence, douleur croissante ou persistante : examen. Éviter étirement forcé et massage profond sur lésion aiguë."
+          ]
+        ],
+        [
+          "Tendinopathies",
+          [
+            "Douleur liée à la charge, souvent localisée ; le cours distingue douleur à l’effort, à l’échauffement, persistante, puis rupture. ==Adapter la charge et organiser une reprise progressive plutôt que repos strict prolongé.==",
+            "Paracétamol si approprié, froid protégé pour soulager. Orthèse selon localisation, renforcer progressivement avec un professionnel si indiqué. Si douleur au repos, incapacité, suspicion de rupture ou persistance : évaluation. Penser fluoroquinolone récente, surtout associée à corticoïde."
+          ]
+        ],
+        [
+          "Antalgie et produits locaux",
+          [
+            "Paracétamol adulte ≥50 kg sans facteur de risque : 500 mg à 1 g/prise, au moins 4 h entre les prises, 3 g/j sans avis médical. Vérifier le cumul, les facteurs hépatiques et le poids.",
+            "AINS : courte durée et plus faible dose efficace si indiqué, après vérification grossesse, fonction rénale, antécédents digestifs, anticoagulants et autres AINS. Gel uniquement sur peau saine, lavage des mains après. Vérifier la photosensibilisation et les consignes d’exposition propres à la spécialité."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Entorse de cheville · diapos 20–29",
+      [
+        [
+          "Ottawa et orientation",
+          [
+            "==Impossible de faire 4 pas, douleur osseuse au bord postérieur ou à la pointe d’une malléole, à la base du 5e métatarsien ou au naviculaire : évaluation pour imagerie== selon siège de la douleur et conditions d’application de la règle. Celle-ci évalue le risque de fracture ; elle ne grade pas l’entorse.",
+            "Le cours signale aussi les âges extrêmes, gros hématome, craquement, douleur syncopale et stagnation à 48–72 h. Déformation, pied pâle/froid ou trouble sensitif après traumatisme : urgence. Le ronéo annonce la cheville comme partie prioritaire."
+          ]
+        ],
+        [
+          "GREC, orthèse et rééducation",
+          [
+            "==Glace protégée, repos relatif, élévation, compression adaptée.== Le CM donne 10 min de froid jusqu’à 4 fois/j. Réévaluer douleur, gonflement et appui. Compression : surveiller couleur, chaleur et sensibilité des orteils ; desserrer si gêne.",
+            "Stades du cours : I étirement, II rupture partielle, III rupture complète. Les repères 10, 21–42 et ≥42 jours sont des durées indicatives de cicatrisation, pas des prescriptions d’orthèse. Aide à l’appui et orthèse selon diagnostic, mesure et prescription ; reprise fonctionnelle et rééducation guidées."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Lombalgie et genou · diapos 30–41",
+      [
+        [
+          "Lombalgie aiguë commune",
+          [
+            "==Déficit neurologique progressif, anesthésie en selle ou troubles sphinctériens : urgence.== Orienter si traumatisme important, fièvre, amaigrissement, antécédent de cancer, douleur nocturne non mécanique ou signes généraux.",
+            "Si épisode mécanique simple sans alerte : maintien des activités tolérées, pas de repos strict, chaleur ou antalgique selon profil, réévaluation si persistance. Ceinture ponctuelle si elle aide à reprendre le mouvement ; pas d’effet démontré sur l’évolution. Le ronéo insiste sur les drapeaux rouges."
+          ]
+        ],
+        [
+          "Entorse du genou",
+          [
+            "Traumatisme en torsion/valgus, craquement, gonflement, instabilité, blocage et appui impossible : faire évaluer. Membres froids ou insensibles, déformation, douleur majeure : urgence. Ligaments collatéraux et croisés à distinguer dans le raisonnement.",
+            "GREC en attendant l’évaluation, aide à l’appui si nécessaire. Attelle articulée ou immobilisatrice selon prescription, vérifier ajustement et tolérance. Le ronéo CM6 présente cette partie comme un repère, avec priorité d’examen à la cheville plutôt qu’aux durées détaillées des orthèses de genou."
+          ]
+        ]
+      ]
+    ],
+    [
+      "Ampoules et dopage · diapos 42–46",
+      [
+        [
+          "Ampoule de frottement",
+          [
+            "==Ampoule intacte : protéger, sans percer de routine.== Nettoyer et sécher, appliquer un hydrocolloïde (p. ex. COMPEED) sans plis sur peau saine à la périphérie ; laisser décoller selon la notice.",
+            "Si ouverte, nettoyer, conserver le toit s’il est en place et protéger. Rougeur croissante, pus, douleur importante, diabète, neuropathie ou artériopathie : avis. Chaussures adaptées, chaussettes sèches, limiter le frottement."
+          ]
+        ],
+        [
+          "Dopage : réflexe à la dispensation",
+          [
+            "==Demander si pratique en compétition et vérifier substance, voie, période et éventuelle autorisation thérapeutique.== Contrôler via la liste officielle consultable au moment du conseil. Vérifier les associations (rhume, corticoïdes, bronchodilatateurs) au cas par cas.",
+            "Les compléments peuvent être contaminés. Une marque ou une vente en pharmacie ne garantit pas l’absence de substance interdite. Expliquer le réflexe de vérification plutôt qu’apprendre une liste qui change."
+          ]
+        ]
+      ]
+    ]
+  ]
+};
+
+  function encartCoursPEC(id) {
+    const families = COURS_PEC[id];
+    if (!families) return "";
+    return '<section class="fc-pec" aria-label="Prise en charge à l’officine">' +
+      families.map(([title, items]) => '<details class="fc-accordion fc-family"><summary><span>' +
+        esc(title) + '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
+        items.map(([name, paragraphs]) => '<details class="fc-accordion fc-condition"><summary><span>' +
+          esc(name) + '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
+          paragraphs.map(paragraph => '<p>' + formatVoyage(paragraph) + '</p>').join("") +
+          '</div></details>').join("") + '</div></details>').join("") + '</section>';
+  }
   function vFichesCours() {
     const f = S.ficheCours ? FICHES_COURS.find(x => x.id === S.ficheCours) : null;
     if (f) return `<div class="fc-sticky"><button class="back" data-a="fiche-retour">${ic("retour")} Toutes les fiches</button><p class="fc-eyebrow">FICHE DE RÉVISION · PH5</p><h1>${esc(f.title)}</h1><p class="muted">${esc(f.source)}</p></div>
-      ${f.priority ? `<section class="fc-focus"><strong>À retenir en priorité</strong><p>${fmt(f.priority)}</p></section>` : ""}
+      ${f.priority ? `<section class="fc-focus${COURS_PEC[f.id] ? " fc-focus-pec" : ""}"><strong>À retenir en priorité</strong><p>${fmt(f.priority)}</p></section>` : ""}
       ${f.exam ? `<section class="fc-exam"><strong>Annales / ED</strong><p>${fmt(f.exam)}</p></section>` : ""}
-      ${f.id === "dermato" ? encartPEC() : f.id === "voyage" ? encartVoyage() : encartDisp(f)}
-      ${f.id === "dermato" || f.id === "voyage" || DISP_DETAILS[f.id] ? "" : f.sections.map((section,i) => `<details class="fc-accordion fc-family"><summary><span>${i+1}. ${esc(section.title)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><ul>${section.items.map(item => `<li>${fmt(item)}</li>`).join("")}</ul></div></details>`).join("")}
+      ${f.id === "dermato" ? encartCoursPEC(f.id) + encartPEC() : f.id === "voyage" ? encartVoyage() : COURS_PEC[f.id] ? encartCoursPEC(f.id) : encartDisp(f)}
+      ${f.id === "dermato" || f.id === "voyage" || COURS_PEC[f.id] || DISP_DETAILS[f.id] ? "" : f.sections.map((section,i) => `<details class="fc-accordion fc-family"><summary><span>${i+1}. ${esc(section.title)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><ul>${section.items.map(item => `<li>${fmt(item)}</li>`).join("")}</ul></div></details>`).join("")}
       ${f.informative ? `<section class="fc-info"><strong>À titre informatif — ne pas apprendre les détails signalés</strong><p>${fmt(f.informative)}</p></section>` : ""}
       <p class="muted fc-source">Sources : ${esc(f.source)}. Synthèse pédagogique ciblée : consulter les supports pour les détails de situations non couverts. Les ED non corrigés ne sont pas traités comme des corrigés.</p>`;
     const q = norm(S.ficheRecherche || "");
