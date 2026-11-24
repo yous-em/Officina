@@ -344,6 +344,27 @@ nav.tabs button{font-size:9px}nav.tabs button svg{width:20px;height:20px}
   .ortho-guide .ortho-card { grid-template-columns:1fr; }
   .ortho-guide figure img { width:min(100%,180px); }
 }
+.pec-recall-modes {display:grid;grid-template-columns:.65fr 1.15fr 1.15fr;gap:5px}
+.pec-recall-modes button {border:1px solid var(--line);color:var(--ink-2);background:var(--surface);border-radius:9px;padding:8px 4px;font-size:12px;font-weight:700;min-height:44px}
+.pec-recall-modes button[aria-pressed=true] {background:var(--accent-soft);color:var(--ink);border-color:var(--accent)}
+.pec-recall-modes [data-pec-count] {font-variant-numeric:tabular-nums;font-weight:800}
+.pec-recall-tree {display:grid;gap:9px}
+.pec-recall-card {margin:5px 0;border-radius:9px}
+.pec-recall-card > summary {font-size:14px;padding:10px 11px;overflow-wrap:anywhere}
+.pec-recall-card > .fc-detail {padding:12px;overflow-wrap:anywhere}
+.pec-recall-path {display:block;color:var(--ink-2);font-size:11px;margin-bottom:4px;font-weight:550}
+.pec-recall-evaluation {padding-top:10px;border-top:1px solid var(--line)}
+.pec-recall-evaluation > p {margin:0 0 6px;font-weight:650}
+.pec-recall-evaluation > .pec-recall-feedback {font-size:12px;line-height:1.4;margin:7px 0 0;color:var(--ink-2)}
+.pec-recall-grades {display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.pec-recall-grades button {display:grid;gap:2px;min-height:50px;padding:5px 2px;font-size:clamp(10px,2.95vw,13px);border:1px solid #8ab7a3;border-radius:7px;background:#e6f4ec;color:#164332;line-height:1.25}
+.pec-recall-grades button:first-child {background:#fbeae6;color:#812b23;border-color:#d68d85}
+.pec-recall-grades button:nth-child(2) {background:#fff0dc;color:#783c12;border-color:#d6a16d}
+.pec-recall-grades button:last-child {background:#d3ebe0}
+.pec-recall-grades small {font-size:10px}
+.pec-recall-grades button:disabled:not([aria-pressed=true]) {opacity:.56}
+.pec-recall-grades button[aria-pressed=true] {outline:2px solid currentColor;outline-offset:-3px}
+.pec-recall-ortho {width:min(100%,220px);height:auto;border-radius:8px}
 </style>
 </head>
 <body>
@@ -6871,7 +6892,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
 
   /* ---------- Sauvegarde locale ---------- */
   const KEY = "officina.v1";
-  const vide = () => ({ v: 1, cards: {}, reviews: [], attempts: [], days: {}, custom: [], edits: {}, susp: {}, maj: 0 });
+  const vide = () => ({ v: 1, cards: {}, reviews: [], attempts: [], days: {}, pecRecall: {}, custom: [], edits: {}, susp: {}, maj: 0 });
   let store = vide(), stockageOk = true;
   try { const raw = localStorage.getItem(KEY); if (raw) store = Object.assign(vide(), JSON.parse(raw)); } catch (e) { stockageOk = false; }
   const saveLocal = () => { try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) { stockageOk = false; } };
@@ -6883,7 +6904,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
     nuage.set(JSON.parse(JSON.stringify(store))).then(() => { etatNuage = "ok"; }, () => { etatNuage = "erreur"; }).then(() => { ecrit = false; if (sale) pousser(); });
   };
   const save = () => { store.maj = Date.now(); saveLocal(); pousser(); };
-  const aDuContenu = (o) => !!(o && ((o.reviews || []).length || (o.attempts || []).length || (o.custom || []).length || Object.keys(o.edits || {}).length));
+  const aDuContenu = (o) => !!(o && ((o.reviews || []).length || (o.attempts || []).length || (o.custom || []).length || Object.keys(o.pecRecall || {}).length || Object.keys(o.edits || {}).length));
   const brancherNuage = async () => {
     try {
       const cl = window.claude; if (!cl || !cl.use) { etatNuage = "absent"; return; }
@@ -6965,6 +6986,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
   /* Compléments cliniques vérifiés dans les diapositives Petit (p. 3–64).
      Les orientations sont volontairement placées AVANT les traitements. */
   const PEC_DERMATO = [
+    {titre:"Herpès labial · p. 14–18", orientation:"**Orienter** si lésion de plus de 1 cm (critère indiqué entre parenthèses dans le CM), plus de 6 poussées/an, localisation génitale, immunodépression, fièvre, altération de l’état général ou absence d’amélioration. Si l’œil est atteint, orientation urgente.", traitement:"Mesures d’hygiène dès les premiers signes. **Aciclovir ACTIVIR® 5 % : 5 applications par jour, maximum 5 jours sans avis médical**, dès les premiers picotements (cours et RCP). Ne pas utiliser chez l’enfant de moins de 6 ans.", conseils:"Éviter le contact des lèvres avec l’entourage, se laver les mains, ne pas partager le linge de toilette et laisser les croûtes en place. **Pas de corticoïde local** : risque d’aggravation. Stick avec SPF en cas d’exposition solaire."},
     {titre:"Verrues · p. 3–8",orientation:"**Orienter** : enfant < 4 ans, grossesse, diabète, artériopathie ou neuropathie, verrue infectée/inflammatoire, grande taille, lésions multiples, augmentation de taille ou échec après 3 mois.",traitement:"Abstention possible si asymptomatique. Si gêne ou douleur : cryothérapie selon notice et localisation ; kératolytiques localisés (acide salicylique/lactique). **Éviter les produits corrosifs et respecter les contre-indications**.",conseils:"Ne pas partager serviettes, limes ou pierres ponces ; claquettes à la piscine ; pansement si saignement ; lavage des mains, désinfection douche/baignoire."},
     {titre:"Condylomes · p. 9–10",orientation:"**Orientation médicale nécessaire** : verrues génitales (HPV/IST).",traitement:"Traitement médicamenteux ou interventionnel décidé après consultation.",conseils:"Aborder transmission, prévention et dépistage selon le contexte."},
     {titre:"Molluscum contagiosum · p. 11–13",orientation:"Consultation si gêne esthétique importante, prurit gênant ou crainte d'éviction des activités collectives.",traitement:"Cryothérapie ou curetage médical possible ; hydroxyde de potassium corrosif, efficacité non démontrée dans le cours.",conseils:"Limiter le grattage, ongles courts, éviter partage de serviettes et tapoter plutôt que gratter."},
@@ -7008,20 +7030,13 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
   ];
   const fichePEC = p => {
     const nom=p.titre.split(" · p.")[0];
-    if(nom==="Onychomycoses") return `<details class="fc-accordion fc-condition"><summary><span>Onychomycoses</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail">
-      <div class="fc-alert"><strong>⚠️ Quand orienter ?</strong><ul><li>Plus de 2 ongles atteints ; diabète, artériopathie ou neuropathie</li><li>Ongle décollé ou très épaissi ; matrice atteinte ; bande noire</li><li>Surinfection ou échec du traitement</li></ul></div>
-      <h4>1. Vernis antifongiques · première intention</h4>
-      <div class="fc-product"><strong>Amorolfine · LOCERYL®</strong><span class="fc-dose">1 à 2 fois/semaine</span><small>Dès 18 ans</small><ol><li>Retirer l'ancien vernis au dissolvant</li><li>Limer avec une lime neuve</li><li>Nettoyer avec la lingette fournie</li><li>Appliquer, puis nettoyer la spatule</li></ol><p class="fc-key">Résiste à l'eau</p></div>
-      <div class="fc-product"><strong>Ciclopirox · MYCONAIL®</strong><span class="fc-dose">1 fois/jour, le soir</span><small>Dès 18 ans</small><ol><li>Laver et sécher : sans dissolvant ni limage</li><li>Appliquer sur l'ongle, 5 mm autour et sous le bord libre si possible</li><li>Laisser sécher 30 secondes</li><li>Ne pas mouiller pendant 6 heures</li></ol><p class="fc-key">Hydrosoluble · ne résiste pas à l'eau</p></div>
-      <h4>2. Après consultation</h4>
-      <div class="fc-product"><strong>Bifonazole + urée · AMYCOR ONYCHOSET®</strong><span class="fc-dose">1 fois/jour · 1 à 3 semaines</span><p>Pansement occlusif 24 h → bain chaud → retirer la partie ramollie. Puis crème antifongique sans urée pendant <strong>4 à 8 semaines</strong>.</p></div>
-      <div class="fc-product"><strong>Terbinafine orale</strong><span class="fc-dose">250 mg/jour · plusieurs mois</span><p>Vigilance : hépatotoxicité, réactions cutanées graves, troubles du goût/de l'odorat, myalgies.</p></div>
-      <h4>3. Conseils au comptoir</h4><ul><li>Bien sécher les pieds et limiter la transpiration</li><li>Privilégier le coton ; poudre ou spray antifongique dans les chaussures</li><li>Repousse lente : environ 6 mois (mains), plus de 12 mois (pieds)</li></ul>
-      <p class="fc-secondary">Le cours signale une efficacité insuffisamment établie pour les solutions non médicamenteuses citées p. 45.</p>
-      <p class="fc-secondary">Source : CM Petit, p. 42–46.</p>
-    </div></details>`;
-    const pratiques=(PEC_PROTOCOLS[nom]||[]).map(([produit,dose,mode])=>'<div class="fc-product"><strong>'+esc(produit)+'</strong><span class="fc-dose">'+esc(dose)+'</span><p>'+esc(mode)+'</p></div>').join('');
-    return `<details class="fc-accordion fc-condition"><summary><span>${esc(nom)}</span><span class="fc-chevron">⌄</span></summary><div class="fc-detail"><div class="fc-alert fc-derm-orientation"><strong>Orientation médicale</strong><p>${formatPecNote(p.orientation)}</p></div><h4>Traitements · posologies et modes d’emploi</h4>${pratiques}<details class="fc-extra"><summary>Autres informations du cours</summary><div class="fc-prose">${fmt(p.traitement).replace(/\\n\\n/g,"</p><p>")}</div></details><h4>Conseils au comptoir</h4><div class="fc-prose">${renderPecPoints(p.conseils)}</div><p class="fc-secondary">${esc(p.titre.match(/p\\. .*/)?.[0] || "")} · CM Petit</p></div></details>`;
+    const topic = pecRecallCatalog().groups.get("dermato").flatMap(group => group.topics).find(x => x.title === nom);
+    const source = nom === "Onychomycoses" ? "Diapos 42–46 et ronéo CM4. Les précisions des RCP sont indiquées dans les sous-parties concernées."
+      : esc(p.titre.match(/p\. .*/)?.[0] || "");
+    return `<details class="fc-accordion fc-condition"><summary><span>${esc(nom)}</span><span class="fc-chevron">⌄</span></summary>
+      <div class="fc-detail pec-content">${topic.cards.map(card => `<section class="pec-block"><h4>${esc(card.title)}</h4>${pecRecallAnswer(card)}</section>`).join("")}
+      <p class="fc-secondary">Diaporama de M. Petit · ${source}</p></div></details>`;
+
   };
   const encartPEC = () => '' + PEC_GROUPES.map(g=>'<details class="fc-accordion fc-family"><summary><span>'+esc(g.titre)+' <small>('+g.cles.length+')</small></span><span class="fc-chevron">⌄</span></summary><div class="fc-family-body">'+g.cles.map(k=>{const p=PEC_DERMATO.find(x=>x.titre.split(" · p.")[0]===k);return p?fichePEC(p):''}).join('')+'</div></details>').join('');
   const DISP_DETAILS = {"osteoporose":{"source":"Prérequis Ostéoporose2026","groups":[["Évaluation et sécurité","Fractures de fragilité, risque de chute, corticothérapie, apport calcium/vitamine D, fonction rénale et santé bucco-dentaire à vérifier.","Douleur œsophagienne, mâchoire ou cuisse inhabituelle : orientation ; prévenir les chutes."],["Bisphosphonates oraux","Alendronate : 70 mg une fois/semaine ; risédronate : 5 mg/j, 35 mg/semaine ou 75 mg deux jours consécutifs/mois selon spécialité.","Au lever à jeun, grand verre d'eau plate, avaler entier ; rester debout/assis au moins 30 min ; respecter le délai avant aliments/autres médicaments selon RCP."],["Autres traitements","Acide zolédronique : 5 mg IV une fois/an ; raloxifène : 60 mg/j (risque thromboembolique) ; tériparatide FORSTEO : 20 µg SC/j, maximum 24 mois.","Tériparatide dans cuisse ou abdomen ; expliquer injection et vertiges/hypotension initiale. Raloxifène à n'importe quelle heure, avec ou sans repas."],["Dénosumab — point critique","PROLIA : 60 mg SC tous les 6 mois, cuisse, abdomen ou haut du bras.","Hypocalcémie, ostéonécrose de mâchoire, infections ; **ne jamais arrêter sans relais médical par bisphosphonate** : rebond osseux et fractures."]]},"goutte":{"source":"Prérequis Goutte2026","groups":[["Crise et colchicine","Colchicine, AINS ou corticoïde selon patient ; colchicine à marge thérapeutique étroite.","Diarrhée = signal de toxicité : cours demande réduction à 0,5 mg voire arrêt ; avis médical si signes importants. Contre-indiquée si clairance créatinine <30 mL/min."],["Interactions majeures","Colchicine : inhibiteurs CYP3A4/P-gp, notamment macrolides sauf spiramycine selon CM et pristinamycine ; statines = risque de myopathie.","COLCHIMAX contient tiémonium et opium : somnolence, symptômes digestifs potentiellement masqués."],["Allopurinol","Début progressif selon fonction rénale : cours 50–100 mg/j si Cl >60 ; 50 mg/j si Cl 30–60, titrer sur uricémie.","Prendre fin/après repas ; éruption surtout dans les deux premiers mois : arrêt et avis médical urgent (toxidermie grave)."],["Prévention des crises et cible","Colchicine 0,5–1 mg/j au moins 6 mois lors de l'instauration d'hypouricémiant ; 0,5 mg/j si IR légère, 0,5 mg un jour sur deux si IR modérée selon CM.","Cible uricémie <360 µmol/L ; <300 µmol/L dans les situations sévères. Fébuxostat : prudence pathologie cardiovasculaire sévère."]]},"anemies":{"source":"UE disp Boulin anémies2026","groups":[["Avant de traiter","NFS, VGM, ferritine, contexte clinique ; distinguer carence martiale, B9, B12 et autres causes.","Saignement actif ou anémie sévère/symptomatique : orientation. Ne pas donner systématiquement du fer à toute femme enceinte."],["Fer oral","**100–200 mg de fer élément/j** selon Boulin : vérifier le fer élément, non la masse du sel.","De préférence hors repas ; pendant repas si douleurs abdominales. Selles noires, goût métallique, troubles digestifs ; paille si poudre liquide pour éviter coloration dentaire."],["Interactions et suivi du fer","Éloigner de plus de 2 h : cyclines, fluoroquinolones, bisphosphonates, lévothyroxine, calcium, magnésium.","Éviter thé/café à proximité ; vitamine C peut améliorer absorption ; tenir hors de portée des enfants. Surveiller hémoglobine et ferritine."],["Folates","Carence : acide folique/folinique 5–15 mg/j en 1–2 prises selon CM.","Prévention grossesse : 400 µg/j de 1 mois avant conception jusqu'à 8 semaines ; 5 mg/j si haut risque. Rechercher déficit B12 avant traitement isolé d'une macrocytose."]]},"hbp":{"source":"UE disp Boulin HBP2026","groups":[["Orientation et signes d'alerte","Rétention aiguë d'urines, hématurie importante, fièvre avec symptômes urinaires, douleur intense : orientation urgente.","Rechercher dysurie, pollakiurie, nycturie, médicaments aggravants, fonction rénale."],["Alpha-bloquants","Relaxent prostate et col vésical ; alfuzosine LP 10 mg/j ; silodosine UROREC : 4 mg/j dans certains cas du CM, 4 mg si ClCr <50 mL/min selon Boulin.","Hypotension orthostatique, vertiges, chutes : lever progressif. Prudence âgés, coronariens, antihypertenseurs ; interactions inhibiteurs puissants CYP3A4, tamsulosine 3A4/2D6."],["Inhibiteurs 5-alpha-réductase","Finastéride et dutastéride, surtout prostate >40 g selon CM ; effet lent, réduction volume.","**PSA diminué d'environ 50 %** : le prescripteur en tient compte (CM : multiplier le PSA mesuré par 2 pour dépistage). Troubles sexuels."],["Alternatives et surveillance","PERMIXON/TADENAN cités ; bithérapie possible si monothérapie insuffisante mais effets indésirables se cumulent.","Chirurgie = traitement curatif selon support ; suivi symptômes, tension, observance, troubles sexuels."]]},"bipolaire":{"source":"UE disp Boulin troubles bipolaires2026","groups":[["Lithium : prise et surveillance","À heures fixes, plutôt le soir selon CM ; lithiémie régulière indispensable, respecter horaire du prélèvement et ordonnance.","Surveiller créatininémie, TSH, poids, glycémie, lipides et risque cardiaque selon patient."],["Lithium : toxicité","Déshydratation, diarrhée, vomissements, chaleur, régime désodé et diurétiques favorisent toxicité.","**Confusion, ataxie, tremblements importants, troubles neurologiques ou diarrhées sévères = avis médical immédiat**. Éviter AINS en automédication."],["Valproate et dérivés","DEPAKINE, DEPAMIDE, DEPAKOTE : sédation, prise de poids, troubles digestifs (prise au milieu du repas), tremblements.","Tératogénicité majeure, contraception et conditions réglementaires de prescription/délivrance à vérifier ; ne pas interchanger/associer arbitrairement les dérivés."],["Surveillance et sécurité","Risque hépatique, hématologique, éruption SJS/Lyell, interaction avec lamotrigine.","Contrôles ASAT/ALAT et NFS selon CM ; ne pas arrêter brutalement, évaluer observance et signes de rechute."]]},"inf-gyn":{"source":"Prérequis Infections gynécologiques2026","groups":[["Triage","Différencier vaginose bactérienne, candidose et trichomonase (IST).","Fièvre, douleurs pelviennes, grossesse, pertes atypiques, récidives ou suspicion IST : orientation."],["Vaginose bactérienne","Métronidazole FLAGYL 500 mg : **1 g/j en 2 prises pendant 7 jours**, pendant repas ; tinidazole FASIGYNE : **2 g dose unique** hors repas ; secnidazole SECNOL : **2 g dose unique** début repas.","Troubles digestifs, coloration urines, effet antabuse mentionné dans le CM ; vérifier les consignes de chaque RCP."],["Trichomonase","Métronidazole, secnidazole, tinidazole ou ornidazole ; ornidazole **1 g/j en 2 prises pendant 5 jours**, ou 1,5 g après repas du soir selon support.","IST : dépistage et prise en charge partenaires ; répétition d'une monodose à J15 uniquement selon schéma prescrit."],["Candidose, HSV, HPV","Antifongiques vaginaux : expliquer insertion le soir, renouvellement propre à chaque spécialité, crème externe si indiquée.","Fluconazole 150 mg hebdomadaire d'entretien pour certaines récidives = décision médicale. HSV : antiviraux dès prodromes ; HPV : vaccination GARDASIL 9 selon âge."]]},"mucoviscidose":{"source":"Prérequis et cas Mucoviscidose2026","groups":[["Analyse d'ordonnance","Vérifier génotype, âge, poids, fonction respiratoire, insuffisance pancréatique, infections, interactions et cohérence des associations.","Surveillance hépatique et CYP3A des modulateurs CFTR ; formes pédiatriques non interchangeables."],["Modulateurs CFTR","KAFTRIO + KALYDECO, SYMKEVI + KALYDECO, ORKAMBI et ALYFTREK : schémas différents, ordonnance spécialisée.","Prise avec aliments lipidiques lorsque RCP le demande ; ORKAMBI contient lumacaftor inducteur puissant CYP3A. Ne pas inventer dose sans âge, poids, génotype."],["Enzymes pancréatiques","CREON : <4 ans **1 000 unités lipase/kg/repas** au départ ; >4 ans **500 unités/kg/repas** ; ajustement selon clinique.","Pendant ou immédiatement après repas, ne pas écraser granulés gastro-résistants. Max **2 500 U/kg/repas, 10 000 U/kg/j ou 4 000 U/g de graisses** selon cours."],["Respiratoire et nutrition","PULMOZYME **2 500 U/2,5 mL : 1 nébulisation/j**, parfois 2/j après 21 ans selon cours ; vitamines A, D, E, K, NaCl, calcium selon ordonnance.","**Ne pas diluer ni mélanger PULMOZYME** dans cuve ; certains nébuliseurs ultrasoniques inadaptés ; expliquer hygiène matériel, surveiller stéatorrhée et poids."]]}};
@@ -8716,9 +8731,521 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
     </section>`;
   }
 
+  const PEC_RECALL_ONYCH = [
+  [
+    "interrogatoire",
+    "Reconnaissance et interrogatoire au comptoir",
+    [
+      "Le cours décrit un bord distal jaunâtre, épaissi et friable. L’atteinte peut progresser vers la base de l’ongle.",
+      "Demander **depuis quand, combien d’ongles et lesquels**, à quel endroit l’atteinte a commencé et jusqu’où elle s’étend. Rechercher atteinte de la base, douleur, décollement, épaississement, bande pigmentée, rougeur ou écoulement.",
+      "Rechercher **diabète, artériopathie, neuropathie**, traitements déjà essayés (produit, durée, application) et éventuel pied d’athlète. Un aspect dystrophique seul ne suffit pas à confirmer une mycose."
+    ]
+  ],
+  [
+    "orientation",
+    "Critères d’orientation médicale",
+    [
+      "==Plus de deux ongles atteints, atteinte de la matrice, ongle décollé ou très épaissi, bande noire ou autre aspect inhabituel, surinfection ou échec du traitement.==",
+      "==Orienter aussi en cas de diabète, artériopathie ou neuropathie.== Pour une atteinte limitée, vérifier aussi l’âge, le terrain et la notice avant de conseiller. Une bande noire doit être évaluée avant de présumer une mycose."
+    ]
+  ],
+  [
+    "traitements",
+    "Traitements disponibles et place dans la prise en charge",
+    [
+      "**Cours** : vernis antifongique en première intention pour une atteinte limitée et sans atteinte matricielle chez l’adulte. Exemples : amorolfine **LOCERYL® 5 %** et ciclopirox **MYCONAIL® 80 mg/g**.",
+      "**Après consultation** : bifonazole + urée (**AMYCOR ONYCHOSET®**) pour ramollir et retirer l’ongle atteint, ou **terbinafine orale** si indiquée. Les solutions filmogènes non médicamenteuses du diaporama ont une efficacité peu établie."
+    ]
+  ],
+  [
+    "amorolfine-mecanisme",
+    "Amorolfine — mécanisme d’action",
+    [
+      "L’amorolfine est un antifongique topique de la famille des **morpholines**. Elle perturbe la **biosynthèse des stérols fongiques** : baisse de l’ergostérol et accumulation de stérols atypiques.",
+      "La membrane du champignon est altérée. L’activité peut être fongistatique ou fongicide."
+    ],
+    "loceryl"
+  ],
+  [
+    "amorolfine-dose",
+    "Amorolfine — posologie et durée",
+    [
+      "**LOCERYL® 5 %** : ==1 à 2 applications par semaine== sur les ongles atteints. Poursuivre sans interruption jusqu’à la repousse saine et à la disparition des lésions. **RCP** : en général **6 mois aux mains et 9 mois aux pieds**.",
+      "Ne pas appliquer automatiquement ce schéma à tous les vernis d’amorolfine : **LOCERYLPRO®** prévoit **1 application par semaine** dans son RCP. Le cours rappelle que la repousse totale d’un ongle du pied peut dépasser 12 mois."
+    ],
+    "loceryl"
+  ],
+  [
+    "amorolfine-mode",
+    "Amorolfine — modalités d’administration",
+    [
+      "1. Si du vernis est déjà présent, le retirer au dissolvant.\n2. Limer la partie atteinte et la surface de l’ongle sans toucher la peau.\n3. Nettoyer et dégraisser la tablette avec la lingette ou une compresse imbibée de dissolvant.\n4. Étaler le vernis sur **toute la tablette atteinte** avec l’applicateur.\n5. Laisser sécher. Nettoyer l’applicateur réutilisable après usage et entre deux ongles, sans l’essuyer sur le bord du flacon.",
+      "==Ne jamais utiliser sur un ongle sain une lime qui a servi à un ongle atteint.== Le vernis est résistant à l’eau selon le cours. Porter des gants imperméables si manipulation de solvants."
+    ],
+    "loceryl"
+  ],
+  [
+    "ciclopirox-mecanisme",
+    "Ciclopirox — mécanisme d’action",
+    [
+      "Le ciclopirox est un antifongique de la famille des **hydroxypyridones**. Il chélate des cations, notamment le fer, et perturbe des enzymes métallodépendantes nécessaires à la cellule fongique.",
+      "**MYCONAIL® contient du ciclopirox**. Le nom de la substance et les modalités d’application sont à vérifier pour chaque spécialité."
+    ],
+    "myconail"
+  ],
+  [
+    "ciclopirox-dose",
+    "Ciclopirox — posologie et durée",
+    [
+      "**MYCONAIL® 80 mg/g** : ==1 application par jour, de préférence le soir==, chez l’adulte. Poursuivre jusqu’à repousse saine : habituellement **6 mois aux mains, 9 à 12 mois aux pieds** selon le RCP.",
+      "Le schéma concerne ce vernis hydrosoluble. Il ne doit pas être transposé aux autres vernis de ciclopirox."
+    ],
+    "myconail"
+  ],
+  [
+    "ciclopirox-mode",
+    "Ciclopirox — modalités d’administration",
+    [
+      "1. Laver et sécher soigneusement l’ongle.\n2. Appliquer une couche mince sur **tout l’ongle**, sur les **5 mm de peau autour** et sous le bord libre si possible.\n3. Laisser sécher **environ 30 secondes**.\n4. ==Garder l’ongle au sec pendant au moins 6 heures.== Reprendre ensuite l’hygiène habituelle.",
+      "Le film hydrosoluble s’enlève à l’eau. Le cours ne demande ni dissolvant, ni limage pour enlever ce vernis. Couper régulièrement le bord libre."
+    ],
+    "myconail"
+  ],
+  [
+    "amycor",
+    "Bifonazole + urée — schéma après consultation",
+    [
+      "**AMYCOR ONYCHOSET®** : **1 application par jour** sous pansement occlusif. Après **24 h**, retirer le pansement, baigner l’ongle à l’eau chaude, retirer la partie ramollie, puis sécher et renouveler.",
+      "**Cours** : généralement **1 à 3 semaines** jusqu’au retrait de la zone atteinte. Poursuivre ensuite avec la crème antifongique **sans urée** selon l’ordonnance. Le cours indique **4 à 8 semaines** pour cette phase."
+    ]
+  ],
+  [
+    "terbinafine",
+    "Terbinafine orale — prescription et vigilance",
+    [
+      "Le cours indique **250 mg par jour chez l’adulte**, sur prescription, pour une durée qui dépend notamment de la localisation. Confirmer le diagnostic et vérifier la fonction hépatique et les traitements associés avec le prescripteur.",
+      "Le CM insiste sur l’**hépatite**, les réactions cutanées graves (Stevens–Johnson, Lyell), les troubles du goût ou de l’odorat et les myalgies. **Ictère, urines foncées, éruption évolutive ou atteinte des muqueuses** : arrêter et demander rapidement un avis médical."
+    ]
+  ],
+  [
+    "conseils",
+    "Conseils officinaux et suivi",
+    [
+      "Fixer un rythme d’application adapté au vernis. Expliquer que l’amélioration se juge sur la **repousse saine à partir de la base**. La zone abîmée déjà présente ne redevient pas saine du jour au lendemain.",
+      "Vérifier la technique et l’observance si le patient ne voit pas d’amélioration. Orienter si extension, atteinte de la base, douleur, inflammation, changement pigmentaire ou échec malgré une utilisation correcte."
+    ]
+  ],
+  [
+    "recidives",
+    "Prévention des récidives",
+    [
+      "Bien sécher les pieds, surtout entre les orteils. Changer les chaussettes régulièrement, privilégier le coton et les chaussures aérées. Prendre en charge la transpiration si nécessaire.",
+      "Éviter de partager coupe-ongles, limes, serviettes et chaussures. Rechercher et traiter une mycose cutanée associée. Le cours cite une **poudre ou un spray antifongique pour les chaussures**, en respectant la destination et la notice du produit."
+    ]
+  ]
+];
+  const PEC_RECALL_DERMATO = {
+  "Verrues": [
+    [
+      "reperage",
+      "Reconnaître les différentes formes",
+      "Les verrues sont des lésions hyperkératosiques bénignes transmissibles par contact direct ou indirect. La guérison spontanée est fréquente chez l’enfant.\n**Verrue plantaire isolée** : bien délimitée, douloureuse, avec de petits points noirs parfois saignants. **Verrues en mosaïque** : épaississements multiples généralement indolores.\n**Vulgaires** : dos des mains et des doigts. **Filiformes** : visage, cou. **Planes** : visage ou dos des mains."
+    ]
+  ],
+  "Condylomes": [
+    [
+      "reperage",
+      "Identifier la lésion et le risque de transmission",
+      "**Verrues génitales dues aux HPV**. Il s’agit d’une infection sexuellement transmissible. ==Toute suspicion de condylomes nécessite une orientation médicale.=="
+    ]
+  ],
+  "Molluscum contagiosum": [
+    [
+      "reperage",
+      "Signes typiques et évolution",
+      "**Papules en dôme, translucides ou rosées, ombiliquées au centre**, surtout entre 2 et 10 ans. Le cours rappelle que les paumes et les plantes sont épargnées.\nTransmission surtout par contact direct. Incubation de 2 à 6 semaines et guérison spontanée possible en quelques mois."
+    ]
+  ],
+  "Herpès labial": [
+    [
+      "reperage",
+      "Début, évolution et facteurs déclenchants",
+      "Le bouton de fièvre est une récurrence du **HSV-1**. Brûlure ou picotements très localisés, puis macule rouge, vésicules et croûtes jaunâtres. Le cours indique une durée habituelle de **8 à 10 jours**.\nFacteurs favorisants : UV, fièvre, stress, fatigue, menstruations. Réévaluer la situation chez une personne immunodéprimée."
+    ],
+    [
+      "aciclovir-creme-activir/dose",
+      "Aciclovir ACTIVIR® — posologie et durée",
+      "**ACTIVIR® 5 % crème : 5 applications par jour, au maximum 5 jours sans avis médical.** Espacer d’au moins 3 à 4 h, sans application nocturne. Commencer dès les picotements. Le cours souligne l’intérêt de commencer dans les 12 premières heures.",
+      "activir"
+    ],
+    [
+      "aciclovir-creme-activir/mode",
+      "Aciclovir ACTIVIR® — modalités d’administration",
+      "Se laver les mains avant et après. Appliquer uniquement sur la lésion de la lèvre, en débordant autour. **Éviter l’œil et les muqueuses** (dont l’intérieur de la bouche).\nSi flacon-pompe neuf, l’amorcer par au moins 3 à 4 pressions lentes et complètes.",
+      "activir"
+    ]
+  ],
+  "Varicelle": [
+    [
+      "reperage",
+      "Agent, transmission et complication principale",
+      "**VZV**. Transmission aérienne et par contact avec le liquide des vésicules.\nLa complication à repérer au comptoir est notamment la **surinfection bactérienne** des lésions. Si le diagnostic reste incertain, faire confirmer médicalement."
+    ]
+  ],
+  "Zona": [
+    [
+      "reperage",
+      "Reconnaître une éruption évocatrice",
+      "**Réactivation du VZV.** Douleur précédant souvent l’éruption de **2 à 3 jours**. Macules et papules évoluent en vésicules, habituellement sur **un seul territoire nerveux, d’un seul côté**.\nUne personne non immunisée exposée au liquide des vésicules peut développer une **varicelle**."
+    ],
+    [
+      "orientation",
+      "Critères d’orientation médicale",
+      "==Toute suspicion de zona justifie une consultation rapide. Le zona ophtalmique est une urgence.==\n**Œil rouge ou douloureux, larmoiement, vésicules palpébrales** : faire consulter immédiatement. Le cours insiste également sur la vigilance chez la personne âgée ou immunodéprimée.",
+      "zona"
+    ]
+  ],
+  "Poux": [
+    [
+      "reperage",
+      "Confirmer l’infestation au comptoir",
+      "Rechercher des **poux mobiles** et des **lentes fixées à la base du cheveu**. Les pellicules se détachent facilement. Le prurit est lié à une réaction à la salive du pou.\nTransmission surtout par contact direct. Les lentes éclosent après environ **7 jours** selon le cours."
+    ]
+  ],
+  "Gale": [
+    [
+      "reperage",
+      "Signes typiques, localisation et contagion",
+      "**Prurit à recrudescence nocturne** et **sillons scabieux**. Des nodules ou vésicules perlées sont possibles. Rechercher les lésions aux espaces interdigitaux, poignets, coudes et bords des pieds. Les atteintes sont souvent bilatérales.\nTransmission surtout par contact direct. **Incubation 3 à 6 semaines**, avec contagiosité possible pendant cette période."
+    ]
+  ],
+  "Tiques": [
+    [
+      "orientation",
+      "Critères d’orientation médicale",
+      "Après une piqûre simple sans symptôme, retirer rapidement la tique, désinfecter et surveiller.\n==Orienter si érythème migrant ou signes généraux après la piqûre.== Rechercher fièvre, céphalées, fatigue, adénopathies, douleurs articulaires ou musculaires."
+    ],
+    [
+      "reperage",
+      "Distinguer réaction locale et érythème migrant",
+      "**Réaction inflammatoire locale** : dans les 24 h, régresse en quelques jours.\n**Érythème migrant** : plaque circulaire qui **s’étend progressivement**, au site de la piqûre, à partir de quelques jours et jusqu’à quelques semaines après. Sa disparition spontanée ne dispense pas d’une consultation."
+    ]
+  ],
+  "Mycoses cutanées": [
+    [
+      "reperage",
+      "Repérer les formes selon la localisation",
+      "**Pied d’athlète** : intertrigo interdigito-plantaire. **Teigne** : cheveux et cuir chevelu. **Intertrigo** : grands ou petits plis. **Herpès circiné** : dermatophytie de peau glabre.\nLe cours décrit des plaques blanchâtres avec érythème et prurit, avec surinfection bactérienne possible. Le **pityriasis versicolor** peut donner une hypo- ou hyperpigmentation et nécessite une consultation dans le cours."
+    ]
+  ],
+  "Mycoses génitales": [
+    [
+      "reperage",
+      "Interrogatoire et tableau évocateur",
+      "Préciser **localisation**, premier épisode ou récidive, **aspect et odeur des pertes**, fièvre ou douleurs pelviennes, grossesse, diabète, prise récente d’antibiotiques.\n**Irritation, prurit, pertes blanchâtres et parfois dysurie** évoquent le tableau du cours. Une vulvite est externe et une vaginite interne."
+    ]
+  ],
+  "Impétigo": [
+    [
+      "reperage",
+      "Reconnaître les lésions typiques",
+      "**Infection cutanée superficielle très contagieuse**, surtout chez l’enfant de 2 à 5 ans. Principal germe : **Staphylococcus aureus**, plus rarement **Streptococcus pyogenes**.\nPetites pustules ou vésicules puis **croûtes jaunes**, parfois prurit. La forme bulleuse peut être douloureuse."
+    ],
+    [
+      "orientation",
+      "Critères d’orientation médicale",
+      "==Forme grave : ecthyma, atteinte de plus de 2 % de la surface corporelle, plus de 6 sites lésionnels ou extension rapide.== L’ecthyma est la forme nécrotique creusante.\nChez le jeune enfant, le cours insiste sur la nécessité fréquente d’une **antibiothérapie locale sur prescription**.",
+      "impetigo"
+    ],
+    [
+      "conseils",
+      "Conseils officinaux et éviction",
+      "Nettoyer à **l’eau et au savon**, sécher avec une serviette dédiée, couvrir par un **pansement sec** si possible. Se laver les mains après contact, couper les ongles et éviter le grattage. Pas d’antiseptique local en plus de la toilette.\n**Collectivité** : si les lésions sont impossibles à couvrir, éviction jusqu’à **3 jours après le début du traitement**.",
+      "impetigo"
+    ]
+  ],
+  "Érysipèle / DHBNN": [
+    [
+      "orientation",
+      "Critères d’orientation médicale",
+      "==Orientation médicale systématique.== Évoquer une DHBNN devant un **placard inflammatoire associé à de la fièvre**. Rechercher une **porte d’entrée cutanée**, notamment une morsure, qui modifie l’antibiothérapie.\n**Extension rapide ou douleur intense** : signes de gravité."
+    ]
+  ],
+  "Furoncle": [
+    [
+      "reperage",
+      "Reconnaître la lésion et sa forme compliquée",
+      "**Infection profonde et nécrosante du follicule pilo-sébacé**, due à **Staphylococcus aureus**. La lésion inflammatoire évolue en **5 à 10 jours** vers la nécrose folliculaire.\n**Anthrax staphylococcique** (regroupement de furoncles), lésions multiples, fièvre ou abcédation : forme compliquée, à orienter."
+    ]
+  ],
+  "Panaris péri-unguéal": [
+    [
+      "reperage",
+      "Reconnaître une infection péri-unguéale",
+      "**Gonflement aigu et douloureux autour de l’ongle**, parfois purulent, souvent après une blessure ou une piqûre. Le cours cite surtout **Staphylococcus aureus**.\nRechercher un **abcès**, qui impose l’orientation. Un ongle incarné correspond à la pénétration du bord de l’ongle dans la peau et peut se compliquer d’infection."
+    ]
+  ],
+  "Acné": [
+    [
+      "reperage",
+      "Distinguer lésions rétentionnelles et inflammatoires",
+      "Hyperséborrhée et obstruction du follicule : **comédon ouvert** (point noir), **comédon fermé** (microkyste, point blanc).\nInflammation : **papule** rouge sans pus, **pustule** à tête blanche, **nodule** profond à risque cicatriciel."
+    ]
+  ],
+  "Rosacée": [
+    [
+      "reperage",
+      "Reconnaître les signes du visage",
+      "**Bouffées vasomotrices** déclenchées notamment par le froid, les variations de température, l’alcool ou les émotions. Puis rougeur plus persistante et **télangiectasies**, parfois papules et pustules. Observer la rougeur et les petits vaisseaux pour distinguer ce tableau de l’acné."
+    ]
+  ],
+  "Psoriasis": [
+    [
+      "reperage",
+      "Reconnaître les plaques et leurs localisations",
+      "Dermatose inflammatoire chronique par poussées. **Plaques rouges bien délimitées**, souvent arrondies et légèrement surélevées, à **squames épaisses, sèches et blanchâtres**.\nCoudes, genoux, mains, pieds, avant-bras, face antérieure des jambes. Le **cuir chevelu** peut être la seule localisation."
+    ]
+  ],
+  "Dermatite séborrhéique": [
+    [
+      "reperage",
+      "Reconnaître les lésions et terrains",
+      "**Rougeurs et squames des zones séborrhéiques**, surtout visage et cuir chevelu, parfois prurigineuses. Dermatose chronique par poussées associée à **Malassezia**, aggravation possible par le stress. Le cours rapproche les croûtes de lait du nourrisson de ce tableau."
+    ]
+  ],
+  "Urticaire": [
+    [
+      "orientation",
+      "Critères d’orientation médicale",
+      "==Gonflement des lèvres, de la langue ou des paupières, gêne respiratoire ou à la déglutition, malaise : appeler le 15 ou le 112.==\nOrienter aussi si fièvre, articulations gonflées et douloureuses, symptômes digestifs associés, enfant de moins de 6 ans, récidive ou persistance après conseil.\nFace à un angio-œdème sous **IEC**, **ARA2**, **racécadotril** ou **gliptine**, évoquer le mécanisme **bradykinique**, insensible aux anti-H1.",
+      "urticaire"
+    ]
+  ]
+};
+  const PEC_RECALL_SOURCES = {
+    zona: ["Assurance Maladie · Zona", "https://www.ameli.fr/assure/sante/themes/zona/bons-reflexes-cas-faut-consulter"],
+    impetigo: ["HAS · Impétigo", "https://www.has-sante.fr/jcms/p_3282449/fr/"],
+    urticaire: ["Assurance Maladie · Urticaire", "https://www.ameli.fr/assure/sante/themes/urticaire/que-faire-cas-faut-consulter"],
+    activir: ["RCP ACTIVIR®", "https://base-donnees-publique.medicaments.gouv.fr/medicament/68933636/extrait"],
+    loceryl: ["RCP LOCERYL®", "https://base-donnees-publique.medicaments.gouv.fr/medicament/66895425/extrait"],
+    myconail: ["RCP MYCONAIL®", "https://base-donnees-publique.medicaments.gouv.fr/medicament/62628179/extrait"],
+  };
+  const PEC_GRADES = ["Oublié", "Difficile", "Correct", "Parfait"];
+  const PEC_MINUTE = 60000, PEC_DAY = 1440 * PEC_MINUTE;
+  const pecKey = value => norm(value).replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const pecCard = (id, title, answer, source) => ({ id, title, answer, source });
+
+  function pecIntervals(previous) {
+    const days = Math.max(0, Math.min(365, Number(previous?.days) || 0));
+    const hard = Math.min(363, Math.max(1, Math.round(days * 1.2)));
+    const good = Math.min(364, Math.max(3, hard + 1, Math.round(days * 2)));
+    const easy = Math.min(365, Math.max(7, good + 1, Math.round(days * 3)));
+    return [10 * PEC_MINUTE, hard * PEC_DAY, good * PEC_DAY, easy * PEC_DAY];
+  }
+  function pecSchedule(previous, grade, now) {
+    const interval = pecIntervals(previous)[grade];
+    return { due: now + interval, days: interval / PEC_DAY, grade, updated: now,
+      reviews: (Math.max(0, Number(previous?.reviews) || 0)) + 1 };
+  }
+  function pecTimeLabel(interval) {
+    if (interval < PEC_DAY) return "Dans " + Math.max(1, Math.ceil(interval / PEC_MINUTE)) + " min";
+    const days = Math.ceil(interval / PEC_DAY);
+    return days === 1 ? "Demain" : "Dans " + days + " jours";
+  }
+  const pecDueDate = time => new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric", month: "short", hour: "2-digit", minute: "2-digit",
+  }).format(time);
+
+  let pecCatalog;
+  function pecGroupsFor(id) {
+    if (id === "dermato") {
+      return PEC_GROUPES.map(group => ({ title: group.titre, topics: group.cles.flatMap(name => {
+        const part = PEC_DERMATO.find(item => item.titre.split(" · p.")[0] === name);
+        if (!part) return [];
+        const prefix = "dermato/" + pecKey(name);
+        const standard = name === "Onychomycoses"
+          ? PEC_RECALL_ONYCH.map(([key, title, notes, source]) => pecCard(prefix + "/" + key, title,
+              () => notes.map(renderPecPoints).join(""), source))
+          : [
+              pecCard(prefix + "/orientation", "Critères d’orientation médicale", () => renderPecPoints(part.orientation)),
+              pecCard(prefix + "/traitements", "Traitements et précautions", () => renderPecPoints(part.traitement)),
+              ...(PEC_PROTOCOLS[name] || []).flatMap(([product, dose, mode]) => {
+                const key = prefix + "/" + pecKey(product);
+                return [
+                  pecCard(key + "/dose", product + " — posologie ou fréquence", () => renderPecPoints(dose)),
+                  pecCard(key + "/mode", product + " — utilisation", () => renderPecPoints(mode)),
+                ];
+              }),
+              pecCard(prefix + "/conseils", "Conseils officinaux", () => renderPecPoints(part.conseils)),
+            ];
+        const additions = PEC_RECALL_DERMATO[name] || [];
+        const revised = new Map(additions.map(([key, title, notes, source]) => {
+          const id = prefix + "/" + key;
+          return [id, pecCard(id, title, () => renderPecPoints(notes), source)];
+        }));
+        const cards = standard.map(card => revised.get(card.id) || card);
+        cards.splice(1, 0, ...[...revised.values()].filter(card => !standard.some(item => item.id === card.id)));
+        return [{ title: name, cards }];
+      }) }));
+    }
+    if (id === "attelles") {
+      return ORTHO_GUIDE.map(([title, rows]) => ({ title, topics: rows.map(({key,name,shape,use,counter}) => ({
+        title: name, cards: [
+          pecCard("attelles/" + key + "/indication", "Indications et points à vérifier", () => renderPecPoints(use) + renderPecPoints(counter)),
+          pecCard("attelles/" + key + "/reconnaissance", "Reconnaître le dispositif", () =>
+            '<img class="pec-recall-ortho" src="' + ORTHO_IMAGES[key] + '" alt="' + esc(name) + '">' + renderPecPoints(shape)),
+        ],
+      })) }));
+    }
+    const groups = id === "voyage" ? VOYAGE_DETAIL : COURS_PEC[id];
+    if (!groups) return [];
+    return groups.map(([title, items]) => ({ title, topics: items.map(([topic, main, detail, source]) => {
+      const notes = id === "voyage" ? [main, detail] : main;
+      const panels = PEC_MEDICATION_PANELS[topic];
+      let units;
+      if (panels) {
+        units = panels.map(([name, heading, content]) => [
+          [name, heading].filter(Boolean).join(" — "),
+          [typeof content === "number" ? notes[content] : content],
+        ]);
+      } else {
+        units = [[topic, notes]];
+      }
+      return { title: topic, cards: units.map(([heading, paragraphs]) => {
+        const reference = id === "voyage" && VOYAGE_SOURCES[source];
+        return pecCard([id, title, topic, heading].map(pecKey).join("/"), heading, () =>
+          paragraphs.map(renderPecPoints).join("") +
+          (reference ? '<p class="fc-secondary"><a href="' + esc(reference[1]) + '" rel="noopener noreferrer" target="_blank">' + esc(reference[0]) + '</a></p>' : ""));
+      }) };
+    }) }));
+  }
+
+  function pecRecallCatalog() {
+    if (pecCatalog) return pecCatalog;
+    const groups = new Map(), cards = new Map();
+    for (const fiche of FICHES_COURS) {
+      const content = pecGroupsFor(fiche.id);
+      if (!content.length) continue;
+      groups.set(fiche.id, content);
+      for (const group of content) for (const topic of group.topics) for (const card of topic.cards) {
+        cards.set(card.id, { ...card, path: [fiche.title, group.title, topic.title] });
+      }
+    }
+    pecCatalog = { groups, cards };
+    return pecCatalog;
+  }
+
+  function pecDueCards(now = Date.now()) {
+    const { cards } = pecRecallCatalog();
+    return Object.entries(store.pecRecall || {})
+      .filter(([id, state]) => cards.has(id) && Number.isFinite(state?.due) && state.due <= now)
+      .sort((a, b) => (a[1].grade ?? 4) - (b[1].grade ?? 4) || a[1].due - b[1].due)
+      .map(([id]) => cards.get(id));
+  }
+
+  function pecToolbar() {
+    const due = pecDueCards().length;
+    const selected = S.pecMode === "jour" ? "jour" : S.pecMode;
+    return '<div class="pec-recall-modes" role="group" aria-label="Mode de lecture">' +
+      [["cours","Cours"],["actif","Restitution active"],["jour","Révisions du jour"]].map(([mode, label]) =>
+        '<button type="button" data-a="pec-mode" data-mode="' + mode + '" aria-pressed="' + (selected === mode) +
+        '">' + label + (mode === "jour" ? ' <span data-pec-count>' + due + '</span>' : '') + '</button>').join("") + '</div>';
+  }
+
+  function pecRecallAnswer(card) {
+    const source = PEC_RECALL_SOURCES[card.source];
+    return card.answer() + (source ?
+      '<p class="fc-secondary"><a href="' + esc(source[1]) + '" target="_blank" rel="noopener noreferrer">' + esc(source[0]) + '</a></p>' : "");
+  }
+
+  function pecRenderCard(card, daily = false) {
+    const previous = store.pecRecall?.[card.id];
+    const id = esc(card.id);
+    const intervals = pecIntervals(previous);
+    const options = pecRecallOptions(id, intervals);
+    return '<details class="fc-accordion pec-recall-card" data-pec-card="' + id + '">' +
+      '<summary><span>' + (daily
+        ? '<small class="pec-recall-path">' + esc(card.path.join(" › ")) + '</small>'
+        : '') + '<span>' + esc(card.title) + '</span></span><span class="fc-chevron" aria-hidden="true">⌄</span></summary>' +
+      '<div class="fc-detail pec-content">' + pecRecallAnswer(card) +
+      '<div class="pec-recall-evaluation"><p>Comment était ta restitution ?</p>' +
+      '<div class="pec-recall-grades">' + options + '</div>' +
+      '<p class="pec-recall-feedback" role="status">' + (Number.isFinite(previous?.due) ? 'Échéance : ' + esc(pecDueDate(previous.due)) : '') +
+      '</p></div></div></details>';
+  }
+
+  function pecRecallOptions(id, intervals) {
+    return PEC_GRADES.map((label, grade) =>
+      '<button type="button" data-a="pec-grade" data-id="' + id + '" data-grade="' + grade + '">' +
+      '<strong>' + label + '</strong><small>' + pecTimeLabel(intervals[grade]) + '</small></button>').join("");
+  }
+
+  function pecRecallTree(fiche) {
+    const groups = pecRecallCatalog().groups.get(fiche.id);
+    if (!groups) return "";
+    return '<section class="pec-reading pec-recall-tree" aria-label="Restitution active"><p class="muted">Récite à voix haute ou mentalement, puis ouvre le corrigé.</p>' +
+      groups.map(group => '<details class="fc-accordion fc-family"><summary><span>' + esc(group.title) +
+        '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
+        group.topics.map(topic => topic.cards.length === 1 && topic.cards[0].title === topic.title
+          ? pecRenderCard(topic.cards[0])
+          : '<details class="fc-accordion fc-condition"><summary><span>' + esc(topic.title) +
+            '</span><span class="fc-chevron" aria-hidden="true">⌄</span></summary><div class="fc-detail">' +
+             topic.cards.map(card => pecRenderCard(card)).join("") + '</div></details>').join("") +
+        '</div></details>').join("") + '</section>';
+  }
+
+  function pecRecallDaily() {
+    const due = pecDueCards();
+    pecDisplayed = due.map(card => card.id).join("|");
+    return '<header><h1>Révisions du jour</h1></header>' + pecToolbar() +
+      '<p class="muted" data-pec-queue-message role="status">' + (due.length ? due.length + ' à revoir' :
+        'Aucune réponse à revoir pour l’instant. Évalue une sous-partie en restitution active pour démarrer son suivi.') +
+      '</p><section class="pec-reading pec-recall-tree" aria-label="Réponses à revoir">' +
+      due.map(card => pecRenderCard(card, true)).join("") + '</section>';
+  }
+
+  function pecRecallGrade(data, button) {
+    const grade = Number(data.grade);
+    const card = pecRecallCatalog().cards.get(data.id);
+    const detail = button.closest("details[data-pec-card]");
+    if (!card || !detail?.open || !Number.isInteger(grade) || grade < 0 || grade > 3 || button.disabled) return;
+    const now = Date.now();
+    const latest = pecSchedule(store.pecRecall?.[card.id], grade, now);
+    store.pecRecall = { ...store.pecRecall, [card.id]: latest };
+    marquerJour(); save();
+    const status = detail.querySelector(".pec-recall-feedback");
+    status.textContent = stockageOk || etatNuage === "ok"
+      ? PEC_GRADES[grade] + " · prochaine révision " + pecDueDate(latest.due)
+      : "Progression en mémoire seulement. Exporte une sauvegarde dans Progrès.";
+    detail.querySelectorAll(".pec-recall-grades button").forEach(option => {
+      option.disabled = true;
+      if (option === button) option.setAttribute("aria-pressed", "true");
+    });
+    pecRefreshQueue();
+  }
+
+  let pecDisplayed = "";
+  function pecRefreshQueue() {
+    if (S.tab !== "fiches") return;
+    const due = pecDueCards();
+    app.querySelectorAll("[data-pec-count]").forEach(count => { count.textContent = due.length; });
+    if (S.pecMode !== "jour") return;
+    const message = app.querySelector("[data-pec-queue-message]");
+    if (message) message.textContent = due.length ? due.length + " à revoir" : "Aucune réponse à revoir pour l’instant.";
+    const key = due.map(card => card.id).join("|");
+    if (key !== pecDisplayed && !app.querySelector("details[data-pec-card][open]")) render();
+  }
+
   function vFichesCours() {
+    if (S.pecMode === "jour") return pecRecallDaily();
     const f = S.ficheCours ? FICHES_COURS.find(x => x.id === S.ficheCours) : null;
+    const canRecall = f && pecRecallCatalog().groups.has(f.id);
+    if (canRecall && S.pecMode === "actif") return `<header class="fc-sticky">
+      <button class="back" data-a="fiche-retour">${ic("retour")} Toutes les fiches</button>
+      <h1>${esc(f.title)}</h1><p class="muted">${esc(f.source)}</p></header>
+      ${pecToolbar()}${pecRecallTree(f)}`;
     if (f) return `<div class="fc-sticky"><button class="back" data-a="fiche-retour">${ic("retour")} Toutes les fiches</button><p class="fc-eyebrow">FICHE DE RÉVISION · PH5</p><h1>${esc(f.title)}</h1><p class="muted">${esc(f.source)}</p></div>
+      ${canRecall ? pecToolbar() : ""}
       ${f.priority ? `<section class="fc-focus${COURS_PEC[f.id] ? " fc-focus-pec" : ""}"><strong>À retenir en priorité</strong><p>${fmt(f.priority)}</p></section>` : ""}
       ${f.exam ? `<section class="fc-exam"><strong>Annales / ED</strong><p>${fmt(f.exam)}</p></section>` : ""}
       ${f.id === "sport" ? `<button class="card tap fc-entry" data-a="fiche-ouvrir" data-id="attelles"><span><strong>Attelles et orthèses au comptoir</strong><small>Guide illustré</small></span>${ic("chevron")}</button>` : ""}
@@ -8729,13 +9256,14 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
     const q = norm(S.ficheRecherche || "");
     const liste = FICHES_COURS.filter(x => norm(x.title + " " + x.source + " " + x.sections.map(y => y.title).join(" ")).includes(q));
     return `<header><p class="fc-eyebrow">BIBLIOTHÈQUE PH5</p><h1>Fiches de cours</h1><p class="muted">L'essentiel par thème, avec les priorités des ED et des annales. Les mentions « à titre informatif » sont distinguées des notions à apprendre.</p></header>
+      ${pecToolbar()}
       <div class="fc-search"><input type="search" id="fc-recherche" data-i="fiche-q" placeholder="Rechercher un thème…" value="${esc(S.ficheRecherche || "")}" aria-label="Rechercher une fiche"></div>
       <div id="fc-liste" class="stack">${liste.length ? liste.map(x => `<button class="card tap fc-entry" data-a="fiche-ouvrir" data-id="${x.id}"><span><strong>${esc(x.title)}</strong><small>${esc(x.source)}</small></span>${ic("chevron")}</button>`).join("") : '<p class="muted">Aucune fiche trouvée.</p>'}</div>
       <p class="muted fc-source">${FICHES_COURS.length} thèmes. Les synthèses distinguent les données des supports et les thèmes réellement vus aux annales.</p>`;
   }
   const TABS = ["accueil", "ordonnances", "cas", "cartes", "medicaments", "fiches", "progres"];
   const TAB_LABEL = { accueil: "Accueil", ordonnances: "Ordonnances", cas: "Cas", cartes: "Cartes", medicaments: "Médicaments", fiches: "Fiches", progres: "Progrès" };
-  const S = { ficheCours: null, ficheRecherche: "", tab: "accueil", ordo: null, cas: null, cls: null, hl: null, refl: Math.floor(Math.random() * D.REFLEXES.length), rev: null, filtre: { niveau: 0 }, q: "", outil: null, ordoVue: "ordos", cr: null, dose: null,
+  const S = { pecMode: "cours", ficheCours: null, ficheRecherche: "", tab: "accueil", ordo: null, cas: null, cls: null, hl: null, refl: Math.floor(Math.random() * D.REFLEXES.length), rev: null, filtre: { niveau: 0 }, q: "", outil: null, ordoVue: "ordos", cr: null, dose: null,
     cartes: { q: "", etat: "toutes", tri: "echeance", drug: null, ouvert: null, edit: null, ids: [], suppr: false } };
 
   /* ---------- Cartes : celles de l'application, ses modifications, ses propres cartes ---------- */
@@ -9218,8 +9746,13 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
 
   /* ---------- Actions ---------- */
   const A = {
-    "fiche-ouvrir": (d) => { S.ficheCours = d.id; history.pushState({officinaFiche:d.id}, "", "#fiches/" + encodeURIComponent(d.id)); render(true); },
-    "med-vers-fiche": (d) => { S.tab="fiches"; S.ficheCours=d.id; history.pushState({officinaFiche:d.id},"","#fiches/"+encodeURIComponent(d.id)); render(true); },
+    "pec-mode": (d) => {
+      if (!["cours", "actif", "jour"].includes(d.mode)) return;
+      S.pecMode = d.mode; render(true);
+    },
+    "pec-grade": pecRecallGrade,
+    "fiche-ouvrir": (d) => { if (S.pecMode === "jour") S.pecMode = "cours"; S.ficheCours = d.id; history.pushState({officinaFiche:d.id}, "", "#fiches/" + encodeURIComponent(d.id)); render(true); },
+    "med-vers-fiche": (d) => { S.pecMode="cours"; S.tab="fiches"; S.ficheCours=d.id; history.pushState({officinaFiche:d.id},"","#fiches/"+encodeURIComponent(d.id)); render(true); },
     "fiche-retour": () => { S.ficheCours = null; history.replaceState({officinaFiche:null}, "", "#fiches"); render(true); },
     tab: (d) => { aller(d.t); if (d.t !== "fiches") S.ficheCours = null; if (d.t === "ordonnances") { S.cr = null; S.dose = null; } if (d.t !== "medicaments") { S.cls = null; S.hl = null; } if (d.t === "accueil") autreReflexe(); render(true); },
     filtre: (d) => { S.filtre.niveau = +d.n; render(); },
@@ -9370,7 +9903,7 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
   });
   const depuisHash = () => {
     const h = decodeURIComponent((location.hash || "").slice(1));
-    if (h.startsWith("fiches/")) { const id = h.slice(7); if (FICHES_COURS.some(f=>f.id===id)) { S.tab="fiches"; S.ficheCours=id; S.rev=null; render(true); } return; }
+    if (h.startsWith("fiches/")) { if (S.pecMode === "jour") S.pecMode = "cours"; const id = h.slice(7); if (FICHES_COURS.some(f=>f.id===id)) { S.tab="fiches"; S.ficheCours=id; S.rev=null; render(true); } return; }
     if (TABS.includes(h)) { S.tab=h; S.ficheCours=null; S.rev=null; render(true); }
   };
   window.addEventListener("hashchange", depuisHash);
@@ -9379,6 +9912,11 @@ const CORE = { FSRS, matchFlag, corrigerOrdo, scoreOrdo, scoreCas, stats, fileRe
   app.addEventListener("touchstart", e => { if (S.tab !== "fiches" || !S.ficheCours || e.touches.length !== 1) { ficheTouch=null; return; } const t=e.touches[0]; ficheTouch={x:t.clientX,y:t.clientY}; }, {passive:true});
   app.addEventListener("touchend", e => { if (!ficheTouch || !S.ficheCours || !e.changedTouches.length) return; const t=e.changedTouches[0], dx=t.clientX-ficheTouch.x,dy=t.clientY-ficheTouch.y; ficheTouch=null; if(dx>85 && Math.abs(dy)<Math.abs(dx)*0.65) { S.ficheCours=null; history.replaceState({officinaFiche:null},"","#fiches"); render(true); } }, {passive:true});
   const h0 = decodeURIComponent((location.hash || "").slice(1)); if (TABS.includes(h0)) S.tab = h0; else if (h0.startsWith("fiches/") && FICHES_COURS.some(f=>f.id===h0.slice(7))) { S.tab="fiches"; S.ficheCours=h0.slice(7); }
+  app.addEventListener("toggle", (e) => {
+    if (S.pecMode === "jour" && e.target.matches("details[data-pec-card]") && !e.target.open) pecRefreshQueue();
+  }, true);
+  window.addEventListener("focus", pecRefreshQueue);
+  setInterval(pecRefreshQueue, 30000);
   render(true);
   brancherNuage();
 })();
